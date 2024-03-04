@@ -1,7 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.con/albugowy15/api-double-track/internal/api/router"
+	"github.con/albugowy15/api-double-track/internal/pkg/config"
+	"github.con/albugowy15/api-double-track/internal/pkg/db"
+)
 
 func main() {
+	config.LoadConfig(".")
+	conf := config.GetConfig()
+
+	db.SetupDB()
+	api := router.Setup()
+	log.Printf("Server running on port %s", conf.Port)
+	http.ListenAndServe(":"+conf.Port, api)
 	fmt.Println("Hello server")
 }

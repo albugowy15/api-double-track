@@ -14,6 +14,7 @@ type Configuration struct {
 	DbUser   string `mapstructure:"DBUSER"`
 	DbPass   string `mapstructure:"DBPASS"`
 	DbSsl    string `mapstructure:"DBSSl"`
+	Port     string `mapstructure:"PORT"`
 }
 
 var Config *Configuration

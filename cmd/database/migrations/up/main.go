@@ -79,6 +79,7 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 
 CREATE TABLE "questions" (
   "id" SERIAL PRIMARY KEY,
+  "number" int UNIQUE NOT NULL,
   "code" varchar(20) UNIQUE NOT NULL,
   "question" text NOT NULL,
   "category" varchar(20) NOT NULL,

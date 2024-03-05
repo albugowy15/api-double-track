@@ -9,7 +9,7 @@ import (
 	"github.con/albugowy15/api-double-track/internal/pkg/config"
 )
 
-var DB *sqlx.DB
+var dbConn *sqlx.DB
 
 func SetupDB() {
 	config.LoadConfig(".")
@@ -20,9 +20,9 @@ func SetupDB() {
 	if err != nil {
 		log.Fatalf("error connecting with database: %v", err)
 	}
-	DB = db
+	dbConn = db
 }
 
 func GetDb() *sqlx.DB {
-	return DB
+	return dbConn
 }

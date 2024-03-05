@@ -15,12 +15,13 @@ type Configuration struct {
 	DbPass   string `mapstructure:"DBPASS"`
 	DbSsl    string `mapstructure:"DBSSl"`
 	Port     string `mapstructure:"PORT"`
+	Secret   string `mapstructure:"SECRET"`
 }
 
-var Config *Configuration
+var config *Configuration
 
 func LoadConfig(path string) {
-	var config *Configuration
+	var conf *Configuration
 	viper.AddConfigPath(path)
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
@@ -33,14 +34,14 @@ func LoadConfig(path string) {
 		return
 	}
 
-	err = viper.Unmarshal(&config)
+	err = viper.Unmarshal(&conf)
 	if err != nil {
 		log.Printf("err unmarshal config: %v", err)
 		return
 	}
-	Config = config
+	config = conf
 }
 
 func GetConfig() *Configuration {
-	return Config
+	return config
 }

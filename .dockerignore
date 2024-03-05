@@ -1,0 +1,8 @@
+/.git/
+/tmp/
+.air.toml
+.gitignore
+Makefile
+README.md
+app.env
+app.env.prod

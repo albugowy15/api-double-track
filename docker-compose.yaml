@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DBDRIVER: postgres
+      DBNAME: dbtrack
+      DBHOST: db
+      DBPORT: 5432
+      DBUSER: postgres
+      DBPASS: postgres
+    networks:
+      - apinet
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dbtrack
+    networks:
+      - apinet
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
+
+networks:
+  apinet:
+    driver: bridge

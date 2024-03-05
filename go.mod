@@ -4,6 +4,7 @@ go 1.22.0
 
 require (
 	github.com/go-chi/chi/v5 v5.0.12
+	github.com/go-chi/jwtauth v1.2.0
 	github.com/google/uuid v1.6.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.9
@@ -13,10 +14,17 @@ require (
 
 require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
+	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/lestrrat-go/backoff/v2 v2.0.7 // indirect
+	github.com/lestrrat-go/httpcc v1.0.1 // indirect
+	github.com/lestrrat-go/iter v1.0.2 // indirect
+	github.com/lestrrat-go/jwx v1.1.0 // indirect
+	github.com/lestrrat-go/option v1.0.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect

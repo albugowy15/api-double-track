@@ -27,7 +27,7 @@ func Setup() *chi.Mux {
 		// this route group require authentication and authorization
 		r.Group(func(r chi.Router) {
 			r.Use(jwtauth.Verifier(jwt.GetAuth()))
-			r.Use(jwtauth.Authenticator)
+			r.Use(jwt.Authenticator)
 
 			r.Get("/statistics", controllers.GetStatistics)
 

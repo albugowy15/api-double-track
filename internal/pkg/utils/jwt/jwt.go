@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/jwtauth"
 	"github.com/lestrrat-go/jwx/jwt"
@@ -46,6 +47,7 @@ func CreateToken(claim JWTClaim) string {
 		"school_id": claim.SchoolId,
 	}
 	jwtauth.SetIssuedNow(jwtClaims)
+	jwtauth.SetExpiryIn(jwtClaims, time.Duration(15*time.Minute))
 	_, token, err := GetAuth().Encode(jwtClaims)
 	if err != nil {
 		log.Fatalf("error create token: %v", err)

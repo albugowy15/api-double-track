@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
-	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.con/albugowy15/api-double-track/internal/pkg/config"
+	"github.con/albugowy15/api-double-track/internal/pkg/db"
 )
 
 var schema = `
@@ -171,15 +170,15 @@ ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("ahp_id") REFERENCES "ahp" ("
 ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id");
 `
 
-func main() {
+func init() {
 	config.LoadConfig(".")
-	conf := config.GetConfig()
-	connStr := fmt.Sprintf("dbname=%s host=%s port=%s user=%s password=%s sslmode=%s", conf.DbName, conf.DbHost, conf.DbPort, conf.DbUser, conf.DbPass, conf.DbSsl)
+	db.SetupDB()
+}
 
-	db, err := sqlx.Connect(conf.DbDriver, connStr)
-	if err != nil {
-		log.Fatal(err)
+func main() {
+	if config.GetConfig().AppEnv == "prod" {
+		log.Fatalf("you cannot run database migrations when app is running in production")
 	}
-	defer db.Close()
-	db.MustExec(schema)
+	db.GetDb().MustExec(schema)
+	db.GetDb().Close()
 }

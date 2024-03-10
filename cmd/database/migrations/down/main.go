@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
-	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.con/albugowy15/api-double-track/internal/pkg/config"
+	"github.con/albugowy15/api-double-track/internal/pkg/db"
 )
 
 var statement = `
@@ -25,15 +24,15 @@ DROP TABLE IF EXISTS topsis_to_alternatives CASCADE;
 DROP FUNCTION IF EXISTS trigger_set_timestamp();
   `
 
-func main() {
+func init() {
 	config.LoadConfig(".")
-	conf := config.GetConfig()
-	connStr := fmt.Sprintf("dbname=%s host=%s port=%s user=%s password=%s sslmode=%s", conf.DbName, conf.DbHost, conf.DbPort, conf.DbUser, conf.DbPass, conf.DbSsl)
+	db.SetupDB()
+}
 
-	db, err := sqlx.Connect("postgres", connStr)
-	if err != nil {
-		log.Fatal(err)
+func main() {
+	if config.GetConfig().AppEnv == "prod" {
+		log.Fatalf("you cannot run database migrations when app is running in production")
 	}
-	db.MustExec(statement)
-	defer db.Close()
+	db.GetDb().MustExec(statement)
+	db.GetDb().Close()
 }

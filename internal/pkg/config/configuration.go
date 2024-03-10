@@ -7,15 +7,10 @@ import (
 )
 
 type Configuration struct {
-	DbDriver string `mapstructure:"DBDRIVER"`
-	DbName   string `mapstructure:"DBNAME"`
-	DbHost   string `mapstructure:"DBHOST"`
-	DbPort   string `mapstructure:"DBPORT"`
-	DbUser   string `mapstructure:"DBUSER"`
-	DbPass   string `mapstructure:"DBPASS"`
-	DbSsl    string `mapstructure:"DBSSl"`
-	Port     string `mapstructure:"PORT"`
-	Secret   string `mapstructure:"SECRET"`
+	AppEnv      string `mapstructure:"APP_ENV"`
+	DatabaseUrl string `mapstructure:"DATABASE_URL"`
+	Port        string `mapstructure:"PORT"`
+	Secret      string `mapstructure:"SECRET"`
 }
 
 var config *Configuration

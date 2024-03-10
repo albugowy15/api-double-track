@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -11,14 +10,15 @@ import (
 	"github.con/albugowy15/api-double-track/internal/pkg/utils/jwt"
 )
 
-func main() {
+func init() {
 	config.LoadConfig(".")
-	conf := config.GetConfig()
-
 	db.SetupDB()
+}
+
+func main() {
+	conf := config.GetConfig()
 	jwt.SetupAuth(conf.Secret)
 	api := router.Setup()
 	log.Printf("Server running on port %s", conf.Port)
 	http.ListenAndServe(":"+conf.Port, api)
-	fmt.Println("Hello server")
 }

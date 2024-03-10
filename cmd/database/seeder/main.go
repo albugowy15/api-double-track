@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"math/rand"
 
-	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.con/albugowy15/api-double-track/internal/pkg/config"
+	"github.con/albugowy15/api-double-track/internal/pkg/db"
 	"github.con/albugowy15/api-double-track/internal/pkg/utils"
 )
 
@@ -46,14 +45,14 @@ type Student struct {
 	SchoolId    string `db:"school_id"`
 }
 
-func main() {
+func init() {
 	config.LoadConfig(".")
-	conf := config.GetConfig()
-	connStr := fmt.Sprintf("dbname=%s host=%s port=%s user=%s password=%s sslmode=%s", conf.DbName, conf.DbHost, conf.DbPort, conf.DbUser, conf.DbPass, conf.DbSsl)
+	db.SetupDB()
+}
 
-	db, err := sqlx.Connect(conf.DbDriver, connStr)
-	if err != nil {
-		log.Fatal(err)
+func main() {
+	if config.GetConfig().AppEnv == "prod" {
+		log.Fatalf("you cannot run database seeder when app is running in production")
 	}
 
 	// seed schools
@@ -68,12 +67,12 @@ func main() {
 		{Name: "SMA Negeri 1 Sumbermanjing"},
 		{Name: "SMA Negeri 1 Pulung"},
 	}
-	_, err = db.NamedExec(`INSERT INTO schools (name) VALUES (:name)`, schools)
+	_, err := db.GetDb().NamedExec(`INSERT INTO schools (name) VALUES (:name)`, schools)
 	if err != nil {
 		log.Fatalf("error insert schools: %v", err)
 	}
 
-	tx := db.MustBegin()
+	tx := db.GetDb().MustBegin()
 
 	// seed alternatives
 	alteratives := []Alternative{
@@ -126,7 +125,7 @@ func main() {
 		Id string `db:"id"`
 	}
 	schoolIds := []SchooldId{}
-	db.Select(&schoolIds, "SELECT id from schools LIMIT 3")
+	db.GetDb().Select(&schoolIds, "SELECT id from schools LIMIT 3")
 	// students
 	studentPass, err := utils.HashStr("passwordStudent")
 	if err != nil {
@@ -218,5 +217,5 @@ func main() {
 	}
 	tx.Commit()
 
-	defer db.Close()
+	db.GetDb().Close()
 }

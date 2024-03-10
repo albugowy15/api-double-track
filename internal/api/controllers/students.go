@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -12,17 +11,15 @@ import (
 
 func GetStudents(w http.ResponseWriter, r *http.Request) {
 	_, claims, _ := jwtauth.FromContext(r.Context())
-	role, ok := claims["role"].(string)
-	if !ok {
-		utils.SendError(w, "token invalid", http.StatusBadRequest)
-		return
-	}
-	log.Printf("role: %s", role)
+	role, _ := claims["role"].(string)
 	if role != "admin" {
 		utils.SendError(w, "anda bukan admin", http.StatusForbidden)
 		return
 	}
-	students, err := user.GetStudentRepository().GetStudents()
+
+	schoolId, _ := claims["school_id"].(string)
+
+	students, err := user.GetStudentRepository().GetStudentsBySchool(schoolId)
 	if err != nil {
 		utils.SendError(w, err.Error(), http.StatusBadRequest)
 		return
@@ -31,10 +28,11 @@ func GetStudents(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetStudent(w http.ResponseWriter, r *http.Request) {
+	_, claims, _ := jwtauth.FromContext(r.Context())
+	schoolId, _ := claims["school_id"].(string)
 	studentIdParam := chi.URLParam(r, "studentId")
-	student, err := user.GetStudentRepository().GetStudentById(studentIdParam)
+	student, err := user.GetStudentRepository().GetStudentBySchoolId(schoolId, studentIdParam)
 	if err != nil {
-		log.Println(err)
 		utils.SendError(w, "data siswa tidak ditemukan", http.StatusNotFound)
 		return
 	}

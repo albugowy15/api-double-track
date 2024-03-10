@@ -22,14 +22,20 @@ func (r *StudentRepository) GetStudentByUsername(username string) (user.Student,
 	return student, err
 }
 
-func (r *StudentRepository) GetStudents() ([]user.Student, error) {
+func (r *StudentRepository) GetStudentsBySchool(schoolId string) ([]user.Student, error) {
 	students := []user.Student{}
-	err := db.GetDb().Select(&students, "SELECT id, username, email, phone_number, fullname, nisn FROM students")
+	err := db.GetDb().Select(&students, "SELECT id, username, email, phone_number, fullname, nisn FROM students WHERE school_id = $1", schoolId)
 	return students, err
 }
 
 func (r *StudentRepository) GetStudentById(studentId string) (user.Student, error) {
 	student := user.Student{}
 	err := db.GetDb().Get(&student, "SELECT id, username, email, phone_number, fullname, nisn FROM students WHERE id = $1", studentId)
+	return student, err
+}
+
+func (r *StudentRepository) GetStudentBySchoolId(schoolId string, studentId string) (user.Student, error) {
+	student := user.Student{}
+	err := db.GetDb().Get(&student, "SELECT id, username, email, phone_number, fullname, nisn FROM students WHERE school_id = $1 AND id = $2", schoolId, studentId)
 	return student, err
 }

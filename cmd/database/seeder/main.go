@@ -5,7 +5,6 @@ import (
 	"log"
 	"math/rand"
 
-	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.con/albugowy15/api-double-track/internal/pkg/config"
@@ -13,11 +12,11 @@ import (
 )
 
 type Admin struct {
-	Username    string    `db:"username"`
-	Password    string    `db:"password"`
-	Email       string    `db:"email"`
-	PhoneNumber string    `db:"phone_number"`
-	SchoolId    uuid.UUID `db:"school_id"`
+	Username    string `db:"username"`
+	Password    string `db:"password"`
+	Email       string `db:"email"`
+	PhoneNumber string `db:"phone_number"`
+	SchoolId    string `db:"school_id"`
 }
 
 type School struct {
@@ -38,13 +37,13 @@ type Question struct {
 }
 
 type Student struct {
-	Username    string    `db:"username"`
-	Password    string    `db:"password"`
-	Fullname    string    `db:"fullname"`
-	Nisn        string    `db:"nisn"`
-	Email       string    `db:"email"`
-	PhoneNumber string    `db:"phone_number"`
-	SchoolId    uuid.UUID `db:"school_id"`
+	Username    string `db:"username"`
+	Password    string `db:"password"`
+	Fullname    string `db:"fullname"`
+	Nisn        string `db:"nisn"`
+	Email       string `db:"email"`
+	PhoneNumber string `db:"phone_number"`
+	SchoolId    string `db:"school_id"`
 }
 
 func main() {
@@ -56,7 +55,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	tx := db.MustBegin()
 
 	// seed schools
 	schools := []School{
@@ -74,6 +72,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("error insert schools: %v", err)
 	}
+
+	tx := db.MustBegin()
 
 	// seed alternatives
 	alteratives := []Alternative{
@@ -123,7 +123,7 @@ func main() {
 	}
 
 	type SchooldId struct {
-		Id uuid.UUID `db:"id"`
+		Id string `db:"id"`
 	}
 	schoolIds := []SchooldId{}
 	db.Select(&schoolIds, "SELECT id from schools LIMIT 3")
@@ -212,7 +212,7 @@ func main() {
 		{Username: "admintester2", Password: adminPass, Email: "admintester2@gmail.com", PhoneNumber: "085166371256", SchoolId: schoolIds[rand.Intn(3)].Id},
 		{Username: "admintester3", Password: adminPass, Email: "admintester3@gmail.com", PhoneNumber: "085441327327", SchoolId: schoolIds[rand.Intn(3)].Id},
 	}
-	_, err = tx.NamedExec(`INSERT INTO admins (username, password, email, phone_number) VALUES (:username, :password, :email, :phone_number)`, admins)
+	_, err = tx.NamedExec(`INSERT INTO admins (username, password, email, phone_number, school_id) VALUES (:username, :password, :email, :phone_number, :school_id)`, admins)
 	if err != nil {
 		log.Fatalf("error insert admins: %v", err)
 	}

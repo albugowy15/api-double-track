@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"github.con/albugowy15/api-double-track/internal/pkg/models"
@@ -35,13 +36,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 		school, err := repositories.GetSchoolRepository().GetSchoolByAdminId(admin.Id)
 		if err != nil {
-			utils.SendError(w, err.Error(), http.StatusBadRequest)
+			utils.SendError(w, "admin tidak memiliki akses ke sekolah", http.StatusBadRequest)
 			return
 		}
 		claim := jwt.JWTClaim{
 			UserId:   admin.Id,
 			Username: admin.Username,
-			Email:    admin.Email,
+			Email:    admin.Email.String,
 			Role:     "admin",
 			SchoolId: school.Id,
 		}
@@ -59,6 +60,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		s := user.GetStudentRepository()
 		student, err := s.GetStudentByUsername(body.Username)
 		if err != nil {
+			log.Println(err)
 			utils.SendError(w, "username atau password salah", http.StatusBadRequest)
 			return
 		}
@@ -67,18 +69,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		school, err := repositories.GetSchoolRepository().GetSchoolByStudentId(student.Id)
-		claim := jwt.JWTClaim{
-			UserId:   student.Id,
-			Username: student.Username,
-			Email:    student.Email,
-			Role:     "student",
-			SchoolId: student.Id,
-		}
-		token := jwt.CreateToken(claim)
 		if err != nil {
 			utils.SendError(w, "siswa tidak memiliki akses ke sekolah", http.StatusBadRequest)
 			return
 		}
+		claim := jwt.JWTClaim{
+			UserId:   student.Id,
+			Username: student.Username,
+			Email:    student.Email.String,
+			Role:     "student",
+			SchoolId: student.Id,
+		}
+		token := jwt.CreateToken(claim)
 		res := models.LoginResponse{
 			Token:    token,
 			Username: student.Username,

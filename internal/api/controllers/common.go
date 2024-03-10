@@ -3,11 +3,19 @@ package controllers
 import (
 	"net/http"
 
+	"github.con/albugowy15/api-double-track/internal/pkg/models"
 	"github.con/albugowy15/api-double-track/internal/pkg/repositories"
 	"github.con/albugowy15/api-double-track/internal/pkg/utils"
 )
 
 func GetStatistics(w http.ResponseWriter, r *http.Request) {
+	res := models.Statistic{
+		RegisteredStudents:       123,
+		QuestionnareCompleted:    450,
+		RecommendationAcceptance: 90.34,
+		ConsistencyAvg:           92.54,
+	}
+	utils.SendJson(w, res, http.StatusOK)
 }
 
 func GetAlternatives(w http.ResponseWriter, r *http.Request) {

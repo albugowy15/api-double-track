@@ -1,4 +1,4 @@
-.PHONY: migrate_up migrate_down seed server client dev build start
+.PHONY: migrate_up migrate_down seed server client dev test build start
 
 migrate_up: 
 	go run cmd/database/migrations/up/main.go
@@ -17,6 +17,9 @@ client:
 
 dev:
 	air
+
+test:
+	go test -v ./...
 
 build:
 	go build -o ./tmp/main cmd/server/main.go

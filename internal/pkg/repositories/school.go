@@ -24,7 +24,7 @@ func (r *SchoolRepository) GetSchoolById(schoolId string) (models.School, error)
 
 func (r *SchoolRepository) GetSchoolByStudentId(studentId string) (models.School, error) {
 	school := models.School{}
-	err := db.GetDb().Get(&school, "SELECT id, name FROM schools sc INNER JOIN students st ON sc.id = st.school_id WHERE st.id = $1", studentId)
+	err := db.GetDb().Get(&school, "SELECT sc.id, name FROM schools sc INNER JOIN students st ON sc.id = st.school_id WHERE st.id = $1", studentId)
 	return school, err
 }
 

@@ -6,6 +6,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.12
 	github.com/go-chi/jwtauth v1.2.0
 	github.com/google/uuid v1.6.0
+	github.com/guregu/null/v5 v5.0.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lestrrat-go/jwx v1.1.0
 	github.com/lib/pq v1.10.9

@@ -29,14 +29,14 @@ func ValidatePassword(password string) error {
 	if strings.Contains(password, " ") {
 		return fmt.Errorf("password tidak boleh terdapat spasi")
 	}
-	upperRegex := `[A-Z]`
-	if !regexp.MustCompile(upperRegex).MatchString(password) {
-		return fmt.Errorf("password minimal terdapat 1 huruf kapital")
-	}
-	lowerRegex := `[a-z]`
-	if !regexp.MustCompile(lowerRegex).MatchString(password) {
-		return fmt.Errorf("password minimal terdapat 1 huruf kecil")
-	}
+	// upperRegex := `[A-Z]`
+	// if !regexp.MustCompile(upperRegex).MatchString(password) {
+	// 	return fmt.Errorf("password minimal terdapat 1 huruf kapital")
+	// }
+	// lowerRegex := `[a-z]`
+	// if !regexp.MustCompile(lowerRegex).MatchString(password) {
+	// 	return fmt.Errorf("password minimal terdapat 1 huruf kecil")
+	// }
 	// digitRegex := `[0-9]`
 	// if !regexp.MustCompile(digitRegex).MatchString(password) {
 	// 	return fmt.Errorf("password minimal terdapat 1 angka")

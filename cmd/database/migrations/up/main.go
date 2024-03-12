@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
+	"github.com/albugowy15/api-double-track/internal/pkg/config"
+	"github.com/albugowy15/api-double-track/internal/pkg/db"
 	_ "github.com/lib/pq"
-	"github.con/albugowy15/api-double-track/internal/pkg/config"
-	"github.con/albugowy15/api-double-track/internal/pkg/db"
 )
 
 var schema = `

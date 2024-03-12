@@ -4,12 +4,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.con/albugowy15/api-double-track/internal/pkg/models"
-	"github.con/albugowy15/api-double-track/internal/pkg/repositories"
-	"github.con/albugowy15/api-double-track/internal/pkg/repositories/user"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils/jwt"
-	"github.con/albugowy15/api-double-track/internal/pkg/validator"
+	"github.com/albugowy15/api-double-track/internal/pkg/models"
+	"github.com/albugowy15/api-double-track/internal/pkg/repositories"
+	"github.com/albugowy15/api-double-track/internal/pkg/repositories/user"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
+	"github.com/albugowy15/api-double-track/internal/pkg/validator"
 	"golang.org/x/crypto/bcrypt"
 )
 

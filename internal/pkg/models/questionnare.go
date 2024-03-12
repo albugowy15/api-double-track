@@ -15,12 +15,10 @@ type Question struct {
 
 type QuestionnareSetting struct {
 	SchoolId                    string     `db:"school_id" json:"school_id"`
-	SchoolName                  string     `db:"school_name" json:"school_name"`
-	AlternativeName             string     `db:"alternative_name" json:"alternative_name"`
 	Id                          int        `db:"id" json:"id"`
 	AlternativeId               int        `db:"alternative_id" json:"alternative_id"`
 	TotalOpenJobs               null.Int16 `db:"total_open_jobs" json:"total_open_jobs"`
-	EntrepreneurshipOpportunity null.Int16 `db:"enterpreneurship_opportunity" json:"enterpreneurship_opportunity"`
+	EntrepreneurshipOpportunity null.Int16 `db:"entrepreneurship_opportunity" json:"entrepreneurship_opportunity"`
 	Salary                      null.Int16 `db:"salary" json:"salary"`
 }
 

@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"github.con/albugowy15/api-double-track/internal/pkg/models"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils"
+	"github.com/albugowy15/api-double-track/internal/pkg/models"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils"
 )
 
 func GetRecommendations(w http.ResponseWriter, r *http.Request) {

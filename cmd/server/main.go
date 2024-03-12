@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.con/albugowy15/api-double-track/internal/api/router"
-	"github.con/albugowy15/api-double-track/internal/pkg/config"
-	"github.con/albugowy15/api-double-track/internal/pkg/db"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils/jwt"
+	"github.com/albugowy15/api-double-track/internal/api/router"
+	"github.com/albugowy15/api-double-track/internal/pkg/config"
+	"github.com/albugowy15/api-double-track/internal/pkg/db"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 )
 
 func init() {

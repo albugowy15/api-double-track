@@ -3,12 +3,12 @@ package router
 import (
 	"net/http"
 
+	"github.com/albugowy15/api-double-track/internal/api/controllers"
+	userMiddleware "github.com/albugowy15/api-double-track/internal/api/middleware"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/jwtauth"
-	"github.con/albugowy15/api-double-track/internal/api/controllers"
-	userMiddleware "github.con/albugowy15/api-double-track/internal/api/middleware"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils/jwt"
 )
 
 func Setup() *chi.Mux {
@@ -33,7 +33,7 @@ func Setup() *chi.Mux {
 			r.Group(func(r chi.Router) {
 				r.Use(userMiddleware.CheckAdminRole)
 				r.Get("/statistics", controllers.GetStatistics)
-				r.Post("/alternatives/settings", func(w http.ResponseWriter, r *http.Request) {})
+				r.Post("/questionnare/settings", controllers.AddQuestionnareSettings)
 				r.Delete("/recommendations", func(w http.ResponseWriter, r *http.Request) {})
 				r.Get("/recommendations", func(w http.ResponseWriter, r *http.Request) {})
 				r.Get("/students", controllers.GetStudents)

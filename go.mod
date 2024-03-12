@@ -1,4 +1,4 @@
-module github.con/albugowy15/api-double-track
+module github.com/albugowy15/api-double-track
 
 go 1.22.0
 

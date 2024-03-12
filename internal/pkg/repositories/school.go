@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"github.con/albugowy15/api-double-track/internal/pkg/db"
-	"github.con/albugowy15/api-double-track/internal/pkg/models"
+	"github.com/albugowy15/api-double-track/internal/pkg/db"
+	"github.com/albugowy15/api-double-track/internal/pkg/models"
 )
 
 type SchoolRepository struct{}

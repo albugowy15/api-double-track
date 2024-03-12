@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.con/albugowy15/api-double-track/internal/pkg/models/user"
+	"github.com/albugowy15/api-double-track/internal/pkg/models/user"
 )
 
 func ValidateFullname(fullname string) error {

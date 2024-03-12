@@ -3,8 +3,8 @@ package user
 import (
 	"log"
 
-	"github.con/albugowy15/api-double-track/internal/pkg/db"
-	"github.con/albugowy15/api-double-track/internal/pkg/models/user"
+	"github.com/albugowy15/api-double-track/internal/pkg/db"
+	"github.com/albugowy15/api-double-track/internal/pkg/models/user"
 )
 
 type StudentRepository struct{}

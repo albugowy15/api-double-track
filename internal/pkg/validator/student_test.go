@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.con/albugowy15/api-double-track/internal/pkg/models/user"
-	"github.con/albugowy15/api-double-track/internal/pkg/validator"
+	"github.com/albugowy15/api-double-track/internal/pkg/models/user"
+	"github.com/albugowy15/api-double-track/internal/pkg/validator"
 )
 
 func TestValidateAddStudent(t *testing.T) {

@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/albugowy15/api-double-track/internal/pkg/utils"
 	"github.com/go-chi/jwtauth"
 	"github.com/lestrrat-go/jwx/jwt"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils"
 )
 
 var tokenAuth *jwtauth.JWTAuth

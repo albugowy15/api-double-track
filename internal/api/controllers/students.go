@@ -3,15 +3,15 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/albugowy15/api-double-track/internal/pkg/models"
+	userModel "github.com/albugowy15/api-double-track/internal/pkg/models/user"
+	"github.com/albugowy15/api-double-track/internal/pkg/repositories"
+	"github.com/albugowy15/api-double-track/internal/pkg/repositories/user"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
+	"github.com/albugowy15/api-double-track/internal/pkg/validator"
 	"github.com/go-chi/chi/v5"
 	"github.com/lib/pq"
-	"github.con/albugowy15/api-double-track/internal/pkg/models"
-	userModel "github.con/albugowy15/api-double-track/internal/pkg/models/user"
-	"github.con/albugowy15/api-double-track/internal/pkg/repositories"
-	"github.con/albugowy15/api-double-track/internal/pkg/repositories/user"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils/jwt"
-	"github.con/albugowy15/api-double-track/internal/pkg/validator"
 )
 
 func GetStudents(w http.ResponseWriter, r *http.Request) {

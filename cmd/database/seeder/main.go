@@ -4,10 +4,10 @@ import (
 	"log"
 	"math/rand"
 
+	"github.com/albugowy15/api-double-track/internal/pkg/config"
+	"github.com/albugowy15/api-double-track/internal/pkg/db"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils"
 	_ "github.com/lib/pq"
-	"github.con/albugowy15/api-double-track/internal/pkg/config"
-	"github.con/albugowy15/api-double-track/internal/pkg/db"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils"
 )
 
 type Admin struct {

@@ -3,8 +3,8 @@ package middleware
 import (
 	"net/http"
 
-	"github.con/albugowy15/api-double-track/internal/pkg/utils"
-	"github.con/albugowy15/api-double-track/internal/pkg/utils/jwt"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 )
 
 func CheckAdminRole(next http.Handler) http.Handler {
@@ -33,7 +33,7 @@ func CheckStudentRole(next http.Handler) http.Handler {
 		}
 
 		role := roleClaim.(string)
-		if role != "admin" {
+		if role != "student" {
 			utils.SendError(w, "tidak memiliki akses siswa", http.StatusUnauthorized)
 			return
 		}

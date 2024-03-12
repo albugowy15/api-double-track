@@ -3,9 +3,9 @@ package db
 import (
 	"log"
 
+	"github.com/albugowy15/api-double-track/internal/pkg/config"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"github.con/albugowy15/api-double-track/internal/pkg/config"
 )
 
 var dbConn *sqlx.DB

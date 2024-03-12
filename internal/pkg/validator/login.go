@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.con/albugowy15/api-double-track/internal/pkg/models"
+	"github.com/albugowy15/api-double-track/internal/pkg/models"
 )
 
 func ValidateUsername(username string) error {

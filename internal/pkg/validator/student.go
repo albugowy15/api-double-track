@@ -9,45 +9,56 @@ import (
 	"github.com/albugowy15/api-double-track/internal/pkg/models/user"
 )
 
+var (
+	ErrFullnameEmpty        = errors.New("nama lengkap wajib diisi")
+	ErrEmailEmpty           = errors.New("email wajib diisi")
+	ErrEmailInvalid         = errors.New("email tidak valid")
+	ErrNisnEmpty            = errors.New("nisn wajib diisi")
+	ErrNisnInvalid          = errors.New("nisn wajib berupa angka")
+	ErrPhoneNumberLength    = errors.New("nomor hp hanya boleh terdiri dari 10 sampai 14 digit angka")
+	ErrPhoneNumberPrefix    = errors.New("nomor hp diawali dengan 08")
+	ErrPhoneNumberNotNumber = errors.New("nomor hp hanya boleh terdiri dari angka")
+)
+
 func ValidateFullname(fullname string) error {
 	if len(fullname) == 0 {
-		return errors.New("nama lengkap wajib diisi")
+		return ErrFullnameEmpty
 	}
 	return nil
 }
 
 func ValidateEmail(email string) error {
 	if len(email) == 0 {
-		return errors.New("email wajib diisi")
+		return ErrEmailEmpty
 	}
 	_, err := mail.ParseAddress(email)
 	if err != nil {
-		return errors.New("email tidak valid")
+		return ErrEmailInvalid
 	}
 	return nil
 }
 
 func ValidateNisn(nisn string) error {
 	if len(nisn) == 0 {
-		return errors.New("nisn wajib diisi")
+		return ErrNisnEmpty
 	}
 	_, err := strconv.Atoi(nisn)
 	if err != nil {
-		return errors.New("nisn wajib berupa angka")
+		return ErrNisnInvalid
 	}
 	return nil
 }
 
 func ValidatePhoneNumber(phoneNumber string) error {
 	if len(phoneNumber) < 10 || len(phoneNumber) > 14 {
-		return errors.New("nomor hp hanya boleh terdiri dari 10 sampai 14 digit angka")
+		return ErrPhoneNumberLength
 	}
 	if !strings.HasPrefix(phoneNumber, "08") {
-		return errors.New("nomor hp diawali dengan 08")
+		return ErrPhoneNumberPrefix
 	}
 	_, err := strconv.Atoi(phoneNumber)
 	if err != nil {
-		return errors.New("nomor hp hanya boleh terdiri dari angka")
+		return ErrPhoneNumberNotNumber
 	}
 	return nil
 }

@@ -14,13 +14,13 @@ func TestValidateAddStudent(t *testing.T) {
 		Nisn:     "",
 	}
 	_, err := validator.ValidateAddStudent(body)
-	if err.Error() != "nama lengkap wajib diisi" {
+	if err != validator.ErrFullnameEmpty {
 		t.Errorf("error not match got: %v", err)
 	}
 
 	body.Fullname = "Ahmad dhhahjjjaf"
 	_, err = validator.ValidateAddStudent(body)
-	if err.Error() != "nisn wajib diisi" {
+	if err != validator.ErrNisnEmpty {
 		t.Errorf("error not match got: %v", err)
 	}
 
@@ -36,7 +36,7 @@ func TestValidateAddStudent(t *testing.T) {
 
 	body.Nisn = "236362H   H&&2352352"
 	sanit, err = validator.ValidateAddStudent(body)
-	if err.Error() != "nisn wajib berupa angka" {
+	if err != validator.ErrNisnInvalid {
 		t.Errorf("error not match got: %v", err)
 	}
 
@@ -60,7 +60,7 @@ func TestValidateUpdateStudent(t *testing.T) {
 
 	data.Fullname = ""
 	_, err = validator.ValidateUpdateStudent(data)
-	if err.Error() != "nama lengkap wajib diisi" {
+	if err != validator.ErrFullnameEmpty {
 		t.Errorf("expect error: %v, got: %v", errors.New("nama lengkap wajib diisi"), err)
 	}
 
@@ -68,13 +68,13 @@ func TestValidateUpdateStudent(t *testing.T) {
 
 	data.Nisn = "2232 fefe 773743"
 	_, err = validator.ValidateUpdateStudent(data)
-	if err.Error() != "nisn wajib berupa angka" {
+	if err != validator.ErrNisnInvalid {
 		t.Errorf("expect error: %v, got: %v", errors.New("nisn wajib berupa angka"), err)
 	}
 
 	data.Nisn = ""
 	_, err = validator.ValidateUpdateStudent(data)
-	if err.Error() != "nisn wajib diisi" {
+	if err != validator.ErrNisnEmpty {
 		t.Errorf("expect error: %v, got: %v", errors.New("nisn wajib diisi"), err)
 	}
 	data.Nisn = "12164664343"
@@ -89,7 +89,7 @@ func TestValidateUpdateStudent(t *testing.T) {
 	data.Email.Valid = true
 	data.Email.String = "kholdi"
 	_, err = validator.ValidateUpdateStudent(data)
-	if err.Error() != "email tidak valid" {
+	if err != validator.ErrEmailInvalid {
 		t.Errorf("expect error: %v, got: %v", errors.New("email tidak valid"), err)
 	}
 	data.Email.String = "kholidbugh@gmail.com"
@@ -97,19 +97,19 @@ func TestValidateUpdateStudent(t *testing.T) {
 	data.PhoneNumber.Valid = true
 	data.PhoneNumber.String = "7434636"
 	_, err = validator.ValidateUpdateStudent(data)
-	if err.Error() != "nomor hp hanya boleh terdiri dari 10 sampai 14 digit angka" {
+	if err != validator.ErrPhoneNumberLength {
 		t.Errorf("expect error: %v, got: %v", errors.New("nomor hp hanya boleh terdiri dari 10 sampai 14 digit angka"), err)
 	}
 
 	data.PhoneNumber.String = "12345678910"
 	_, err = validator.ValidateUpdateStudent(data)
-	if err.Error() != "nomor hp diawali dengan 08" {
+	if err != validator.ErrPhoneNumberPrefix {
 		t.Errorf("expect error: %v, got: %v", errors.New("nomor hp diawali dengan 08"), err)
 	}
 
 	data.PhoneNumber.String = "08123456789we"
 	_, err = validator.ValidateUpdateStudent(data)
-	if err.Error() != "nomor hp hanya boleh terdiri dari angka" {
+	if err != validator.ErrPhoneNumberNotNumber {
 		t.Errorf("expect error: %v, got: %v", errors.New("nomor hp hanya boleh terdiri dari angka"), err)
 	}
 

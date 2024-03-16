@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/albugowy15/api-double-track/internal/pkg/utils"
 	"github.com/go-chi/jwtauth"
@@ -47,7 +46,7 @@ func CreateToken(claim JWTClaim) string {
 		"school_id": claim.SchoolId,
 	}
 	jwtauth.SetIssuedNow(jwtClaims)
-	jwtauth.SetExpiryIn(jwtClaims, time.Duration(15*time.Minute))
+	// jwtauth.SetExpiryIn(jwtClaims, time.Duration(15*time.Minute))
 	_, token, err := GetAuth().Encode(jwtClaims)
 	if err != nil {
 		log.Fatalf("error create token: %v", err)

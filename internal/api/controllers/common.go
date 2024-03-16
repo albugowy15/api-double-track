@@ -27,3 +27,7 @@ func GetAlternatives(w http.ResponseWriter, r *http.Request) {
 	}
 	utils.SendJson(w, alternatives, http.StatusOK)
 }
+
+func GetSchool(w http.ResponseWriter, r *http.Request) {
+	utils.SendError(w, "heee", http.StatusInternalServerError)
+}

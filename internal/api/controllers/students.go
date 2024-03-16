@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/albugowy15/api-double-track/internal/pkg/models"
@@ -166,6 +167,71 @@ func UpdateStudent(w http.ResponseWriter, r *http.Request) {
 	// success
 	res := models.MessageResponse{
 		Message: "berhail memperbarui data siswa",
+	}
+	utils.SendJson(w, res, http.StatusOK)
+}
+
+func GetProfile(w http.ResponseWriter, r *http.Request) {
+	// get student id from token
+	studentIdClaim, _ := jwt.GetJwtClaim(r, "user_id")
+	studentId := studentIdClaim.(string)
+
+	// Get student from db by student id
+	s := user.GetStudentRepository()
+	student, err := s.GetStudentById(studentId)
+	if err != nil {
+		log.Printf("err get student profile: %v", err)
+		utils.SendError(w, "data siswa tidak ditemukan", http.StatusNotFound)
+		return
+	}
+	school, err := repositories.GetSchoolRepository().GetSchoolByStudentId(studentId)
+	if err != nil {
+		log.Printf("err get student school: %v", err)
+		utils.SendError(w, "data sekolah tidak ditemukan", http.StatusNotFound)
+		return
+	}
+	profile := userModel.StudentProfile{
+		Id:          student.Id,
+		Username:    student.Username,
+		Fullname:    student.Fullname,
+		Email:       student.Email,
+		PhoneNumber: student.PhoneNumber,
+		Nisn:        student.Nisn,
+		School:      school.Name,
+	}
+	utils.SendJson(w, profile, http.StatusOK)
+}
+
+func UpdateProfile(w http.ResponseWriter, r *http.Request) {
+	studentIdClaim, _ := jwt.GetJwtClaim(r, "user_id")
+	studentId := studentIdClaim.(string)
+
+	var body userModel.Student
+	utils.GetBody(w, r, &body)
+	sanitizedBody, err := validator.ValidateUpdateStudent(body)
+	if err != nil {
+		utils.SendError(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// check id exist
+	s := user.GetStudentRepository()
+	student, err := s.GetStudentById(studentId)
+	if err != nil {
+		utils.SendError(w, "siswa tidak ditemukan", http.StatusBadRequest)
+		return
+	}
+
+	// save to db
+	err = s.UpdateStudent(student.Id, sanitizedBody)
+	if err != nil {
+		utils.SendError(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	// success
+	res := models.MessageResponse{
+		Message: "berhasil memperbarui profil",
 	}
 	utils.SendJson(w, res, http.StatusOK)
 }

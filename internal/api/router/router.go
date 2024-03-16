@@ -46,6 +46,8 @@ func Setup() *chi.Mux {
 			// student route
 			r.Group(func(r chi.Router) {
 				r.Use(userMiddleware.CheckStudentRole)
+				r.Get("/students/profile", controllers.GetProfile)
+				r.Patch("/students/profile", controllers.UpdateProfile)
 				r.Get("/recommendations/{studentId}", func(w http.ResponseWriter, r *http.Request) {})
 				r.Get("/questionnare/questions", controllers.GetQuestions)
 				r.Post("/questionnare/answers", controllers.SubmitAnswer)

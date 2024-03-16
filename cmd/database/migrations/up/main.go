@@ -89,8 +89,7 @@ CREATE TABLE "answers" (
   "id" BIGSERIAL PRIMARY KEY,
   "student_id" uuid,
   "question_id" int,
-  "answer_str" varchar(20),
-  "answer_num" int,
+  "answer" text,
   "created_at" TIMESTAMP NOT NULL DEFAULT (now()),
   "updated_at" TIMESTAMP NOT NULL DEFAULT (now())
 );

@@ -13,6 +13,16 @@ type Question struct {
 	Number      int         `db:"number" json:"number"`
 }
 
+type QuestionResponse struct {
+	Question string   `json:"question"`
+	Type     string   `json:"type"`
+	MinText  string   `json:"min_text"`
+	MaxText  string   `json:"max_text"`
+	Options  []string `json:"options"`
+	Id       int      `json:"id"`
+	Number   int      `json:"number"`
+}
+
 type QuestionnareSetting struct {
 	SchoolId                    string     `db:"school_id" json:"school_id"`
 	Id                          int        `db:"id" json:"id"`
@@ -24,8 +34,7 @@ type QuestionnareSetting struct {
 
 type Answer struct {
 	StudentId  string      `db:"student_id" json:"student_id"`
-	AnswerStr  null.String `db:"answer_str" json:"answer_str"`
+	Answer     null.String `db:"answer" json:"answer"`
 	Id         int64       `db:"id" json:"id"`
 	QuestionId int         `db:"question_id" json:"question_id"`
-	AnswerNum  null.Int16  `db:"answer_num" json:"answer_num"`
 }

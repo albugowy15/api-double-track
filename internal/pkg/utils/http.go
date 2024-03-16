@@ -19,6 +19,10 @@ type ErrorJsonResponse struct {
 	Error string `json:"error"`
 }
 
+type DataJsonResponse struct {
+	Data any `json:"data"`
+}
+
 func SendError(w http.ResponseWriter, message string, status int) {
 	res := ErrorJsonResponse{
 		Error: message,
@@ -33,7 +37,10 @@ func SendError(w http.ResponseWriter, message string, status int) {
 }
 
 func SendJson(w http.ResponseWriter, res any, status int) {
-	json, err := json.Marshal(res)
+	data := DataJsonResponse{
+		Data: res,
+	}
+	json, err := json.Marshal(data)
 	if err != nil {
 		log.Fatalf("error marshaling json:%v", err)
 	}

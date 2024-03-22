@@ -8,6 +8,7 @@ import (
 
 type Configuration struct {
 	AppEnv      string `mapstructure:"APP_ENV"`
+	BaseUrl     string `mapstructure:"BASE_URL"`
 	DatabaseUrl string `mapstructure:"DATABASE_URL"`
 	Port        string `mapstructure:"PORT"`
 	Secret      string `mapstructure:"SECRET"`

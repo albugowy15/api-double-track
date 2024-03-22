@@ -32,6 +32,14 @@ type QuestionnareSetting struct {
 	Salary                      null.Int16 `db:"salary" json:"salary"`
 }
 
+type QuestionnareSettingAlternative struct {
+	Alternative                 string     `db:"alternative" json:"alternative"`
+	Id                          int        `db:"id" json:"id"`
+	TotalOpenJobs               null.Int16 `db:"total_open_jobs" json:"total_open_jobs"`
+	EntrepreneurshipOpportunity null.Int16 `db:"entrepreneurship_opportunity" json:"entrepreneurship_opportunity"`
+	Salary                      null.Int16 `db:"salary" json:"salary"`
+}
+
 type Answer struct {
 	StudentId  string      `db:"student_id" json:"student_id"`
 	Answer     null.String `db:"answer" json:"answer"`

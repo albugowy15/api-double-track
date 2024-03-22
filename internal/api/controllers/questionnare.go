@@ -98,4 +98,40 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 }
 
 func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
+	body := map[string]string{}
+	utils.GetBody(w, r, &body)
+	if err := validator.ValidateSubmitAnswer(body); err != nil {
+		utils.SendError(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// start process here
+	res := models.MessageResponse{
+		Message: "berhasil menyimpan jawabah",
+	}
+	utils.SendJson(w, res, http.StatusCreated)
+}
+
+func GetIncompleteQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
+	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
+	schoolId := schoolIdClaim.(string)
+	alternatives, err := repositories.GetQuestionnareSettingRepository().GetMissingSettings(schoolId)
+	if err != nil {
+		log.Println(err)
+		utils.SendError(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	utils.SendJson(w, alternatives, http.StatusOK)
+}
+
+func GetQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
+	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
+	schoolId := schoolIdClaim.(string)
+	settings, err := repositories.GetQuestionnareSettingRepository().GetQuestionnareSettings(schoolId)
+	if err != nil {
+		log.Println(err)
+		utils.SendError(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	utils.SendJson(w, settings, http.StatusOK)
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/albugowy15/api-double-track/internal/api/controllers"
 	userMiddleware "github.com/albugowy15/api-double-track/internal/api/middleware"
+	"github.com/albugowy15/api-double-track/internal/pkg/swagger"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -13,10 +14,13 @@ import (
 
 func Setup() *chi.Mux {
 	router := chi.NewRouter()
+
 	router.Use(middleware.Logger)
 	router.Use(middleware.RequestID)
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.Compress(5, "text/html", "application/json"))
+
+	router.Get("/swagger/*", swagger.WrapHandler)
 
 	router.Route("/v1", func(r chi.Router) {
 		r.Post("/auth/login", controllers.Login)
@@ -29,11 +33,15 @@ func Setup() *chi.Mux {
 			r.Use(jwtauth.Verifier(jwt.GetAuth()))
 			r.Use(jwt.Authenticator)
 
+			r.Get("/school", controllers.GetSchool)
+
 			// admin route
 			r.Group(func(r chi.Router) {
 				r.Use(userMiddleware.CheckAdminRole)
 				r.Get("/statistics", controllers.GetStatistics)
 				r.Post("/questionnare/settings", controllers.AddQuestionnareSettings)
+				r.Get("/questionnare/settings", controllers.GetQuestionnareSettings)
+				r.Get("/questionnare/settings/incomplete", controllers.GetIncompleteQuestionnareSettings)
 				r.Delete("/recommendations", func(w http.ResponseWriter, r *http.Request) {})
 				r.Get("/recommendations", func(w http.ResponseWriter, r *http.Request) {})
 				r.Get("/students", controllers.GetStudents)

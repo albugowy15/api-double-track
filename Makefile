@@ -1,4 +1,4 @@
-.PHONY: migrate_up migrate_down seed server client dev test build start
+.PHONY: migrate_up migrate_down seed server client dev test build start docs
 
 migrate_up: 
 	go run cmd/database/migrations/up/main.go
@@ -26,3 +26,6 @@ build:
 
 start:
 	go build -o ./tmp/main cmd/server/main.go && ./tmp/main
+
+docs:
+	swag init -d "./" -g "cmd/server/main.go"

@@ -16,11 +16,11 @@ func init() {
 	db.SetupDB()
 }
 
-// @title Double Track API
-// @version 1.0
-// @description This is a Double Track REST API
+//	@title			Double Track API
+//	@version		1.0
+//	@description	This is a Double Track REST API
 
-// @BasePath /v1
+//	@BasePath	/v1
 func main() {
 	conf := config.GetConfig()
 	jwt.SetupAuth(conf.Secret)

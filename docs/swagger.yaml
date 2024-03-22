@@ -1,9 +1,757 @@
 basePath: /v1
-host: localhost:8080
+definitions:
+  schemas.AddStudentRequest:
+    properties:
+      email:
+        type: string
+      fullname:
+        type: string
+      nisn:
+        type: string
+      phone_number:
+        type: string
+      username:
+        type: string
+    type: object
+  schemas.Alternative:
+    properties:
+      alternative:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+    type: object
+  schemas.DeleteStudentRequest:
+    properties:
+      id:
+        type: string
+    type: object
+  schemas.LoginRequest:
+    properties:
+      password:
+        type: string
+      type:
+        type: string
+      username:
+        type: string
+    type: object
+  schemas.LoginResponse:
+    properties:
+      id:
+        type: string
+      role:
+        type: string
+      school_id:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  schemas.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  schemas.QuestionResponse:
+    properties:
+      id:
+        type: integer
+      max_text:
+        type: string
+      min_text:
+        type: string
+      number:
+        type: integer
+      options:
+        items:
+          type: string
+        type: array
+      question:
+        type: string
+      type:
+        type: string
+    type: object
+  schemas.QuestionnareSettingAlternative:
+    properties:
+      alternative:
+        type: string
+      entrepreneurship_opportunity:
+        type: integer
+      id:
+        type: integer
+      salary:
+        type: integer
+      total_open_jobs:
+        type: integer
+    type: object
+  schemas.QuestionnareSettingRequest:
+    properties:
+      alternative_id:
+        type: integer
+      entrepreneurship_opportunity:
+        type: integer
+      salary:
+        type: integer
+      total_open_jobs:
+        type: integer
+    type: object
+  schemas.School:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  schemas.Statistic:
+    properties:
+      consistency_avg:
+        type: number
+      questionnare_completed:
+        type: integer
+      recommendation_acceptance:
+        type: number
+      registered_students:
+        type: integer
+    type: object
+  schemas.Student:
+    properties:
+      email:
+        type: string
+      fullname:
+        type: string
+      id:
+        type: string
+      nisn:
+        type: string
+      phone_number:
+        type: string
+      username:
+        type: string
+    type: object
+  schemas.StudentProfile:
+    properties:
+      email:
+        type: string
+      fullname:
+        type: string
+      id:
+        type: string
+      nisn:
+        type: string
+      phone_number:
+        type: string
+      school:
+        type: string
+      username:
+        type: string
+    type: object
+  schemas.UpdateStudentRequest:
+    properties:
+      email:
+        type: string
+      fullname:
+        type: string
+      nisn:
+        type: string
+      phone_number:
+        type: string
+      username:
+        type: string
+    type: object
+  utils.DataJsonResponse:
+    properties:
+      data: {}
+    type: object
+  utils.ErrorJsonResponse:
+    properties:
+      error:
+        type: string
+    type: object
 info:
   contact: {}
   description: This is a Double Track REST API
   title: Double Track API
   version: "1.0"
-paths: {}
+paths:
+  /alternatives:
+    get:
+      consumes:
+      - application/json
+      description: Get all alternatives
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/schemas.Alternative'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Get alternatives
+      tags:
+      - Common
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login authentication for student and admin
+      parameters:
+      - description: Login request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/schemas.LoginResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Login authentication
+      tags:
+      - Auth
+  /questionnare/answers:
+    post:
+      consumes:
+      - application/json
+      description: Submit questionnare answers
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Submit answer request body
+        in: body
+        name: body
+        required: true
+        schema:
+          additionalProperties:
+            type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schemas.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Submit answer
+      tags:
+      - Questionnare
+      - Student
+  /questionnare/questions:
+    get:
+      consumes:
+      - application/json
+      description: Get all available questions
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/schemas.QuestionResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Get Questions
+      tags:
+      - Questionnare
+      - Student
+  /questionnare/settings:
+    get:
+      consumes:
+      - application/json
+      description: Get questionnare settings
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/schemas.QuestionnareSettingAlternative'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Get questionnare settings
+      tags:
+      - Questionnare
+      - Admin
+    post:
+      consumes:
+      - application/json
+      description: Add a questionnare setting
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Add questionnare setting request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.QuestionnareSettingRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schemas.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Add questionnare setting
+      tags:
+      - Questionnare
+      - Admin
+  /questionnare/settings/incomplete:
+    get:
+      consumes:
+      - application/json
+      description: Get incomplete questionnare settings
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/schemas.QuestionnareSettingAlternative'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Get incomplete questionnare settings
+      tags:
+      - Questionnare
+      - Admin
+  /school:
+    get:
+      consumes:
+      - application/json
+      description: Get current authenticated user shcool
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/schemas.School'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Get school
+      tags:
+      - Common
+      - Student
+      - Admin
+  /statistics:
+    get:
+      consumes:
+      - application/json
+      description: Get statistics
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/schemas.Statistic'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Get statistic
+      tags:
+      - Common
+      - Admin
+  /students:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a student from a school
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Delete student request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.DeleteStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schemas.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Delete a student
+      tags:
+      - Students
+      - Admin
+    get:
+      consumes:
+      - application/json
+      description: Get all students from a school
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/schemas.Student'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Get students
+      tags:
+      - Students
+      - Admin
+    post:
+      consumes:
+      - application/json
+      description: Add a student from a school
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Add student request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.AddStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schemas.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Add a student
+      tags:
+      - Students
+      - Admin
+  /students/{studentId}:
+    get:
+      consumes:
+      - application/json
+      description: Get a student from a school
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Id student
+        in: path
+        name: studentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/schemas.Student'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Get a student
+      tags:
+      - Students
+      - Admin
+    patch:
+      consumes:
+      - application/json
+      description: Update a student from a school
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Update student id
+        in: path
+        name: studentId
+        required: true
+        type: string
+      - description: Update student request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.UpdateStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schemas.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Update a student
+      tags:
+      - Students
+      - Admin
+  /students/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get a student profile
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.DataJsonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/schemas.StudentProfile'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Get a student profile
+      tags:
+      - Students
+      - Student
+    patch:
+      consumes:
+      - application/json
+      description: Update a student profile
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Update student profile body request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.UpdateStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schemas.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorJsonResponse'
+      summary: Update a student profile
+      tags:
+      - Students
+      - Student
 swagger: "2.0"

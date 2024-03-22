@@ -20,7 +20,7 @@ type ErrorJsonResponse struct {
 }
 
 type DataJsonResponse struct {
-	Data any `json:"data"`
+	Data interface{} `json:"data"`
 }
 
 func SendError(w http.ResponseWriter, message string, status int) {

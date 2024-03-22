@@ -24,7 +24,6 @@ func Setup() *chi.Mux {
 
 	router.Route("/v1", func(r chi.Router) {
 		r.Post("/auth/login", controllers.Login)
-		r.Post("/auth/register", func(w http.ResponseWriter, r *http.Request) {})
 		r.Get("/alternatives", controllers.GetAlternatives)
 
 		// protected route Group
@@ -54,8 +53,8 @@ func Setup() *chi.Mux {
 			// student route
 			r.Group(func(r chi.Router) {
 				r.Use(userMiddleware.CheckStudentRole)
-				r.Get("/students/profile", controllers.GetProfile)
-				r.Patch("/students/profile", controllers.UpdateProfile)
+				r.Get("/students/profile", controllers.GetStudentProfile)
+				r.Patch("/students/profile", controllers.UpdateStudentProfile)
 				r.Get("/recommendations/{studentId}", func(w http.ResponseWriter, r *http.Request) {})
 				r.Get("/questionnare/questions", controllers.GetQuestions)
 				r.Post("/questionnare/answers", controllers.SubmitAnswer)

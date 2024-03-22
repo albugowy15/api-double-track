@@ -13,6 +13,18 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Login godoc
+//
+//	@Summary		Login authentication
+//	@Description	Login authentication for student and admin
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body		schemas.LoginRequest	true	"Login request body"
+//	@Success		200		{object}	utils.DataJsonResponse{data=schemas.LoginResponse}
+//	@Failure		400		{object}	utils.ErrorJsonResponse
+//	@Failure		500		{object}	utils.ErrorJsonResponse
+//	@Router			/auth/login [post]
 func Login(w http.ResponseWriter, r *http.Request) {
 	var body models.LoginRequest
 	utils.GetBody(w, r, &body)

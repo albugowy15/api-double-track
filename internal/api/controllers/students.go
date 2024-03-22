@@ -15,6 +15,19 @@ import (
 	"github.com/lib/pq"
 )
 
+// GetStudents godoc
+//
+//	@Summary		Get students
+//	@Description	Get all students from a school
+//	@Tags			Students
+//	@Tags			Admin
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Success		200				{object}	utils.DataJsonResponse{data=[]schemas.Student}
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/students [get]
 func GetStudents(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
@@ -28,6 +41,20 @@ func GetStudents(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, students, http.StatusOK)
 }
 
+// GetStudent godoc
+//
+//	@Summary		Get a student
+//	@Description	Get a student from a school
+//	@Tags			Students
+//	@Tags			Admin
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Param			studentId		path		string	true	"Id student"
+//	@Success		200				{object}	utils.DataJsonResponse{data=schemas.Student}
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/students/{studentId} [get]
 func GetStudent(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
@@ -40,6 +67,20 @@ func GetStudent(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, student, http.StatusOK)
 }
 
+// AddStudent godoc
+//
+//	@Summary		Add a student
+//	@Description	Add a student from a school
+//	@Tags			Students
+//	@Tags			Admin
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string						true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Param			body			body		schemas.AddStudentRequest	true	"Add student request body"
+//	@Success		201				{object}	schemas.MessageResponse
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/students [post]
 func AddStudent(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
@@ -81,7 +122,20 @@ func AddStudent(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, res, http.StatusCreated)
 }
 
-// check role
+// DeleteStudent godoc
+//
+//	@Summary		Delete a student
+//	@Description	Delete a student from a school
+//	@Tags			Students
+//	@Tags			Admin
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string							true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Param			body			body		schemas.DeleteStudentRequest	true	"Delete student request body"
+//	@Success		201				{object}	schemas.MessageResponse
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/students [delete]
 func DeleteStudent(w http.ResponseWriter, r *http.Request) {
 	var body userModel.Student
 	utils.GetBody(w, r, &body)
@@ -125,6 +179,21 @@ func DeleteStudent(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, res, http.StatusOK)
 }
 
+// UpdateStudent godoc
+//
+//	@Summary		Update a student
+//	@Description	Update a student from a school
+//	@Tags			Students
+//	@Tags			Admin
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string							true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Param			studentId		path		string							true	"Update student id"
+//	@Param			body			body		schemas.UpdateStudentRequest	true	"Update student request body"
+//	@Success		201				{object}	schemas.MessageResponse
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/students/{studentId} [patch]
 func UpdateStudent(w http.ResponseWriter, r *http.Request) {
 	studentIdParam := chi.URLParam(r, "studentId")
 
@@ -171,7 +240,20 @@ func UpdateStudent(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, res, http.StatusOK)
 }
 
-func GetProfile(w http.ResponseWriter, r *http.Request) {
+// GetStudentProfile godoc
+//
+//	@Summary		Get a student profile
+//	@Description	Get a student profile
+//	@Tags			Students
+//	@Tags			Student
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Success		200				{object}	utils.DataJsonResponse{data=schemas.StudentProfile}
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/students/profile [get]
+func GetStudentProfile(w http.ResponseWriter, r *http.Request) {
 	// get student id from token
 	studentIdClaim, _ := jwt.GetJwtClaim(r, "user_id")
 	studentId := studentIdClaim.(string)
@@ -202,7 +284,21 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, profile, http.StatusOK)
 }
 
-func UpdateProfile(w http.ResponseWriter, r *http.Request) {
+// UpdateStudentProfile godoc
+//
+//	@Summary		Update a student profile
+//	@Description	Update a student profile
+//	@Tags			Students
+//	@Tags			Student
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string							true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Param			body			body		schemas.UpdateStudentRequest	true	"Update student profile body request"
+//	@Success		201				{object}	schemas.MessageResponse
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/students/profile [patch]
+func UpdateStudentProfile(w http.ResponseWriter, r *http.Request) {
 	studentIdClaim, _ := jwt.GetJwtClaim(r, "user_id")
 	studentId := studentIdClaim.(string)
 

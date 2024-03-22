@@ -20,6 +20,20 @@ var CodeToText = map[string]string{
 	"FAS": "Fasilitas pendukung lebih penting",
 }
 
+// AddQuestionnareSettings godoc
+//
+//	@Summary		Add questionnare setting
+//	@Description	Add a questionnare setting
+//	@Tags			Questionnare
+//	@Tags			Admin
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string								true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Param			body			body		schemas.QuestionnareSettingRequest	true	"Add questionnare setting request body"
+//	@Success		201				{object}	schemas.MessageResponse
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/questionnare/settings [post]
 func AddQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	var body models.QuestionnareSetting
 	utils.GetBody(w, r, &body)
@@ -47,6 +61,19 @@ func AddQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, res, http.StatusCreated)
 }
 
+// GetQuestions godoc
+//
+//	@Summary		Get Questions
+//	@Description	Get all available questions
+//	@Tags			Questionnare
+//	@Tags			Student
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Success		200				{object}	utils.DataJsonResponse{data=[]schemas.QuestionResponse}
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/questionnare/questions [get]
 func GetQuestions(w http.ResponseWriter, r *http.Request) {
 	questions, err := repositories.GetQuestionRepository().GetQuestions()
 	if err != nil {
@@ -97,6 +124,20 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, questionsRes, http.StatusOK)
 }
 
+// SubmitAnswer godoc
+//
+//	@Summary		Submit answer
+//	@Description	Submit questionnare answers
+//	@Tags			Questionnare
+//	@Tags			Student
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string				true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Param			body			body		map[string]string{}	true	"Submit answer request body"
+//	@Success		201				{object}	schemas.MessageResponse
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/questionnare/answers [post]
 func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 	body := map[string]string{}
 	utils.GetBody(w, r, &body)
@@ -112,6 +153,19 @@ func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, res, http.StatusCreated)
 }
 
+// GetIncompleteQuestionnareSettings godoc
+//
+//	@Summary		Get incomplete questionnare settings
+//	@Description	Get incomplete questionnare settings
+//	@Tags			Questionnare
+//	@Tags			Admin
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Success		200				{object}	utils.DataJsonResponse{data=[]schemas.QuestionnareSettingAlternative}
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/questionnare/settings/incomplete [get]
 func GetIncompleteQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
@@ -124,6 +178,19 @@ func GetIncompleteQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	utils.SendJson(w, alternatives, http.StatusOK)
 }
 
+// GetQuestionnareSettings godoc
+//
+//	@Summary		Get questionnare settings
+//	@Description	Get questionnare settings
+//	@Tags			Questionnare
+//	@Tags			Admin
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Success		200				{object}	utils.DataJsonResponse{data=[]schemas.QuestionnareSettingAlternative}
+//	@Failure		400				{object}	utils.ErrorJsonResponse
+//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Router			/questionnare/settings [get]
 func GetQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)

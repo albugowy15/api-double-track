@@ -136,9 +136,14 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 //	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/questionnare/answers [post]
 func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
-	body := map[string]string{}
+	var body []models.SubmitAnswerRequest
 	httputil.GetBody(w, r, &body)
 	if err := validator.ValidateSubmitAnswer(body); err != nil {
+		httputil.SendError(w, err, http.StatusBadRequest)
+		return
+	}
+
+	if err := validator.ValidateAnswerNumber(body); err != nil {
 		httputil.SendError(w, err, http.StatusBadRequest)
 		return
 	}

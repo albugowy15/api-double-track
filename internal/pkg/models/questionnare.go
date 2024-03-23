@@ -46,3 +46,9 @@ type Answer struct {
 	Id         int64       `db:"id" json:"id"`
 	QuestionId int         `db:"question_id" json:"question_id"`
 }
+
+type SubmitAnswerRequest struct {
+	Id     int    `json:"id"`
+	Number int    `json:"number"`
+	Answer string `json:"answer"`
+}

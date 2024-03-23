@@ -15,6 +15,115 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/profile": {
+            "get": {
+                "description": "Get admin profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Get admin profile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/schemas.Admin"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update admin profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Update admin profile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Update admin profile request body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schemas.UpdateAdminRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/alternatives": {
             "get": {
                 "description": "Get all alternatives",
@@ -34,7 +143,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -53,7 +162,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -89,7 +198,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -105,13 +214,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -157,19 +266,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/schemas.MessageResponse"
+                            "$ref": "#/definitions/httputil.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -205,7 +314,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -224,13 +333,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -266,7 +375,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -285,13 +394,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -332,19 +441,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/schemas.MessageResponse"
+                            "$ref": "#/definitions/httputil.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -380,7 +489,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -399,13 +508,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -442,7 +551,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -458,7 +567,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -494,7 +603,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -510,7 +619,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -546,7 +655,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -565,13 +674,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -612,19 +721,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/schemas.MessageResponse"
+                            "$ref": "#/definitions/httputil.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -665,19 +774,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/schemas.MessageResponse"
+                            "$ref": "#/definitions/httputil.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -713,7 +822,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -729,13 +838,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -776,19 +885,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/schemas.MessageResponse"
+                            "$ref": "#/definitions/httputil.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -831,7 +940,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/utils.DataJsonResponse"
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -847,13 +956,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -901,19 +1010,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/schemas.MessageResponse"
+                            "$ref": "#/definitions/httputil.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.ErrorJsonResponse"
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
                         }
                     }
                 }
@@ -921,6 +1030,28 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "httputil.DataJsonResponse": {
+            "type": "object",
+            "properties": {
+                "data": {}
+            }
+        },
+        "httputil.ErrorJsonResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "httputil.MessageJsonResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "schemas.AddStudentRequest": {
             "type": "object",
             "properties": {
@@ -931,6 +1062,26 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nisn": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "schemas.Admin": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 },
                 "phone_number": {
@@ -993,14 +1144,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "schemas.MessageResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
                     "type": "string"
                 }
             }
@@ -1148,6 +1291,20 @@ const docTemplate = `{
                 }
             }
         },
+        "schemas.UpdateAdminRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "schemas.UpdateStudentRequest": {
             "type": "object",
             "properties": {
@@ -1164,20 +1321,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "utils.DataJsonResponse": {
-            "type": "object",
-            "properties": {
-                "data": {}
-            }
-        },
-        "utils.ErrorJsonResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
                     "type": "string"
                 }
             }

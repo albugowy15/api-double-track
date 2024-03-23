@@ -5,9 +5,15 @@ import (
 )
 
 type Admin struct {
-	Id          string      `db:"id"`
-	Username    string      `db:"username"`
-	Email       null.String `db:"email"`
-	Password    string      `db:"password"`
-	PhoneNumber null.String `db:"phone_number"`
+	Id          string      `db:"id" json:"id"`
+	Username    string      `db:"username" json:"username"`
+	Email       null.String `db:"email" json:"email,omitempty"`
+	Password    string      `db:"password" json:"-"`
+	PhoneNumber null.String `db:"phone_number" json:"phone_number,omitempty"`
+}
+
+type UpdateAdminRequest struct {
+	Username    string `json:"username"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
 }

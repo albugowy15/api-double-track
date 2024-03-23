@@ -37,6 +37,8 @@ func Setup() *chi.Mux {
 			// admin route
 			r.Group(func(r chi.Router) {
 				r.Use(userMiddleware.CheckAdminRole)
+				r.Get("/admin/profile", controllers.GetAdminProfile)
+				r.Patch("/admin/profile", controllers.UpdateAdminProfile)
 				r.Get("/statistics", controllers.GetStatistics)
 				r.Post("/questionnare/settings", controllers.AddQuestionnareSettings)
 				r.Get("/questionnare/settings", controllers.GetQuestionnareSettings)

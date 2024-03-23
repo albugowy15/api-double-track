@@ -7,3 +7,9 @@ type Admin struct {
 	Password    string `json:"password"`
 	PhoneNumber string `json:"phone_number"`
 }
+
+type UpdateAdminRequest struct {
+	Username    string `json:"username"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
+}

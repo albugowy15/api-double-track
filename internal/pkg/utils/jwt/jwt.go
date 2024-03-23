@@ -1,11 +1,12 @@
 package jwt
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/albugowy15/api-double-track/internal/pkg/utils"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils/httputil"
 	"github.com/go-chi/jwtauth"
 	"github.com/lestrrat-go/jwx/jwt"
 )
@@ -58,12 +59,12 @@ func Authenticator(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token, _, err := jwtauth.FromContext(r.Context())
 		if err != nil {
-			utils.SendError(w, err.Error(), http.StatusUnauthorized)
+			httputil.SendError(w, err, http.StatusUnauthorized)
 			return
 		}
 
 		if token == nil || jwt.Validate(token) != nil {
-			utils.SendError(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+			httputil.SendError(w, errors.New(http.StatusText(http.StatusUnauthorized)), http.StatusUnauthorized)
 			return
 		}
 		next.ServeHTTP(w, r)

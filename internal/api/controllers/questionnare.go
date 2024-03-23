@@ -7,7 +7,7 @@ import (
 
 	"github.com/albugowy15/api-double-track/internal/pkg/models"
 	"github.com/albugowy15/api-double-track/internal/pkg/repositories"
-	"github.com/albugowy15/api-double-track/internal/pkg/utils"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils/httputil"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 	"github.com/albugowy15/api-double-track/internal/pkg/validator"
 )
@@ -30,16 +30,16 @@ var CodeToText = map[string]string{
 //	@Produce		json
 //	@Param			Authorization	header		string								true	"Insert your access token"	default(Bearer <Add access token here>)
 //	@Param			body			body		schemas.QuestionnareSettingRequest	true	"Add questionnare setting request body"
-//	@Success		201				{object}	schemas.MessageResponse
-//	@Failure		400				{object}	utils.ErrorJsonResponse
-//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Success		201				{object}	httputil.MessageJsonResponse
+//	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/questionnare/settings [post]
 func AddQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	var body models.QuestionnareSetting
-	utils.GetBody(w, r, &body)
+	httputil.GetBody(w, r, &body)
 	err := validator.ValidateQuestionnareSettings(body)
 	if err != nil {
-		utils.SendError(w, err.Error(), http.StatusBadRequest)
+		httputil.SendError(w, err, http.StatusBadRequest)
 		return
 	}
 
@@ -51,14 +51,11 @@ func AddQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	err = s.AddQuestionnareSetting(body)
 	if err != nil {
 		log.Println(err)
-		utils.SendError(w, "internal server error", http.StatusInternalServerError)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 
-	res := models.MessageResponse{
-		Message: "berhasil menyimpan setting kuesioner",
-	}
-	utils.SendJson(w, res, http.StatusCreated)
+	httputil.SendMessage(w, "berhasil menyimpan setting kuesioner", http.StatusCreated)
 }
 
 // GetQuestions godoc
@@ -70,14 +67,14 @@ func AddQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
-//	@Success		200				{object}	utils.DataJsonResponse{data=[]schemas.QuestionResponse}
-//	@Failure		400				{object}	utils.ErrorJsonResponse
-//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Success		200				{object}	httputil.DataJsonResponse{data=[]schemas.QuestionResponse}
+//	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/questionnare/questions [get]
 func GetQuestions(w http.ResponseWriter, r *http.Request) {
 	questions, err := repositories.GetQuestionRepository().GetQuestions()
 	if err != nil {
-		utils.SendError(w, "internal server error", http.StatusInternalServerError)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 	questionsRes := []models.QuestionResponse{}
@@ -91,7 +88,7 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 		token := strings.Split(question.Code, "_")
 		if len(token) != 2 {
 			log.Printf("token length is not 2: got: %d", len(token))
-			utils.SendError(w, "internal server error", http.StatusInternalServerError)
+			httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 			return
 		}
 		switch question.Category {
@@ -106,7 +103,7 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 				item.MaxText = "Sangat Mendukung"
 			default:
 				log.Printf("unexpected token %s", token[0])
-				utils.SendError(w, "internal server error", http.StatusInternalServerError)
+				httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 				return
 			}
 		case "COMPARISON":
@@ -115,13 +112,13 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 			item.MaxText = CodeToText[token[1]]
 		default:
 			log.Println("there is no question with category: ", question.Category)
-			utils.SendError(w, "internal server error", http.StatusInternalServerError)
+			httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 			return
 		}
 
 		questionsRes = append(questionsRes, item)
 	}
-	utils.SendJson(w, questionsRes, http.StatusOK)
+	httputil.SendData(w, questionsRes, http.StatusOK)
 }
 
 // SubmitAnswer godoc
@@ -134,23 +131,20 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 //	@Produce		json
 //	@Param			Authorization	header		string				true	"Insert your access token"	default(Bearer <Add access token here>)
 //	@Param			body			body		map[string]string{}	true	"Submit answer request body"
-//	@Success		201				{object}	schemas.MessageResponse
-//	@Failure		400				{object}	utils.ErrorJsonResponse
-//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Success		201				{object}	httputil.MessageJsonResponse
+//	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/questionnare/answers [post]
 func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 	body := map[string]string{}
-	utils.GetBody(w, r, &body)
+	httputil.GetBody(w, r, &body)
 	if err := validator.ValidateSubmitAnswer(body); err != nil {
-		utils.SendError(w, err.Error(), http.StatusBadRequest)
+		httputil.SendError(w, err, http.StatusBadRequest)
 		return
 	}
 
 	// start process here
-	res := models.MessageResponse{
-		Message: "berhasil menyimpan jawabah",
-	}
-	utils.SendJson(w, res, http.StatusCreated)
+	httputil.SendMessage(w, "berhasil menyimpan jawaban", http.StatusCreated)
 }
 
 // GetIncompleteQuestionnareSettings godoc
@@ -162,9 +156,9 @@ func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
-//	@Success		200				{object}	utils.DataJsonResponse{data=[]schemas.QuestionnareSettingAlternative}
-//	@Failure		400				{object}	utils.ErrorJsonResponse
-//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Success		200				{object}	httputil.DataJsonResponse{data=[]schemas.QuestionnareSettingAlternative}
+//	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/questionnare/settings/incomplete [get]
 func GetIncompleteQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
@@ -172,10 +166,10 @@ func GetIncompleteQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	alternatives, err := repositories.GetQuestionnareSettingRepository().GetMissingSettings(schoolId)
 	if err != nil {
 		log.Println(err)
-		utils.SendError(w, "internal server error", http.StatusInternalServerError)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	utils.SendJson(w, alternatives, http.StatusOK)
+	httputil.SendData(w, alternatives, http.StatusOK)
 }
 
 // GetQuestionnareSettings godoc
@@ -187,9 +181,9 @@ func GetIncompleteQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
-//	@Success		200				{object}	utils.DataJsonResponse{data=[]schemas.QuestionnareSettingAlternative}
-//	@Failure		400				{object}	utils.ErrorJsonResponse
-//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Success		200				{object}	httputil.DataJsonResponse{data=[]schemas.QuestionnareSettingAlternative}
+//	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/questionnare/settings [get]
 func GetQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
@@ -197,8 +191,8 @@ func GetQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	settings, err := repositories.GetQuestionnareSettingRepository().GetQuestionnareSettings(schoolId)
 	if err != nil {
 		log.Println(err)
-		utils.SendError(w, "internal server error", http.StatusInternalServerError)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	utils.SendJson(w, settings, http.StatusOK)
+	httputil.SendData(w, settings, http.StatusOK)
 }

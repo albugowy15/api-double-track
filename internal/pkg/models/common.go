@@ -1,9 +1,5 @@
 package models
 
-type MessageResponse struct {
-	Message string `json:"message"`
-}
-
 type Statistic struct {
 	RegisteredStudents       int     `db:"registered_students" json:"registered_students"`
 	QuestionnareCompleted    int     `db:"questionnare_completed" json:"questionnare_completed"`

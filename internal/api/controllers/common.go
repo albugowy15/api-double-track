@@ -6,7 +6,7 @@ import (
 
 	"github.com/albugowy15/api-double-track/internal/pkg/models"
 	"github.com/albugowy15/api-double-track/internal/pkg/repositories"
-	"github.com/albugowy15/api-double-track/internal/pkg/utils"
+	"github.com/albugowy15/api-double-track/internal/pkg/utils/httputil"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 )
 
@@ -19,8 +19,8 @@ import (
 //	@Accept			json
 //	@Produce		json
 //	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
-//	@Success		200				{object}	utils.DataJsonResponse{data=schemas.Statistic}
-//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.Statistic}
+//	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/statistics [get]
 func GetStatistics(w http.ResponseWriter, r *http.Request) {
 	res := models.Statistic{
@@ -29,7 +29,7 @@ func GetStatistics(w http.ResponseWriter, r *http.Request) {
 		RecommendationAcceptance: 90.34,
 		ConsistencyAvg:           92.54,
 	}
-	utils.SendJson(w, res, http.StatusOK)
+	httputil.SendData(w, res, http.StatusOK)
 }
 
 // GetAlternatives godoc
@@ -39,17 +39,17 @@ func GetStatistics(w http.ResponseWriter, r *http.Request) {
 //	@Tags			Common
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	utils.DataJsonResponse{data=[]schemas.Alternative}
-//	@Failure		500	{object}	utils.ErrorJsonResponse
+//	@Success		200	{object}	httputil.DataJsonResponse{data=[]schemas.Alternative}
+//	@Failure		500	{object}	httputil.ErrorJsonResponse
 //	@Router			/alternatives [get]
 func GetAlternatives(w http.ResponseWriter, r *http.Request) {
 	s := repositories.GetAlternativeRepository()
 	alternatives, err := s.GetAlternatives()
 	if err != nil {
-		utils.SendError(w, "internal server error", http.StatusInternalServerError)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	utils.SendJson(w, alternatives, http.StatusOK)
+	httputil.SendData(w, alternatives, http.StatusOK)
 }
 
 // GetSchool godoc
@@ -62,8 +62,8 @@ func GetAlternatives(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
-//	@Success		200				{object}	utils.DataJsonResponse{data=schemas.School}
-//	@Failure		500				{object}	utils.ErrorJsonResponse
+//	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.School}
+//	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/school [get]
 func GetSchool(w http.ResponseWriter, r *http.Request) {
 	// get school_id from token
@@ -73,8 +73,8 @@ func GetSchool(w http.ResponseWriter, r *http.Request) {
 	school, err := repositories.GetSchoolRepository().GetSchoolById(schoolId)
 	if err != nil {
 		log.Printf("err get school: %v", err)
-		utils.SendError(w, "internal server error", http.StatusInternalServerError)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	utils.SendJson(w, school, http.StatusOK)
+	httputil.SendData(w, school, http.StatusOK)
 }

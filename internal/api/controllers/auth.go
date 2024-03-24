@@ -91,7 +91,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			Username: student.Username,
 			Email:    student.Email.String,
 			Role:     "student",
-			SchoolId: student.Id,
+			SchoolId: school.Id,
 		}
 		token := jwt.CreateToken(claim)
 		res := models.LoginResponse{

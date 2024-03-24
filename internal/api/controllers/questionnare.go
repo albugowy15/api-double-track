@@ -8,6 +8,7 @@ import (
 	"github.com/albugowy15/api-double-track/internal/api/services"
 	"github.com/albugowy15/api-double-track/internal/pkg/models"
 	"github.com/albugowy15/api-double-track/internal/pkg/repositories"
+	"github.com/albugowy15/api-double-track/internal/pkg/schemas"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/httputil"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 	"github.com/albugowy15/api-double-track/internal/pkg/validator"
@@ -205,4 +206,41 @@ func GetQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	httputil.SendData(w, settings, http.StatusOK)
+}
+
+// GetQuesionnareReady godoc
+//
+//	@Summary		Get questionnare ready status
+//	@Description	Get questionnare ready status
+//	@Tags			Questionnare
+//	@Tags			Student
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.QuestionnareReadyResponse}
+//	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		500				{object}	httputil.ErrorJsonResponse
+//	@Router			/questionnare/ready [get]
+func GetQuesionnareReady(w http.ResponseWriter, r *http.Request) {
+	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
+	schoolId := schoolIdClaim.(string)
+	settings, err := repositories.GetQuestionnareSettingRepository().GetQuestionnareSettings(schoolId)
+	if err != nil {
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	totalAlternative := 7
+	if len(settings) == totalAlternative {
+		res := schemas.QuestionnareReadyResponse{
+			Ready: true,
+		}
+		httputil.SendData(w, res, http.StatusOK)
+		return
+	}
+
+	res := schemas.QuestionnareReadyResponse{
+		Ready: false,
+	}
+	httputil.SendData(w, res, http.StatusOK)
 }

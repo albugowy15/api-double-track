@@ -48,3 +48,7 @@ type Answer struct {
 	Id         int64  `json:"id"`
 	QuestionId int    `json:"question_id"`
 }
+
+type QuestionnareReadyResponse struct {
+	Ready bool `json:"ready"`
+}

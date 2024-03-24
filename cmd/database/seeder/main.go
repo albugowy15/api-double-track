@@ -79,8 +79,8 @@ func main() {
 		{Alternative: "Multimedia", Description: "Alternative keterampilan Multimedia"},
 		{Alternative: "Teknik Elektro", Description: "Alternative keterampilan Teknik Elektro"},
 		{Alternative: "Teknik Listrik", Description: "Alternative keterampilan Tata Listrik"},
-		{Alternative: "Tata Boga", Description: "Alternative keterampilan Tata Boga"},
 		{Alternative: "Tata Busana", Description: "Alternative keterampilan Tata Busana"},
+		{Alternative: "Tata Boga", Description: "Alternative keterampilan Tata Boga"},
 		{Alternative: "Tata Kecantikan", Description: "Alternative keterampilan Tata Kecantikan"},
 		{Alternative: "Teknik Kendararaan Ringan/Motor", Description: "Alternative keterampilan Teknik Kendararaan Ringan/Motor"},
 	}

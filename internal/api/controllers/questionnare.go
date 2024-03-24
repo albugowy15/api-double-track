@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/albugowy15/api-double-track/internal/api/services"
 	"github.com/albugowy15/api-double-track/internal/pkg/models"
 	"github.com/albugowy15/api-double-track/internal/pkg/repositories"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/httputil"
@@ -148,7 +149,11 @@ func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// start process here
+	err := services.CalculateAHP(r, body)
+	if err != nil {
+		httputil.SendError(w, err, http.StatusBadRequest)
+		return
+	}
 	httputil.SendMessage(w, "berhasil menyimpan jawaban", http.StatusCreated)
 }
 

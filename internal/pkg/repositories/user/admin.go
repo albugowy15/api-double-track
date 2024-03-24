@@ -41,21 +41,15 @@ func (r *AdminRepository) UpdateAdminProfile(adminId string, data user.UpdateAdm
 		tx.Rollback()
 		return err
 	}
-
-	if len(data.Email) > 0 {
-		_, err = tx.Exec("UPDATE admins SET email = $1 WHERE id = $2", data.Email, adminId)
-		if err != nil {
-			tx.Rollback()
-			return err
-		}
+	_, err = tx.Exec("UPDATE admins SET email = $1 WHERE id = $2", data.Email, adminId)
+	if err != nil {
+		tx.Rollback()
+		return err
 	}
-
-	if len(data.PhoneNumber) > 0 {
-		_, err = tx.Exec("UPDATE admins SET phone_number = $1 WHERE id = $2", data.PhoneNumber, adminId)
-		if err != nil {
-			tx.Rollback()
-			return err
-		}
+	_, err = tx.Exec("UPDATE admins SET phone_number = $1 WHERE id = $2", data.PhoneNumber, adminId)
+	if err != nil {
+		tx.Rollback()
+		return err
 	}
 
 	tx.Commit()

@@ -15,20 +15,19 @@ func ValidateUpdateAdminRequest(data user.UpdateAdminRequest) error {
 		return err
 	}
 
-	if len(data.Email) > 0 {
-		// email validation
-		err := ValidateEmail(data.Email)
-		if err != nil {
-			return err
-		}
+	if len(data.Email) == 0 {
+		return errors.New("email wajib diisi")
+	}
+	if err := ValidateEmail(data.Email); err != nil {
+		return err
 	}
 
-	if len(data.PhoneNumber) > 0 {
-		// phone_number validation
-		err := ValidatePhoneNumber(data.PhoneNumber)
-		if err != nil {
-			return err
-		}
+	if len(data.PhoneNumber) == 0 {
+		return errors.New("nomor hp wajib diisi")
 	}
+	if err := ValidatePhoneNumber(data.PhoneNumber); err != nil {
+		return err
+	}
+
 	return nil
 }

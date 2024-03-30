@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"strings"
@@ -12,6 +13,7 @@ import (
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/httputil"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 	"github.com/albugowy15/api-double-track/internal/pkg/validator"
+	"github.com/guregu/null/v5"
 )
 
 var CodeToText = map[string]string{
@@ -140,6 +142,14 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 	var body []models.SubmitAnswerRequest
 	httputil.GetBody(w, r, &body)
+
+	studentIdClaim, err := jwt.GetJwtClaim(r, "user_id")
+	if err != nil {
+		httputil.SendError(w, errors.New("invalid token"), http.StatusUnauthorized)
+		return
+	}
+	studentId := studentIdClaim.(string)
+
 	if err := validator.ValidateSubmitAnswer(body); err != nil {
 		httputil.SendError(w, err, http.StatusBadRequest)
 		return
@@ -150,12 +160,29 @@ func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := services.CalculateAHP(r, body)
+	err = services.CalculateAHP(r, body)
 	if err != nil {
 		httputil.SendError(w, err, http.StatusBadRequest)
 		return
 	}
-	httputil.SendMessage(w, "berhasil menyimpan jawaban", http.StatusCreated)
+	// save question to db
+	answers := []models.Answer{}
+	for _, item := range body {
+		answer := models.Answer{
+			StudentId:  studentId,
+			QuestionId: item.Id,
+			Answer:     null.StringFrom(item.Answer),
+		}
+		answers = append(answers, answer)
+	}
+	err = repositories.GetAnswersRepository().SaveAnswers(answers)
+	if err != nil {
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	httputil.SendMessage(w, "berhasil menyimpan kuesioner", http.StatusCreated)
 }
 
 // GetIncompleteQuestionnareSettings godoc

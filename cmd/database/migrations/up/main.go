@@ -156,7 +156,7 @@ ALTER TABLE "questionnare_settings" ADD FOREIGN KEY ("alternative_id") REFERENCE
 
 ALTER TABLE "questionnare_settings" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id");
 
-ALTER TABLE "answers" ADD FOREIGN KEY ("student_id") REFERENCES "schools" ("id");
+ALTER TABLE "answers" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("id");
 
 ALTER TABLE "answers" ADD FOREIGN KEY ("question_id") REFERENCES "questions" ("id");
 

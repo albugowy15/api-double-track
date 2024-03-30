@@ -59,7 +59,7 @@ func Setup() *chi.Mux {
 				r.Patch("/students/profile", controllers.UpdateStudentProfile)
 				r.Get("/recommendations/{studentId}", func(w http.ResponseWriter, r *http.Request) {})
 				r.Get("/questionnare/questions", controllers.GetQuestions)
-				r.Get("/questionnare/ready", controllers.GetQuesionnareReady)
+				r.Get("/questionnare/status", controllers.GetQuesionnareStatus)
 				r.Post("/questionnare/answers", controllers.SubmitAnswer)
 			})
 		})

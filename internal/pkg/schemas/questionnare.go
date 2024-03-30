@@ -49,6 +49,6 @@ type Answer struct {
 	QuestionId int    `json:"question_id"`
 }
 
-type QuestionnareReadyResponse struct {
-	Ready bool `json:"ready"`
+type QuestionnareStatusResponse struct {
+	Status string `json:"status"`
 }

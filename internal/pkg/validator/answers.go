@@ -18,7 +18,6 @@ var (
 
 var ValidCompAnser = map[string]bool{
 	"9":   true,
-	"8":   true,
 	"7":   true,
 	"5":   true,
 	"3":   true,

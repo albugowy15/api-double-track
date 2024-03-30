@@ -5,6 +5,7 @@ import (
 
 	"github.com/albugowy15/api-double-track/internal/pkg/db"
 	"github.com/albugowy15/api-double-track/internal/pkg/models"
+	"github.com/jmoiron/sqlx"
 )
 
 type AnswersRepository struct{}
@@ -18,23 +19,19 @@ func GetAnswersRepository() *AnswersRepository {
 	return answersRepository
 }
 
-func (r *AnswersRepository) SaveAnswers(answers []models.Answer) error {
-	tx, err := db.GetDb().Beginx()
+func (r *AnswersRepository) SaveAnswersTx(answers []models.Answer, tx *sqlx.Tx) error {
+	_, err := tx.NamedExec(`INSERT INTO answers (student_id, question_id, answer) VALUES (:student_id, :question_id, :answer)`, answers)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("db err:", err)
 	}
-	_, err = tx.NamedExec(`INSERT INTO answers (student_id, question_id, answer) VALUES (:student_id, :question_id, :answer)`, answers)
+	return err
+}
+
+func (r *AnswersRepository) GetAnswersByStudentId(studentId string) ([]models.Answer, error) {
+	answers := []models.Answer{}
+	err := db.GetDb().Select(&answers, "SELECT id, student_id, question_id, answer FROM answers WHERE student_id = $1", studentId)
 	if err != nil {
-		tx.Rollback()
-		return err
+		log.Println("db err:", err)
 	}
-	// for _, answer := range answers {
-	// 	_, err := tx.Exec("INSERT INTO answers (student_id, question_id, answer) VALUES ($1, $2, $3)", answer.StudentId, answer.QuestionId, answer.Answer)
-	// 	if err != nil {
-	// 		tx.Rollback()
-	// 		return err
-	// 	}
-	// }
-	tx.Commit()
-	return nil
+	return answers, err
 }

@@ -345,64 +345,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/questionnare/ready": {
-            "get": {
-                "description": "Get questionnare ready status",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Questionnare",
-                    "Student"
-                ],
-                "summary": "Get questionnare ready status",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/schemas.QuestionnareReadyResponse"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/questionnare/settings": {
             "get": {
                 "description": "Get questionnare settings",
@@ -557,6 +499,64 @@ const docTemplate = `{
                                             "items": {
                                                 "$ref": "#/definitions/schemas.QuestionnareSettingAlternative"
                                             }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/questionnare/status": {
+            "get": {
+                "description": "Get questionnare status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Questionnare",
+                    "Student"
+                ],
+                "summary": "Get questionnare status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/schemas.QuestionnareStatusResponse"
                                         }
                                     }
                                 }
@@ -1235,14 +1235,6 @@ const docTemplate = `{
                 }
             }
         },
-        "schemas.QuestionnareReadyResponse": {
-            "type": "object",
-            "properties": {
-                "ready": {
-                    "type": "boolean"
-                }
-            }
-        },
         "schemas.QuestionnareSettingAlternative": {
             "type": "object",
             "properties": {
@@ -1277,6 +1269,14 @@ const docTemplate = `{
                 },
                 "total_open_jobs": {
                     "type": "integer"
+                }
+            }
+        },
+        "schemas.QuestionnareStatusResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
                 }
             }
         },

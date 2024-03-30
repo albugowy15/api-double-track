@@ -215,8 +215,10 @@ func CalculateWeightedSum(mpc MPC, criteriaWeight WeightedSum) WeightedSum {
 
 func CalculateLambdaMax(weightedSum WeightedSum, criteriaWeight CriteriaWeight) float32 {
 	ratios := [TotalCriteria]float32{}
+	log.Println("ratios")
 	for row := range TotalCriteria {
 		ratios[row] = weightedSum[row] / criteriaWeight[row]
+		log.Println("ratio:", ratios[row])
 	}
 	sum := SumRow(ratios)
 	lambdaMax := sum / TotalCriteria

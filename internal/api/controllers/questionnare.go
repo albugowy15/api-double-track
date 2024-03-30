@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"errors"
 	"log"
 	"net/http"
 	"strings"
@@ -13,7 +12,6 @@ import (
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/httputil"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 	"github.com/albugowy15/api-double-track/internal/pkg/validator"
-	"github.com/guregu/null/v5"
 )
 
 var CodeToText = map[string]string{
@@ -143,13 +141,6 @@ func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 	var body []models.SubmitAnswerRequest
 	httputil.GetBody(w, r, &body)
 
-	studentIdClaim, err := jwt.GetJwtClaim(r, "user_id")
-	if err != nil {
-		httputil.SendError(w, errors.New("invalid token"), http.StatusUnauthorized)
-		return
-	}
-	studentId := studentIdClaim.(string)
-
 	if err := validator.ValidateSubmitAnswer(body); err != nil {
 		httputil.SendError(w, err, http.StatusBadRequest)
 		return
@@ -160,27 +151,17 @@ func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = services.CalculateAHP(r, body)
+	err := services.CalculateAHP(r, body)
 	if err != nil {
-		httputil.SendError(w, err, http.StatusBadRequest)
-		return
-	}
-	// save question to db
-	answers := []models.Answer{}
-	for _, item := range body {
-		answer := models.Answer{
-			StudentId:  studentId,
-			QuestionId: item.Id,
-			Answer:     null.StringFrom(item.Answer),
+		re, ok := err.(*services.AHPServiceError)
+		if ok {
+			httputil.SendError(w, re.Err, re.StatusCode)
+			return
 		}
-		answers = append(answers, answer)
-	}
-	err = repositories.GetAnswersRepository().SaveAnswers(answers)
-	if err != nil {
-		log.Println(err)
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
+	// save question to db
 
 	httputil.SendMessage(w, "berhasil menyimpan kuesioner", http.StatusCreated)
 }
@@ -235,39 +216,56 @@ func GetQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	httputil.SendData(w, settings, http.StatusOK)
 }
 
-// GetQuesionnareReady godoc
+// GetQuesionnareStatus godoc
 //
-//	@Summary		Get questionnare ready status
-//	@Description	Get questionnare ready status
+//	@Summary		Get questionnare status
+//	@Description	Get questionnare status
 //	@Tags			Questionnare
 //	@Tags			Student
 //	@Accept			json
 //	@Produce		json
 //	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
-//	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.QuestionnareReadyResponse}
+//	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.QuestionnareStatusResponse}
 //	@Failure		400				{object}	httputil.ErrorJsonResponse
 //	@Failure		500				{object}	httputil.ErrorJsonResponse
-//	@Router			/questionnare/ready [get]
-func GetQuesionnareReady(w http.ResponseWriter, r *http.Request) {
+//	@Router			/questionnare/status [get]
+func GetQuesionnareStatus(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
-	settings, err := repositories.GetQuestionnareSettingRepository().GetQuestionnareSettings(schoolId)
+	studentIdClaim, _ := jwt.GetJwtClaim(r, "user_id")
+	studentId := studentIdClaim.(string)
+
+	// check is questionnare complete
+	answers, err := repositories.GetAnswersRepository().GetAnswersByStudentId(studentId)
 	if err != nil {
-		log.Println(err)
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	totalAlternative := 7
-	if len(settings) == totalAlternative {
-		res := schemas.QuestionnareReadyResponse{
-			Ready: true,
+	if len(answers) > 0 {
+		res := schemas.QuestionnareStatusResponse{
+			Status: "COMPLETED",
 		}
 		httputil.SendData(w, res, http.StatusOK)
 		return
 	}
 
-	res := schemas.QuestionnareReadyResponse{
-		Ready: false,
+	// check is questionnare settings all sets
+	settings, err := repositories.GetQuestionnareSettingRepository().GetQuestionnareSettings(schoolId)
+	if err != nil {
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	totalAlternative := 7
+	if len(settings) == totalAlternative {
+		res := schemas.QuestionnareStatusResponse{
+			Status: "READY",
+		}
+		httputil.SendData(w, res, http.StatusOK)
+		return
+	}
+
+	res := schemas.QuestionnareStatusResponse{
+		Status: "NOTREADY",
 	}
 	httputil.SendData(w, res, http.StatusOK)
 }

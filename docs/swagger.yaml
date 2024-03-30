@@ -95,11 +95,6 @@ definitions:
       type:
         type: string
     type: object
-  schemas.QuestionnareReadyResponse:
-    properties:
-      ready:
-        type: boolean
-    type: object
   schemas.QuestionnareSettingAlternative:
     properties:
       alternative:
@@ -123,6 +118,11 @@ definitions:
         type: integer
       total_open_jobs:
         type: integer
+    type: object
+  schemas.QuestionnareStatusResponse:
+    properties:
+      status:
+        type: string
     type: object
   schemas.School:
     properties:
@@ -410,42 +410,6 @@ paths:
       tags:
       - Questionnare
       - Student
-  /questionnare/ready:
-    get:
-      consumes:
-      - application/json
-      description: Get questionnare ready status
-      parameters:
-      - default: Bearer <Add access token here>
-        description: Insert your access token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/schemas.QuestionnareReadyResponse'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
-      summary: Get questionnare ready status
-      tags:
-      - Questionnare
-      - Student
   /questionnare/settings:
     get:
       consumes:
@@ -558,6 +522,42 @@ paths:
       tags:
       - Questionnare
       - Admin
+  /questionnare/status:
+    get:
+      consumes:
+      - application/json
+      description: Get questionnare status
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/schemas.QuestionnareStatusResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+      summary: Get questionnare status
+      tags:
+      - Questionnare
+      - Student
   /school:
     get:
       consumes:

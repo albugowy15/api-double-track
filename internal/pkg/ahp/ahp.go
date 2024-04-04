@@ -114,7 +114,7 @@ func BuildSubMPC() SubMPC {
 	subMpc := SubMPC{}
 	for row := range TotalSubCriteria {
 		for col := range TotalSubCriteria {
-			subMpc[row][col] = (float32(col) + 1.0) / (float32(row) + 1.0)
+			subMpc[row][col] = (float32(TotalSubCriteria) - float32(col)) / (float32(TotalSubCriteria) - float32(row))
 		}
 	}
 	return subMpc

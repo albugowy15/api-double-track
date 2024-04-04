@@ -48,7 +48,7 @@ type Answer struct {
 }
 
 type SubmitAnswerRequest struct {
+	Answer string `json:"answer"`
 	Id     int    `json:"id"`
 	Number int    `json:"number"`
-	Answer string `json:"answer"`
 }

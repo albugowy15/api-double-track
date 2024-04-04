@@ -1,8 +1,6 @@
 package router
 
 import (
-	"net/http"
-
 	"github.com/albugowy15/api-double-track/internal/api/controllers"
 	userMiddleware "github.com/albugowy15/api-double-track/internal/api/middleware"
 	"github.com/albugowy15/api-double-track/internal/pkg/swagger"
@@ -43,8 +41,9 @@ func Setup() *chi.Mux {
 				r.Post("/questionnare/settings", controllers.AddQuestionnareSettings)
 				r.Get("/questionnare/settings", controllers.GetQuestionnareSettings)
 				r.Get("/questionnare/settings/incomplete", controllers.GetIncompleteQuestionnareSettings)
-				r.Delete("/recommendations", func(w http.ResponseWriter, r *http.Request) {})
-				r.Get("/recommendations", func(w http.ResponseWriter, r *http.Request) {})
+				r.Delete("/recommendations", controllers.DeleteRecommendations)
+				r.Get("/recommendations", controllers.GetRecommendations)
+				r.Get("/recommendations/student/{studentId}", controllers.GetStudentRecommendationDetail)
 				r.Get("/students", controllers.GetStudents)
 				r.Post("/students", controllers.AddStudent)
 				r.Get("/students/{studentId}", controllers.GetStudent)
@@ -57,10 +56,11 @@ func Setup() *chi.Mux {
 				r.Use(userMiddleware.CheckStudentRole)
 				r.Get("/students/profile", controllers.GetStudentProfile)
 				r.Patch("/students/profile", controllers.UpdateStudentProfile)
-				r.Get("/recommendations/{studentId}", func(w http.ResponseWriter, r *http.Request) {})
+				r.Get("/recommendations/student", controllers.GetStudentRecommendations)
 				r.Get("/questionnare/questions", controllers.GetQuestions)
 				r.Get("/questionnare/status", controllers.GetQuesionnareStatus)
 				r.Post("/questionnare/answers", controllers.SubmitAnswer)
+				r.Delete("/questionnare/answers", controllers.DeleteAnswer)
 			})
 		})
 	})

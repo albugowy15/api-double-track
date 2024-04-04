@@ -52,3 +52,9 @@ type Answer struct {
 type QuestionnareStatusResponse struct {
 	Status string `json:"status"`
 }
+
+type SubmitAnswerRequest struct {
+	Answer string `json:"answer"`
+	Id     int    `json:"id"`
+	Number int    `json:"number"`
+}

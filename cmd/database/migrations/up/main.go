@@ -114,7 +114,7 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 CREATE TABLE "ahp" (
   "id" BIGSERIAL PRIMARY KEY,
   "student_id" uuid,
-  "consistency_index" decimal,
+  "consistency_ratio" decimal,
   "created_at" TIMESTAMP NOT NULL DEFAULT (now()),
   "updated_at" TIMESTAMP NOT NULL DEFAULT (now())
 );

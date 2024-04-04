@@ -3,7 +3,7 @@ package models
 type AHP struct {
 	StudentId        string  `db:"student_id"`
 	Id               int32   `db:"id"`
-	ConsistencyIndex float32 `db:"consistency_index"`
+	ConsistencyRatio float32 `db:"consistency_ratio"`
 }
 
 type AHPToAlternatives struct {

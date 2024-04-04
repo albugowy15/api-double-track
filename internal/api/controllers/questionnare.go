@@ -1,17 +1,20 @@
 package controllers
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"strings"
 
 	"github.com/albugowy15/api-double-track/internal/api/services"
+	"github.com/albugowy15/api-double-track/internal/pkg/db"
 	"github.com/albugowy15/api-double-track/internal/pkg/models"
 	"github.com/albugowy15/api-double-track/internal/pkg/repositories"
 	"github.com/albugowy15/api-double-track/internal/pkg/schemas"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/httputil"
 	"github.com/albugowy15/api-double-track/internal/pkg/utils/jwt"
 	"github.com/albugowy15/api-double-track/internal/pkg/validator"
+	"github.com/guregu/null/v5"
 )
 
 var CodeToText = map[string]string{
@@ -132,7 +135,7 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			Authorization	header		string				true	"Insert your access token"	default(Bearer <Add access token here>)
-//	@Param			body			body		map[string]string{}	true	"Submit answer request body"
+//	@Param			body			body		[]schemas.SubmitAnswerRequest	true	"Submit answer request body"
 //	@Success		201				{object}	httputil.MessageJsonResponse
 //	@Failure		400				{object}	httputil.ErrorJsonResponse
 //	@Failure		500				{object}	httputil.ErrorJsonResponse
@@ -140,19 +143,51 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 	var body []models.SubmitAnswerRequest
 	httputil.GetBody(w, r, &body)
+	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
+	schoolId := schoolIdClaim.(string)
+	studentIdClaim, _ := jwt.GetJwtClaim(r, "user_id")
+	studentId := studentIdClaim.(string)
 
 	if err := validator.ValidateSubmitAnswer(body); err != nil {
 		httputil.SendError(w, err, http.StatusBadRequest)
 		return
 	}
-
 	if err := validator.ValidateAnswerNumber(body); err != nil {
 		httputil.SendError(w, err, http.StatusBadRequest)
 		return
 	}
 
-	err := services.CalculateAHP(r, body)
+	// make sure all questionnare settings set
+	missingSettings, err := repositories.GetQuestionnareSettingRepository().GetMissingSettings(schoolId)
 	if err != nil {
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	isSettingsComplete := len(missingSettings) == 0
+	if !isSettingsComplete {
+		httputil.SendError(w, errors.New("kuesioner belum diatur, hubungi admin"), http.StatusBadRequest)
+		return
+	}
+	// make sure student not submit answer twice
+	prevAnswer, err := repositories.GetAnswersRepository().GetAnswersByStudentId(studentId)
+	if err != nil {
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	isPrevAnswerExist := len(prevAnswer) != 0
+	if isPrevAnswerExist {
+		httputil.SendError(w, errors.New("kuesioner telah diselesaikan"), http.StatusBadRequest)
+		return
+	}
+
+	tx, err := db.GetDb().Beginx()
+	if err != nil {
+		httputil.SendError(w, err, http.StatusBadRequest)
+		return
+	}
+
+	if err := services.CalculateAHP(r, body, tx); err != nil {
+		tx.Rollback()
 		re, ok := err.(*services.AHPServiceError)
 		if ok {
 			httputil.SendError(w, re.Err, re.StatusCode)
@@ -161,9 +196,53 @@ func SubmitAnswer(w http.ResponseWriter, r *http.Request) {
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	// save question to db
 
+	// start your topsis service here,
+	// the function parameter would be same as CalculateAHP services
+	// TODO: TOPSIS Service
+
+	// save answer
+	answers := []models.Answer{}
+	for _, item := range body {
+		answer := models.Answer{
+			StudentId:  studentId,
+			QuestionId: item.Id,
+			Answer:     null.StringFrom(item.Answer),
+		}
+		answers = append(answers, answer)
+	}
+	err = repositories.GetAnswersRepository().SaveAnswersTx(answers, tx)
+	if err != nil {
+		tx.Rollback()
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	tx.Commit()
 	httputil.SendMessage(w, "berhasil menyimpan kuesioner", http.StatusCreated)
+}
+
+// DeleteAnswer godoc
+//
+//	@Summary		Delete student questionnare answer
+//	@Description	Delete student questionnare answer
+//	@Tags			Questionnare
+//	@Tags			Student
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string				true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Success		201				{object}	httputil.MessageJsonResponse
+//	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		500				{object}	httputil.ErrorJsonResponse
+//	@Router			/questionnare/answers [delete]
+func DeleteAnswer(w http.ResponseWriter, r *http.Request) {
+	studentIdClaim, _ := jwt.GetJwtClaim(r, "user_id")
+	studentId := studentIdClaim.(string)
+	if err := repositories.GetAnswersRepository().DeleteAnswers(studentId); err != nil {
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	httputil.SendMessage(w, "berhasil menghapus jawaban kuesioner", http.StatusCreated)
 }
 
 // GetIncompleteQuestionnareSettings godoc

@@ -40,6 +40,13 @@ definitions:
       username:
         type: string
     type: object
+  schemas.AhpRecommendation:
+    properties:
+      consistency_ratio:
+        type: number
+      result:
+        $ref: '#/definitions/schemas.RecommendationResult'
+    type: object
   schemas.Alternative:
     properties:
       alternative:
@@ -48,6 +55,11 @@ definitions:
         type: string
       id:
         type: integer
+    type: object
+  schemas.DeleteRecommendationRequest:
+    properties:
+      student_id:
+        type: string
     type: object
   schemas.DeleteStudentRequest:
     properties:
@@ -124,6 +136,24 @@ definitions:
       status:
         type: string
     type: object
+  schemas.Recommendation:
+    properties:
+      ahp:
+        $ref: '#/definitions/schemas.AhpRecommendation'
+      topsis:
+        $ref: '#/definitions/schemas.TopsisRecommendation'
+    type: object
+  schemas.RecommendationResult:
+    properties:
+      alternative:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      score:
+        type: number
+    type: object
   schemas.School:
     properties:
       id:
@@ -173,6 +203,41 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  schemas.StudentRecommendation:
+    properties:
+      ahp_results:
+        items:
+          $ref: '#/definitions/schemas.RecommendationResult'
+        type: array
+      consistency_ratio:
+        type: number
+      fullname:
+        type: string
+      id:
+        type: integer
+      nisn:
+        type: string
+      topsis_results:
+        items:
+          $ref: '#/definitions/schemas.RecommendationResult'
+        type: array
+    type: object
+  schemas.SubmitAnswerRequest:
+    properties:
+      answer:
+        type: string
+      id:
+        type: integer
+      number:
+        type: integer
+    type: object
+  schemas.TopsisRecommendation:
+    properties:
+      id:
+        type: integer
+      result:
+        $ref: '#/definitions/schemas.RecommendationResult'
     type: object
   schemas.UpdateAdminRequest:
     properties:
@@ -334,6 +399,36 @@ paths:
       tags:
       - Auth
   /questionnare/answers:
+    delete:
+      consumes:
+      - application/json
+      description: Delete student questionnare answer
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/httputil.MessageJsonResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+      summary: Delete student questionnare answer
+      tags:
+      - Questionnare
+      - Student
     post:
       consumes:
       - application/json
@@ -350,9 +445,9 @@ paths:
         name: body
         required: true
         schema:
-          additionalProperties:
-            type: string
-          type: object
+          items:
+            $ref: '#/definitions/schemas.SubmitAnswerRequest'
+          type: array
       produces:
       - application/json
       responses:
@@ -558,6 +653,157 @@ paths:
       tags:
       - Questionnare
       - Student
+  /recommendations:
+    delete:
+      consumes:
+      - application/json
+      description: Delete recommendation for a student
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Delete student recommendation request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.DeleteRecommendationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/httputil.MessageJsonResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+      summary: Delete recommendation for a student
+      tags:
+      - Recommendations
+      - Admin
+    get:
+      consumes:
+      - application/json
+      description: Get all students recommendations
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/schemas.StudentRecommendation'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+      summary: Get all students recommendations
+      tags:
+      - Recommendations
+      - Admin
+  /recommendations/student:
+    get:
+      consumes:
+      - application/json
+      description: Get recommendations for a student
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/schemas.Recommendation'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+      summary: Get recommendations for a student
+      tags:
+      - Recommendations
+      - Student
+  /recommendations/student/{studentId}:
+    get:
+      consumes:
+      - application/json
+      description: Get student recommendations details
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Id student
+        in: path
+        name: studentId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/schemas.Recommendation'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.ErrorJsonResponse'
+      summary: Get student recommendations details
+      tags:
+      - Recommendations
+      - Admin
   /school:
     get:
       consumes:

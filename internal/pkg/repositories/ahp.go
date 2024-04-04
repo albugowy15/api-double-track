@@ -21,7 +21,7 @@ func GetAHPRepository() *AHPRepository {
 
 func (r *AHPRepository) GetAHPByStudentId(studentId string) (models.AHP, error) {
 	ahp := models.AHP{}
-	err := db.GetDb().Get(&ahp, "SELECT id, student_id, consistency_index FROM ahp WHERE student_id = $1", studentId)
+	err := db.GetDb().Get(&ahp, "SELECT id, student_id, consistency_ratio FROM ahp WHERE student_id = $1", studentId)
 	if err != nil {
 		log.Println("db err:", err)
 	}
@@ -29,7 +29,7 @@ func (r *AHPRepository) GetAHPByStudentId(studentId string) (models.AHP, error) 
 }
 
 func (r *AHPRepository) SaveAHP(data models.AHP) error {
-	_, err := db.GetDb().Exec("INSERT INTO ahp (student_id, consistency_index) VALUES ($1, $2)", data.StudentId, data.ConsistencyIndex)
+	_, err := db.GetDb().Exec("INSERT INTO ahp (student_id, consistency_ratio) VALUES ($1, $2)", data.StudentId, data.ConsistencyRatio)
 	if err != nil {
 		log.Println("db err:", err)
 		return err
@@ -39,7 +39,7 @@ func (r *AHPRepository) SaveAHP(data models.AHP) error {
 
 func (r *AHPRepository) SaveAHPTx(data models.AHP, tx *sqlx.Tx) (int32, error) {
 	var lastInsertedId int32
-	err := tx.QueryRowx("INSERT INTO ahp (student_id, consistency_index) VALUES ($1, $2) RETURNING id", data.StudentId, data.ConsistencyIndex).Scan(&lastInsertedId)
+	err := tx.QueryRowx("INSERT INTO ahp (student_id, consistency_ratio) VALUES ($1, $2) RETURNING id", data.StudentId, data.ConsistencyRatio).Scan(&lastInsertedId)
 	if err != nil {
 		log.Println("db err:", err)
 		return lastInsertedId, err

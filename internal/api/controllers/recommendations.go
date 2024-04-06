@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"errors"
 	"net/http"
 
@@ -55,6 +56,10 @@ func GetStudentRecommendations(w http.ResponseWriter, r *http.Request) {
 
 	consistencyRatio, err := repositories.GetRecommendationRepository().GetAHPConsistencyRatio(studentId)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("belum mengisi kuesioner"), http.StatusNotFound)
+			return
+		}
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}

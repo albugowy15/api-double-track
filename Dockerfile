@@ -1,3 +1,4 @@
+
 FROM golang:1.22.0 AS build-stage
 WORKDIR /app
 COPY go.mod go.sum ./
@@ -18,3 +19,7 @@ COPY  app.env.example /app/app.env
 EXPOSE 8080
 USER appuser
 ENTRYPOINT [ "/app/api-double-track" ]
+
+LABEL org.opencontainers.image.source=https://github.com/albugowy15/api-double-track
+LABEL org.opencontainers.image.description="Go-based REST API that offers a variety of endpoints designed to supply data for integration with the Double Track Recommendation Web"
+LABEL org.opencontainers.image.licenses=MIT

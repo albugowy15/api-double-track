@@ -1,7 +1,6 @@
 package ahp_test
 
 import (
-	"fmt"
 	"sort"
 	"testing"
 
@@ -40,7 +39,6 @@ func buildBody() []models.SubmitAnswerRequest {
 		body = append(body, item)
 	}
 
-	fmt.Println(body)
 	sort.Slice(body, func(i, j int) bool {
 		return body[i].Number < body[j].Number
 	})

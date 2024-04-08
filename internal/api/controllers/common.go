@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"database/sql"
+	"errors"
 	"log"
 	"net/http"
 
@@ -63,6 +65,7 @@ func GetAlternatives(w http.ResponseWriter, r *http.Request) {
 //	@Produce		json
 //	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
 //	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.School}
+//	@Failure		404				{object}	httputil.ErrorJsonResponse
 //	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/school [get]
 func GetSchool(w http.ResponseWriter, r *http.Request) {
@@ -72,6 +75,10 @@ func GetSchool(w http.ResponseWriter, r *http.Request) {
 
 	school, err := repositories.GetSchoolRepository().GetSchoolById(schoolId)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("sekolah tidak ditemukan"), http.StatusNotFound)
+			return
+		}
 		log.Printf("err get school: %v", err)
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return

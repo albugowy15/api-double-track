@@ -3,6 +3,7 @@ package controllers
 import (
 	"database/sql"
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/albugowy15/api-double-track/internal/pkg/models"
@@ -48,6 +49,7 @@ func GetRecommendations(w http.ResponseWriter, r *http.Request) {
 //	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
 //	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.Recommendation}
 //	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		404				{object}	httputil.ErrorJsonResponse
 //	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/recommendations/student [get]
 func GetStudentRecommendations(w http.ResponseWriter, r *http.Request) {
@@ -57,19 +59,19 @@ func GetStudentRecommendations(w http.ResponseWriter, r *http.Request) {
 	consistencyRatio, err := repositories.GetRecommendationRepository().GetAHPConsistencyRatio(studentId)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			httputil.SendError(w, errors.New("belum mengisi kuesioner"), http.StatusNotFound)
+			httputil.SendError(w, errors.New("isian kuesioner tidak ditemukan"), http.StatusNotFound)
 			return
 		}
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	ahpResuls, err := repositories.GetRecommendationRepository().GetAHPRecommendations(studentId)
+	ahpResults, err := repositories.GetRecommendationRepository().GetAHPRecommendations(studentId)
 	if err != nil {
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 	ahp := models.AhpRecommendation{
-		Result:           ahpResuls,
+		Result:           ahpResults,
 		ConsistencyRatio: null.FloatFrom(float64(consistencyRatio)),
 	}
 
@@ -103,6 +105,7 @@ func DeleteRecommendations(w http.ResponseWriter, r *http.Request) {
 
 	err := repositories.GetAnswersRepository().DeleteAnswers(body.StudentId)
 	if err != nil {
+		log.Println(err)
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusBadRequest)
 		return
 	}
@@ -122,6 +125,7 @@ func DeleteRecommendations(w http.ResponseWriter, r *http.Request) {
 //	@Param			studentId		path		string	true	"Id student"
 //	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.Recommendation}
 //	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		404				{object}	httputil.ErrorJsonResponse
 //	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/recommendations/student/{studentId} [get]
 func GetStudentRecommendationDetail(w http.ResponseWriter, r *http.Request) {
@@ -132,16 +136,20 @@ func GetStudentRecommendationDetail(w http.ResponseWriter, r *http.Request) {
 	}
 	consistencyRatio, err := repositories.GetRecommendationRepository().GetAHPConsistencyRatio(studentId)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("isian kuesioner tidak ditemukan"), http.StatusNotFound)
+			return
+		}
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	ahpResuls, err := repositories.GetRecommendationRepository().GetAHPRecommendations(studentId)
+	ahpResults, err := repositories.GetRecommendationRepository().GetAHPRecommendations(studentId)
 	if err != nil {
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 	ahp := models.AhpRecommendation{
-		Result:           ahpResuls,
+		Result:           ahpResults,
 		ConsistencyRatio: null.FloatFrom(float64(consistencyRatio)),
 	}
 

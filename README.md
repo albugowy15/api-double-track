@@ -47,7 +47,3 @@ air
 ```
 
 This will launch the application with hot reload enabled, allowing you to make changes to the code and see them reflected in real-time without restarting the server.
-
-```
-
-```

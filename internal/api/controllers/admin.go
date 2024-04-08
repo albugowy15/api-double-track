@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"database/sql"
+	"errors"
 	"log"
 	"net/http"
 
@@ -21,6 +23,7 @@ import (
 //	@Param			Authorization	header		string	true	"Insert your access token"	default(Bearer <Add access token here>)
 //	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.Admin}
 //	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		404				{object}	httputil.ErrorJsonResponse
 //	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/admin/profile [get]
 func GetAdminProfile(w http.ResponseWriter, r *http.Request) {
@@ -29,6 +32,10 @@ func GetAdminProfile(w http.ResponseWriter, r *http.Request) {
 	a := user.GetAdminRepository()
 	admin, err := a.GetAdminById(adminId)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("profil admin tidak ditemukan"), http.StatusNotFound)
+			return
+		}
 		log.Println(err)
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -61,6 +68,15 @@ func UpdateAdminProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	a := user.GetAdminRepository()
+	_, err = a.GetAdminById(adminId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("profil admin tidak ditemukan"), http.StatusNotFound)
+			return
+		}
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
 	if err := a.UpdateAdminProfile(adminId, body); err != nil {
 		log.Print(err)
 		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)

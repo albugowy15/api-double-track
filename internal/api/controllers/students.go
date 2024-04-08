@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"net/http"
@@ -54,6 +55,7 @@ func GetStudents(w http.ResponseWriter, r *http.Request) {
 //	@Param			studentId		path		string	true	"Id student"
 //	@Success		200				{object}	httputil.DataJsonResponse{data=schemas.Student}
 //	@Failure		400				{object}	httputil.ErrorJsonResponse
+//	@Failure		404				{object}	httputil.ErrorJsonResponse
 //	@Failure		500				{object}	httputil.ErrorJsonResponse
 //	@Router			/students/{studentId} [get]
 func GetStudent(w http.ResponseWriter, r *http.Request) {
@@ -62,7 +64,12 @@ func GetStudent(w http.ResponseWriter, r *http.Request) {
 	studentIdParam := chi.URLParam(r, "studentId")
 	student, err := user.GetStudentRepository().GetStudentBySchoolId(schoolId, studentIdParam)
 	if err != nil {
-		httputil.SendError(w, errors.New("data siswa tidak ditemukan"), http.StatusNotFound)
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("data siswa tidak ditemukan"), http.StatusNotFound)
+			return
+		}
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 	httputil.SendData(w, student, http.StatusOK)
@@ -97,14 +104,19 @@ func AddStudent(w http.ResponseWriter, r *http.Request) {
 
 	_, err = repositories.GetSchoolRepository().GetSchoolById(schoolId)
 	if err != nil {
-		httputil.SendError(w, errors.New("id sekolah tidak ditemukan"), http.StatusBadRequest)
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("id sekolah tidak ditemukan"), http.StatusBadRequest)
+			return
+		}
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 
 	sanitizedBody.Username = sanitizedBody.Nisn
 	password, err := utils.HashStr(sanitizedBody.Nisn)
 	if err != nil {
-		httputil.SendError(w, err, http.StatusBadGateway)
+		httputil.SendError(w, err, http.StatusBadRequest)
 		return
 	}
 	sanitizedBody.Password = password
@@ -147,13 +159,23 @@ func DeleteStudent(w http.ResponseWriter, r *http.Request) {
 	s := user.GetStudentRepository()
 	student, err := s.GetStudentById(body.Id)
 	if err != nil {
-		httputil.SendError(w, errors.New("siswa tidak ditemukan"), http.StatusBadRequest)
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("siswa tidak ditemukan"), http.StatusBadRequest)
+			return
+		}
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 
 	studentSchool, err := repositories.GetSchoolRepository().GetSchoolByStudentId(student.Id)
 	if err != nil {
-		httputil.SendError(w, errors.New("sekolah tidak ditemukan"), http.StatusBadRequest)
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("sekolah tidak ditemukan"), http.StatusBadRequest)
+			return
+		}
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 
@@ -204,14 +226,24 @@ func UpdateStudent(w http.ResponseWriter, r *http.Request) {
 	s := user.GetStudentRepository()
 	student, err := s.GetStudentById(studentIdParam)
 	if err != nil {
-		httputil.SendError(w, errors.New("siswa tidak ditemukan"), http.StatusBadRequest)
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("siswa tidak ditemukan"), http.StatusBadRequest)
+			return
+		}
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 
 	// check same school id
 	studentSchool, err := repositories.GetSchoolRepository().GetSchoolByStudentId(student.Id)
 	if err != nil {
-		httputil.SendError(w, errors.New("sekolah tidak ditemukan"), http.StatusBadRequest)
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("sekolah tidak ditemukan"), http.StatusBadRequest)
+			return
+		}
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 	schoolIdClaim, _ := jwt.GetJwtClaim(r, "school_id")
@@ -254,14 +286,22 @@ func GetStudentProfile(w http.ResponseWriter, r *http.Request) {
 	s := user.GetStudentRepository()
 	student, err := s.GetStudentById(studentId)
 	if err != nil {
-		log.Printf("err get student profile: %v", err)
-		httputil.SendError(w, errors.New("data siswa tidak ditemukan"), http.StatusNotFound)
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("data siswa tidak ditemukan"), http.StatusNotFound)
+			return
+		}
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 	school, err := repositories.GetSchoolRepository().GetSchoolByStudentId(studentId)
 	if err != nil {
-		log.Printf("err get student school: %v", err)
-		httputil.SendError(w, errors.New("data sekolah tidak ditemukan"), http.StatusNotFound)
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("data sekolah tidak ditemukan"), http.StatusNotFound)
+			return
+		}
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 	profile := userModel.StudentProfile{
@@ -306,7 +346,12 @@ func UpdateStudentProfile(w http.ResponseWriter, r *http.Request) {
 	s := user.GetStudentRepository()
 	student, err := s.GetStudentById(studentId)
 	if err != nil {
-		httputil.SendError(w, errors.New("siswa tidak ditemukan"), http.StatusBadRequest)
+		if err == sql.ErrNoRows {
+			httputil.SendError(w, errors.New("siswa tidak ditemukan"), http.StatusBadRequest)
+			return
+		}
+		log.Println(err)
+		httputil.SendError(w, httputil.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 

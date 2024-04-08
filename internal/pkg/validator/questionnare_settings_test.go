@@ -2,7 +2,6 @@ package validator_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
 
 	"github.com/albugowy15/api-double-track/internal/pkg/models"
@@ -12,8 +11,6 @@ import (
 
 func TestValidateSettingOptions(t *testing.T) {
 	settingItem := null.Int16From(1)
-
-	fmt.Println(settingItem)
 
 	err := validator.ValidateSettingItem(settingItem)
 	if err != nil {

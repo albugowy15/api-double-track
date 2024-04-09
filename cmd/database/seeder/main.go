@@ -51,27 +51,7 @@ func init() {
 }
 
 func main() {
-	if config.GetConfig().AppEnv == "prod" {
-		log.Fatalf("you cannot run database seeder when app is running in production")
-	}
-
-	// seed schools
-	schools := []School{
-		{Name: "SMA IPIEMS Surabaya"},
-		{Name: "SMA Dharmawanita Surabaya"},
-		{Name: "SMA Negeri 1 Ngadirojo"},
-		{Name: "SMA Negeri 1 Jenangan"},
-		{Name: "SMA Negeri 1 Gondanglegi"},
-		{Name: "SMA Negeri 1 Balongpanggang"},
-		{Name: "SMA Negeri 1 Turen"},
-		{Name: "SMA Negeri 1 Sumbermanjing"},
-		{Name: "SMA Negeri 1 Pulung"},
-	}
-	_, err := db.GetDb().NamedExec(`INSERT INTO schools (name) VALUES (:name)`, schools)
-	if err != nil {
-		log.Fatalf("error insert schools: %v", err)
-	}
-
+	env := config.GetConfig().AppEnv
 	tx := db.GetDb().MustBegin()
 
 	// seed alternatives
@@ -84,7 +64,7 @@ func main() {
 		{Alternative: "Tata Kecantikan", Description: "Alternative keterampilan Tata Kecantikan"},
 		{Alternative: "Teknik Kendararaan Ringan/Motor", Description: "Alternative keterampilan Teknik Kendararaan Ringan/Motor"},
 	}
-	_, err = tx.NamedExec(`INSERT INTO alternatives (alternative, description) VALUES (:alternative, :description)`, alteratives)
+	_, err := tx.NamedExec(`INSERT INTO alternatives (alternative, description) VALUES (:alternative, :description)`, alteratives)
 	if err != nil {
 		log.Fatalf("error insert alternatives: %v", err)
 	}
@@ -121,6 +101,30 @@ func main() {
 		log.Fatalf("error insert questions: %v", err)
 	}
 
+	if env == "prod" {
+		log.Println("seed database for production")
+		tx.Commit()
+		db.GetDb().Close()
+		return
+	}
+
+	log.Println("seed database for development")
+	// seed schools
+	schools := []School{
+		{Name: "SMA IPIEMS Surabaya"},
+		{Name: "SMA Dharmawanita Surabaya"},
+		{Name: "SMA Negeri 1 Ngadirojo"},
+		{Name: "SMA Negeri 1 Jenangan"},
+		{Name: "SMA Negeri 1 Gondanglegi"},
+		{Name: "SMA Negeri 1 Balongpanggang"},
+		{Name: "SMA Negeri 1 Turen"},
+		{Name: "SMA Negeri 1 Sumbermanjing"},
+		{Name: "SMA Negeri 1 Pulung"},
+	}
+	_, err = db.GetDb().NamedExec(`INSERT INTO schools (name) VALUES (:name)`, schools)
+	if err != nil {
+		log.Fatalf("error insert schools: %v", err)
+	}
 	type SchooldId struct {
 		Id string `db:"id"`
 	}
@@ -215,7 +219,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("error insert admins: %v", err)
 	}
-	tx.Commit()
 
+	tx.Commit()
 	db.GetDb().Close()
 }

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/albugowy15/api-double-track/internal/pkg/config"
 	"github.com/albugowy15/api-double-track/internal/pkg/db"
 	_ "github.com/lib/pq"
@@ -175,9 +173,6 @@ func init() {
 }
 
 func main() {
-	if config.GetConfig().AppEnv == "prod" {
-		log.Fatalf("you cannot run database migrations when app is running in production")
-	}
 	db.GetDb().MustExec(schema)
 	db.GetDb().Close()
 }

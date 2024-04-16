@@ -1,8 +1,12 @@
-/.git/
-/tmp/
+.git/
+.github/
+tmp/
+bin/
 .air.toml
 .gitignore
+LICENSE
 Makefile
 README.md
 app.env
 app.env.prod
+fly.toml

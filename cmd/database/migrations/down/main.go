@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/albugowy15/api-double-track/internal/pkg/config"
-	"github.com/albugowy15/api-double-track/internal/pkg/db"
+	"github.com/albugowy15/api-double-track/db"
+	"github.com/albugowy15/api-double-track/pkg/config"
 	_ "github.com/lib/pq"
 )
 
@@ -23,11 +23,11 @@ DROP FUNCTION IF EXISTS trigger_set_timestamp();
   `
 
 func init() {
-	config.LoadConfig(".")
-	db.SetupDB()
+	config.Load(".")
+	db.Init()
 }
 
 func main() {
-	db.GetDb().MustExec(statement)
-	db.GetDb().Close()
+	db.AppDB.MustExec(statement)
+	db.AppDB.Close()
 }

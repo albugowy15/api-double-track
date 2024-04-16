@@ -9,11 +9,8 @@ migrate_down:
 seed:
 	go run cmd/database/seeder/main.go
 
-server:
-	go run cmd/server/main.go
-
-client:
-	go run cmd/client/main.go
+run:
+	go run cmd/api/main.go
 
 dev:
 	air
@@ -22,10 +19,10 @@ test:
 	go test -v ./...
 
 build:
-	go build -o ./tmp/main cmd/server/main.go
+	go build -o ./tmp/main cmd/api/main.go
 
 start:
-	go build -o ./tmp/main cmd/server/main.go && ./tmp/main
+	go build -o ./tmp/main cmd/api/main.go && ./tmp/main
 
 docs:
-	swag init -d "./" -g "cmd/server/main.go"
+	swag init -d "./" -g "cmd/api/main.go"

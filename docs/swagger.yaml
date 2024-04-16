@@ -1,15 +1,15 @@
 basePath: /v1
 definitions:
-  httputil.DataJsonResponse:
+  httpx.DataJsonResponse:
     properties:
       data: {}
     type: object
-  httputil.ErrorJsonResponse:
+  httpx.ErrorJsonResponse:
     properties:
       error:
         type: string
     type: object
-  httputil.MessageJsonResponse:
+  httpx.MessageJsonResponse:
     properties:
       message:
         type: string
@@ -286,7 +286,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   $ref: '#/definitions/schemas.Admin'
@@ -294,11 +294,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get admin profile
       tags:
       - Admin
@@ -325,15 +329,15 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/httputil.MessageJsonResponse'
+            $ref: '#/definitions/httpx.MessageJsonResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Update admin profile
       tags:
       - Admin
@@ -349,7 +353,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   items:
@@ -359,7 +363,7 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get alternatives
       tags:
       - Common
@@ -382,7 +386,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   $ref: '#/definitions/schemas.LoginResponse'
@@ -390,11 +394,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Login authentication
       tags:
       - Auth
@@ -416,15 +420,15 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/httputil.MessageJsonResponse'
+            $ref: '#/definitions/httpx.MessageJsonResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Delete student questionnare answer
       tags:
       - Questionnare
@@ -454,15 +458,15 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/httputil.MessageJsonResponse'
+            $ref: '#/definitions/httpx.MessageJsonResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Submit answer
       tags:
       - Questionnare
@@ -486,7 +490,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   items:
@@ -496,11 +500,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get Questions
       tags:
       - Questionnare
@@ -524,7 +528,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   items:
@@ -534,11 +538,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get questionnare settings
       tags:
       - Questionnare
@@ -566,15 +570,15 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/httputil.MessageJsonResponse'
+            $ref: '#/definitions/httpx.MessageJsonResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Add questionnare setting
       tags:
       - Questionnare
@@ -598,7 +602,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   items:
@@ -608,11 +612,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get incomplete questionnare settings
       tags:
       - Questionnare
@@ -636,7 +640,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   $ref: '#/definitions/schemas.QuestionnareStatusResponse'
@@ -644,11 +648,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get questionnare status
       tags:
       - Questionnare
@@ -677,15 +681,15 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/httputil.MessageJsonResponse'
+            $ref: '#/definitions/httpx.MessageJsonResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Delete recommendation for a student
       tags:
       - Recommendations
@@ -708,7 +712,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   items:
@@ -718,11 +722,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get all students recommendations
       tags:
       - Recommendations
@@ -746,7 +750,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   $ref: '#/definitions/schemas.Recommendation'
@@ -754,11 +758,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get recommendations for a student
       tags:
       - Recommendations
@@ -787,7 +795,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   $ref: '#/definitions/schemas.Recommendation'
@@ -795,11 +803,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get student recommendations details
       tags:
       - Recommendations
@@ -823,15 +835,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   $ref: '#/definitions/schemas.School'
               type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get school
       tags:
       - Common
@@ -856,7 +872,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   $ref: '#/definitions/schemas.Statistic'
@@ -864,7 +880,7 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get statistic
       tags:
       - Common
@@ -893,15 +909,15 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/httputil.MessageJsonResponse'
+            $ref: '#/definitions/httpx.MessageJsonResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Delete a student
       tags:
       - Students
@@ -924,7 +940,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   items:
@@ -934,11 +950,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get students
       tags:
       - Students
@@ -966,15 +982,15 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/httputil.MessageJsonResponse'
+            $ref: '#/definitions/httpx.MessageJsonResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Add a student
       tags:
       - Students
@@ -1003,7 +1019,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   $ref: '#/definitions/schemas.Student'
@@ -1011,11 +1027,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get a student
       tags:
       - Students
@@ -1048,15 +1068,15 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/httputil.MessageJsonResponse'
+            $ref: '#/definitions/httpx.MessageJsonResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Update a student
       tags:
       - Students
@@ -1080,7 +1100,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/httputil.DataJsonResponse'
+            - $ref: '#/definitions/httpx.DataJsonResponse'
             - properties:
                 data:
                   $ref: '#/definitions/schemas.StudentProfile'
@@ -1088,11 +1108,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Get a student profile
       tags:
       - Students
@@ -1120,15 +1140,15 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/httputil.MessageJsonResponse'
+            $ref: '#/definitions/httpx.MessageJsonResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/httputil.ErrorJsonResponse'
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
       summary: Update a student profile
       tags:
       - Students

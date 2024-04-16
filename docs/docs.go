@@ -44,7 +44,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -60,13 +60,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -106,19 +112,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -143,7 +149,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -162,7 +168,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -198,7 +204,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -214,13 +220,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -266,19 +272,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -310,19 +316,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -358,7 +364,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -377,13 +383,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -419,7 +425,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -438,13 +444,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -485,19 +491,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -533,7 +539,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -552,13 +558,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -594,7 +600,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -610,13 +616,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -652,7 +658,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -671,13 +677,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -718,19 +724,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -766,7 +772,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -782,13 +788,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -831,7 +843,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -847,13 +859,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -890,7 +908,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -903,10 +921,16 @@ const docTemplate = `{
                             ]
                         }
                     },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -942,7 +966,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -958,7 +982,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -994,7 +1018,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1013,13 +1037,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1060,19 +1084,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1113,19 +1137,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1161,7 +1185,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1177,13 +1201,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1224,19 +1248,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1279,7 +1303,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1295,13 +1319,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1349,19 +1379,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1369,13 +1399,13 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "httputil.DataJsonResponse": {
+        "httpx.DataJsonResponse": {
             "type": "object",
             "properties": {
                 "data": {}
             }
         },
-        "httputil.ErrorJsonResponse": {
+        "httpx.ErrorJsonResponse": {
             "type": "object",
             "properties": {
                 "error": {
@@ -1383,7 +1413,7 @@ const docTemplate = `{
                 }
             }
         },
-        "httputil.MessageJsonResponse": {
+        "httpx.MessageJsonResponse": {
             "type": "object",
             "properties": {
                 "message": {

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/albugowy15/api-double-track/internal/pkg/config"
-	"github.com/albugowy15/api-double-track/internal/pkg/db"
+	"github.com/albugowy15/api-double-track/db"
+	"github.com/albugowy15/api-double-track/pkg/config"
 	_ "github.com/lib/pq"
 )
 
@@ -168,11 +168,11 @@ ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES 
 `
 
 func init() {
-	config.LoadConfig(".")
-	db.SetupDB()
+	config.Load(".")
+	db.Init()
 }
 
 func main() {
-	db.GetDb().MustExec(schema)
-	db.GetDb().Close()
+	db.AppDB.MustExec(schema)
+	db.AppDB.Close()
 }

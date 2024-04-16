@@ -37,7 +37,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -53,13 +53,19 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -99,19 +105,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -136,7 +142,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -155,7 +161,7 @@
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -191,7 +197,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -207,13 +213,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -259,19 +265,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -303,19 +309,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -351,7 +357,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -370,13 +376,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -412,7 +418,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -431,13 +437,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -478,19 +484,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -526,7 +532,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -545,13 +551,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -587,7 +593,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -603,13 +609,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -645,7 +651,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -664,13 +670,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -711,19 +717,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -759,7 +765,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -775,13 +781,19 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -824,7 +836,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -840,13 +852,19 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -883,7 +901,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -896,10 +914,16 @@
                             ]
                         }
                     },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -935,7 +959,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -951,7 +975,7 @@
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -987,7 +1011,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1006,13 +1030,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1053,19 +1077,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1106,19 +1130,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1154,7 +1178,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1170,13 +1194,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1217,19 +1241,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1272,7 +1296,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/httputil.DataJsonResponse"
+                                    "$ref": "#/definitions/httpx.DataJsonResponse"
                                 },
                                 {
                                     "type": "object",
@@ -1288,13 +1312,19 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1342,19 +1372,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/httputil.MessageJsonResponse"
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/httputil.ErrorJsonResponse"
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
                         }
                     }
                 }
@@ -1362,13 +1392,13 @@
         }
     },
     "definitions": {
-        "httputil.DataJsonResponse": {
+        "httpx.DataJsonResponse": {
             "type": "object",
             "properties": {
                 "data": {}
             }
         },
-        "httputil.ErrorJsonResponse": {
+        "httpx.ErrorJsonResponse": {
             "type": "object",
             "properties": {
                 "error": {
@@ -1376,7 +1406,7 @@
                 }
             }
         },
-        "httputil.MessageJsonResponse": {
+        "httpx.MessageJsonResponse": {
             "type": "object",
             "properties": {
                 "message": {

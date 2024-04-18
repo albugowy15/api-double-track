@@ -1,15 +1,15 @@
-package user
+package repositories
 
 import (
 	"database/sql"
 	"log"
 
 	"github.com/albugowy15/api-double-track/db"
-	"github.com/albugowy15/api-double-track/internal/models/user"
+	"github.com/albugowy15/api-double-track/internal/models"
 )
 
-func GetStudentByUsername(username string) (user.Student, error) {
-	student := user.Student{}
+func GetStudentByUsername(username string) (models.Student, error) {
+	student := models.Student{}
 	err := db.AppDB.Get(
 		&student,
 		"SELECT id, username, email, password, phone_number, fullname, nisn  FROM students WHERE username = $1",
@@ -21,8 +21,8 @@ func GetStudentByUsername(username string) (user.Student, error) {
 	return student, err
 }
 
-func GetStudentsBySchool(schoolId string) ([]user.Student, error) {
-	students := []user.Student{}
+func GetStudentsBySchool(schoolId string) ([]models.Student, error) {
+	students := []models.Student{}
 	err := db.AppDB.Select(
 		&students,
 		"SELECT id, username, email, phone_number, fullname, nisn FROM students WHERE school_id = $1",
@@ -34,8 +34,8 @@ func GetStudentsBySchool(schoolId string) ([]user.Student, error) {
 	return students, err
 }
 
-func GetStudentById(studentId string) (user.Student, error) {
-	student := user.Student{}
+func GetStudentById(studentId string) (models.Student, error) {
+	student := models.Student{}
 	err := db.AppDB.Get(
 		&student,
 		"SELECT id, username, email, phone_number, fullname, nisn FROM students WHERE id = $1",
@@ -47,8 +47,8 @@ func GetStudentById(studentId string) (user.Student, error) {
 	return student, err
 }
 
-func GetStudentBySchoolId(schoolId string, studentId string) (user.Student, error) {
-	student := user.Student{}
+func GetStudentBySchoolId(schoolId string, studentId string) (models.Student, error) {
+	student := models.Student{}
 	err := db.AppDB.Get(
 		&student,
 		"SELECT id, username, email, phone_number, fullname, nisn FROM students WHERE school_id = $1 AND id = $2",
@@ -61,7 +61,7 @@ func GetStudentBySchoolId(schoolId string, studentId string) (user.Student, erro
 	return student, err
 }
 
-func AddStudent(schoolId string, data user.Student) error {
+func AddStudent(schoolId string, data models.Student) error {
 	_, err := db.AppDB.Exec(
 		`INSERT INTO students (username, password, fullname, nisn, school_id) VALUES ($1, $2, $3, $4, $5)`,
 		data.Username,
@@ -143,7 +143,7 @@ func DeleteStudent(studentId string) error {
 	return nil
 }
 
-func UpdateStudent(studentId string, data user.Student) error {
+func UpdateStudent(studentId string, data models.Student) error {
 	_, err := db.AppDB.Exec(
 		"UPDATE students SET fullname = $1, username = $2, nisn = $3, email = $4, phone_number = $5 WHERE id = $6",
 		data.Fullname,

@@ -7,17 +7,6 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	Token    string `json:"token"`
-	Username string `json:"username"`
-	Role     string `json:"role"`
-	Id       string `json:"id"`
-	SchoolId string `json:"school_id"`
-}
-
-type AuthRefreshResponse struct {
-	Token    string `json:"token"`
-	Username string `json:"username"`
-	Role     string `json:"role"`
-	Id       string `json:"id"`
-	SchoolId string `json:"school_id"`
+	Token string `json:"token"`
+	Role  string `json:"role"`
 }

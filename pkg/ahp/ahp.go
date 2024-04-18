@@ -3,7 +3,6 @@ package ahp
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 
@@ -195,12 +194,10 @@ func CalculateSubCriteriaWeight(subNormMpc SubMPC) SubCriteriaWeight {
 
 func CalculateWeightedSum(mpc MPC, criteriaWeight WeightedSum) WeightedSum {
 	weightedMpc := MPC{}
-	log.Println("weightedMpc")
 	for row := range TotalCriteria {
 		for col := range TotalCriteria {
 			weightedMpc[row][col] = mpc[row][col] * criteriaWeight[col]
 		}
-		log.Println(weightedMpc[row])
 	}
 	weightedSum := CriteriaWeight{}
 	for row := range TotalCriteria {
@@ -211,10 +208,8 @@ func CalculateWeightedSum(mpc MPC, criteriaWeight WeightedSum) WeightedSum {
 
 func CalculateLambdaMax(weightedSum WeightedSum, criteriaWeight CriteriaWeight) float32 {
 	ratios := [TotalCriteria]float32{}
-	log.Println("ratios")
 	for row := range TotalCriteria {
 		ratios[row] = weightedSum[row] / criteriaWeight[row]
-		log.Println("ratio:", ratios[row])
 	}
 	sum := SumRow(ratios)
 	lambdaMax := sum / TotalCriteria

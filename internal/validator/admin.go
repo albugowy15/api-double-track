@@ -3,10 +3,10 @@ package validator
 import (
 	"errors"
 
-	"github.com/albugowy15/api-double-track/internal/models/user"
+	"github.com/albugowy15/api-double-track/internal/models"
 )
 
-func ValidateUpdateAdminRequest(data user.UpdateAdminRequest) error {
+func ValidateUpdateAdminRequest(data models.UpdateAdminRequest) error {
 	if len(data.Username) == 0 {
 		return errors.New("username wajib diisi")
 	}

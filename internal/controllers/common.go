@@ -8,7 +8,6 @@ import (
 
 	"github.com/albugowy15/api-double-track/internal/models"
 	"github.com/albugowy15/api-double-track/internal/repositories"
-	"github.com/albugowy15/api-double-track/internal/repositories/user"
 	"github.com/albugowy15/api-double-track/pkg/auth"
 	"github.com/albugowy15/api-double-track/pkg/httpx"
 	"github.com/guregu/null/v5"
@@ -30,7 +29,7 @@ func HandleGetStatistics(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := auth.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
 
-	totalStudetns, err := user.GetTotalStudents(schoolId)
+	totalStudetns, err := repositories.GetTotalStudents(schoolId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return

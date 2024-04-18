@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/albugowy15/api-double-track/internal/models/user"
+	"github.com/albugowy15/api-double-track/internal/models"
 )
 
 var (
@@ -63,8 +63,8 @@ func ValidatePhoneNumber(phoneNumber string) error {
 	return nil
 }
 
-func ValidateAddStudent(data user.Student) (user.Student, error) {
-	var sanitized user.Student
+func ValidateAddStudent(data models.Student) (models.Student, error) {
+	var sanitized models.Student
 	if err := ValidateFullname(data.Fullname); err != nil {
 		return sanitized, err
 	}
@@ -79,8 +79,8 @@ func ValidateAddStudent(data user.Student) (user.Student, error) {
 	return sanitized, nil
 }
 
-func ValidateUpdateStudent(data user.Student) (user.Student, error) {
-	var sanitized user.Student
+func ValidateUpdateStudent(data models.Student) (models.Student, error) {
+	var sanitized models.Student
 
 	sanitized.Fullname = strings.TrimSpace(data.Fullname)
 	sanitized.Username = strings.TrimSpace(data.Username)

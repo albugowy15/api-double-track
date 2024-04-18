@@ -4,12 +4,12 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/albugowy15/api-double-track/internal/models/user"
+	"github.com/albugowy15/api-double-track/internal/models"
 	"github.com/albugowy15/api-double-track/internal/validator"
 )
 
 func TestValidateAddStudent(t *testing.T) {
-	body := user.Student{
+	body := models.Student{
 		Fullname: "",
 		Nisn:     "",
 	}
@@ -48,7 +48,7 @@ func TestValidateAddStudent(t *testing.T) {
 }
 
 func TestValidateUpdateStudent(t *testing.T) {
-	data := user.Student{
+	data := models.Student{
 		Fullname: "Mohamad kholid",
 		Nisn:     "14232332",
 		Username: "feuufe77232jj",

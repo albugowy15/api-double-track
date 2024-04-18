@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	userModel "github.com/albugowy15/api-double-track/internal/models/user"
-	"github.com/albugowy15/api-double-track/internal/repositories/user"
+	"github.com/albugowy15/api-double-track/internal/models"
+	"github.com/albugowy15/api-double-track/internal/repositories"
 	"github.com/albugowy15/api-double-track/internal/validator"
 	"github.com/albugowy15/api-double-track/pkg/auth"
 	"github.com/albugowy15/api-double-track/pkg/httpx"
@@ -29,7 +29,7 @@ import (
 func HanldeGetAdminProfile(w http.ResponseWriter, r *http.Request) {
 	userIdClaim, _ := auth.GetJwtClaim(r, "user_id")
 	adminId := userIdClaim.(string)
-	admin, err := user.GetAdminById(adminId)
+	admin, err := repositories.GetAdminById(adminId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("profil admin tidak ditemukan"), http.StatusNotFound)
@@ -58,7 +58,7 @@ func HanldeGetAdminProfile(w http.ResponseWriter, r *http.Request) {
 func HandlePatchAdminProfile(w http.ResponseWriter, r *http.Request) {
 	userIdClaim, _ := auth.GetJwtClaim(r, "user_id")
 	adminId := userIdClaim.(string)
-	var body userModel.UpdateAdminRequest
+	var body models.UpdateAdminRequest
 	if err := httpx.GetBody(r, &body); err != nil {
 		httpx.SendError(w, err, http.StatusBadRequest)
 	}
@@ -68,7 +68,7 @@ func HandlePatchAdminProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = user.GetAdminById(adminId)
+	_, err = repositories.GetAdminById(adminId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("profil admin tidak ditemukan"), http.StatusNotFound)
@@ -77,7 +77,7 @@ func HandlePatchAdminProfile(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	if err := user.UpdateAdminProfile(adminId, body); err != nil {
+	if err := repositories.UpdateAdminProfile(adminId, body); err != nil {
 		log.Print(err)
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return

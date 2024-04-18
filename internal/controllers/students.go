@@ -6,9 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	userModel "github.com/albugowy15/api-double-track/internal/models/user"
+	"github.com/albugowy15/api-double-track/internal/models"
 	"github.com/albugowy15/api-double-track/internal/repositories"
-	"github.com/albugowy15/api-double-track/internal/repositories/user"
 	"github.com/albugowy15/api-double-track/internal/validator"
 	"github.com/albugowy15/api-double-track/pkg/auth"
 	"github.com/albugowy15/api-double-track/pkg/crypto"
@@ -34,7 +33,7 @@ func HandleGetStudents(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := auth.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
 
-	students, err := user.GetStudentsBySchool(schoolId)
+	students, err := repositories.GetStudentsBySchool(schoolId)
 	if err != nil {
 		httpx.SendError(w, err, http.StatusBadRequest)
 		return
@@ -62,7 +61,7 @@ func HandleGetStudent(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := auth.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
 	studentIdParam := chi.URLParam(r, "studentId")
-	student, err := user.GetStudentBySchoolId(schoolId, studentIdParam)
+	student, err := repositories.GetStudentBySchoolId(schoolId, studentIdParam)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("data siswa tidak ditemukan"), http.StatusNotFound)
@@ -93,7 +92,7 @@ func HandlePostStudent(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := auth.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
 
-	var body userModel.Student
+	var body models.Student
 	if err := httpx.GetBody(r, &body); err != nil {
 		httpx.SendError(w, err, http.StatusBadRequest)
 	}
@@ -123,7 +122,7 @@ func HandlePostStudent(w http.ResponseWriter, r *http.Request) {
 	}
 	sanitizedBody.Password = password
 
-	if err := user.AddStudent(schoolId, sanitizedBody); err != nil {
+	if err := repositories.AddStudent(schoolId, sanitizedBody); err != nil {
 		if err, _ := err.(*pq.Error); err.Code.Class() == "23" {
 			httpx.SendError(w, errors.New("nisn sudah terdaftar"), http.StatusBadRequest)
 			return
@@ -149,7 +148,7 @@ func HandlePostStudent(w http.ResponseWriter, r *http.Request) {
 //	@Failure		500				{object}	httpx.ErrorJsonResponse
 //	@Router			/students [delete]
 func HandleDeleteStudent(w http.ResponseWriter, r *http.Request) {
-	var body userModel.Student
+	var body models.Student
 	if err := httpx.GetBody(r, &body); err != nil {
 		httpx.SendError(w, err, http.StatusBadRequest)
 	}
@@ -160,7 +159,7 @@ func HandleDeleteStudent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check id exist
-	student, err := user.GetStudentById(body.Id)
+	student, err := repositories.GetStudentById(body.Id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("siswa tidak ditemukan"), http.StatusBadRequest)
@@ -190,7 +189,7 @@ func HandleDeleteStudent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = user.DeleteStudent(student.Id)
+	err = repositories.DeleteStudent(student.Id)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -217,7 +216,7 @@ func HandleDeleteStudent(w http.ResponseWriter, r *http.Request) {
 func HandlePatchStudent(w http.ResponseWriter, r *http.Request) {
 	studentIdParam := chi.URLParam(r, "studentId")
 
-	var body userModel.Student
+	var body models.Student
 	if err := httpx.GetBody(r, &body); err != nil {
 		httpx.SendError(w, err, http.StatusBadRequest)
 	}
@@ -228,7 +227,7 @@ func HandlePatchStudent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check id exist
-	student, err := user.GetStudentById(studentIdParam)
+	student, err := repositories.GetStudentById(studentIdParam)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("siswa tidak ditemukan"), http.StatusBadRequest)
@@ -258,7 +257,7 @@ func HandlePatchStudent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// save to db
-	err = user.UpdateStudent(student.Id, sanitizedBody)
+	err = repositories.UpdateStudent(student.Id, sanitizedBody)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -287,7 +286,7 @@ func HandleGetStudentProfile(w http.ResponseWriter, r *http.Request) {
 	studentId := studentIdClaim.(string)
 
 	// Get student from db by student id
-	student, err := user.GetStudentById(studentId)
+	student, err := repositories.GetStudentById(studentId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("data siswa tidak ditemukan"), http.StatusNotFound)
@@ -307,7 +306,7 @@ func HandleGetStudentProfile(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	profile := userModel.StudentProfile{
+	profile := models.StudentProfile{
 		Id:          student.Id,
 		Username:    student.Username,
 		Fullname:    student.Fullname,
@@ -337,7 +336,7 @@ func HandlePatchStudentProfile(w http.ResponseWriter, r *http.Request) {
 	studentIdClaim, _ := auth.GetJwtClaim(r, "user_id")
 	studentId := studentIdClaim.(string)
 
-	var body userModel.Student
+	var body models.Student
 	if err := httpx.GetBody(r, &body); err != nil {
 		httpx.SendError(w, err, http.StatusBadRequest)
 	}
@@ -348,7 +347,7 @@ func HandlePatchStudentProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check id exist
-	student, err := user.GetStudentById(studentId)
+	student, err := repositories.GetStudentById(studentId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("siswa tidak ditemukan"), http.StatusBadRequest)
@@ -360,7 +359,7 @@ func HandlePatchStudentProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// save to db
-	err = user.UpdateStudent(student.Id, sanitizedBody)
+	err = repositories.UpdateStudent(student.Id, sanitizedBody)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return

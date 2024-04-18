@@ -44,7 +44,6 @@ func CalculateAHP(r *http.Request, body []models.SubmitAnswerRequest, tx *sqlx.T
 	lambdaMax := ahp.CalculateLambdaMax(weightedSum, criteriaWeight)
 	consistencyIndex := ahp.ConsistencyIndex(lambdaMax)
 	consistencyRatio := ahp.ConsistencyRatio(consistencyIndex)
-	log.Printf("is consistent: %v", ahp.IsAnswerConsistent(consistencyRatio))
 
 	schoolIdClaim, err := auth.GetJwtClaim(r, "school_id")
 	if err != nil {

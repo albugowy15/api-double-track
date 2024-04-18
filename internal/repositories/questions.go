@@ -7,18 +7,7 @@ import (
 	"github.com/albugowy15/api-double-track/internal/models"
 )
 
-type QuestionRepository struct{}
-
-var questionRepository *QuestionRepository
-
-func GetQuestionRepository() *QuestionRepository {
-	if questionRepository == nil {
-		questionRepository = &QuestionRepository{}
-	}
-	return questionRepository
-}
-
-func (r *QuestionRepository) GetQuestions() ([]models.Question, error) {
+func GetQuestions() ([]models.Question, error) {
 	questions := []models.Question{}
 	err := db.AppDB.Select(&questions, "SELECT id, question, description, category, code, number FROM questions ORDER BY number")
 	if err != nil {

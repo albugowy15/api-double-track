@@ -49,7 +49,7 @@ func HandlePostLogin(w http.ResponseWriter, r *http.Request) {
 			httpx.SendError(w, errors.New("username atau password salah"), http.StatusBadRequest)
 			return
 		}
-		school, err := repositories.GetSchoolRepository().GetSchoolByAdminId(admin.Id)
+		school, err := repositories.GetSchoolByAdminId(admin.Id)
 		if err != nil {
 			httpx.SendError(w, errors.New("admin tidak memiliki akses ke sekolah"), http.StatusBadRequest)
 			return
@@ -72,8 +72,7 @@ func HandlePostLogin(w http.ResponseWriter, r *http.Request) {
 		httpx.SendData(w, res, http.StatusOK)
 		return
 	case "student":
-		s := user.GetStudentRepository()
-		student, err := s.GetStudentByUsername(body.Username)
+		student, err := user.GetStudentByUsername(body.Username)
 		if err != nil {
 			log.Println(err)
 			httpx.SendError(w, errors.New("username atau password salah"), http.StatusBadRequest)
@@ -83,7 +82,7 @@ func HandlePostLogin(w http.ResponseWriter, r *http.Request) {
 			httpx.SendError(w, errors.New("username atau password salah"), http.StatusBadRequest)
 			return
 		}
-		school, err := repositories.GetSchoolRepository().GetSchoolByStudentId(student.Id)
+		school, err := repositories.GetSchoolByStudentId(student.Id)
 		if err != nil {
 			httpx.SendError(w, errors.New("siswa tidak memiliki akses ke sekolah"), http.StatusBadRequest)
 			return

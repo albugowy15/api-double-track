@@ -8,8 +8,10 @@ import (
 
 	"github.com/albugowy15/api-double-track/internal/models"
 	"github.com/albugowy15/api-double-track/internal/repositories"
+	"github.com/albugowy15/api-double-track/internal/repositories/user"
 	"github.com/albugowy15/api-double-track/pkg/auth"
 	"github.com/albugowy15/api-double-track/pkg/httpx"
+	"github.com/guregu/null/v5"
 )
 
 // HandleGetStatistics godoc
@@ -25,11 +27,29 @@ import (
 //	@Failure		500				{object}	httpx.ErrorJsonResponse
 //	@Router			/statistics [get]
 func HandleGetStatistics(w http.ResponseWriter, r *http.Request) {
+	schoolIdClaim, _ := auth.GetJwtClaim(r, "school_id")
+	schoolId := schoolIdClaim.(string)
+
+	totalStudetns, err := user.GetTotalStudents(schoolId)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	totalCompleteQuestionnare, err := repositories.GetTotalCompleteQuestionnare(schoolId)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	avgConsistencyRatio, err := repositories.GetAvgConsistencyRatio(schoolId)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
 	res := models.Statistic{
-		RegisteredStudents:       123,
-		QuestionnareCompleted:    450,
-		RecommendationAcceptance: 90.34,
-		ConsistencyAvg:           92.54,
+		RegisteredStudents:    totalStudetns,
+		QuestionnareCompleted: totalCompleteQuestionnare,
+		ConsistencyAvg:        null.NewFloat(avgConsistencyRatio.Float64, avgConsistencyRatio.Valid),
 	}
 	httpx.SendData(w, res, http.StatusOK)
 }
@@ -45,8 +65,7 @@ func HandleGetStatistics(w http.ResponseWriter, r *http.Request) {
 //	@Failure		500	{object}	httpx.ErrorJsonResponse
 //	@Router			/alternatives [get]
 func HandleGetAlternatives(w http.ResponseWriter, r *http.Request) {
-	s := repositories.GetAlternativeRepository()
-	alternatives, err := s.GetAlternatives()
+	alternatives, err := repositories.GetAlternatives()
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -73,7 +92,7 @@ func HandleGetSchool(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := auth.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
 
-	school, err := repositories.GetSchoolRepository().GetSchoolById(schoolId)
+	school, err := repositories.GetSchoolById(schoolId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("sekolah tidak ditemukan"), http.StatusNotFound)

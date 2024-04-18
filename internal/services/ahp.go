@@ -54,7 +54,7 @@ func CalculateAHP(r *http.Request, body []models.SubmitAnswerRequest, tx *sqlx.T
 		}
 	}
 	schoolId := schoolIdClaim.(string)
-	settings, err := repositories.GetQuestionnareSettingRepository().GetQuestionnareSettings(schoolId)
+	settings, err := repositories.GetQuestionnareSettings(schoolId)
 	if err != nil {
 		log.Println(err)
 		return &AHPServiceError{
@@ -91,8 +91,7 @@ func CalculateAHP(r *http.Request, body []models.SubmitAnswerRequest, tx *sqlx.T
 	// save ahp
 	studentIdClaim, _ := auth.GetJwtClaim(r, "user_id")
 	studentId := studentIdClaim.(string)
-	a := repositories.GetAHPRepository()
-	insertedId, err := a.SaveAHPTx(models.AHP{StudentId: studentId, ConsistencyRatio: consistencyRatio}, tx)
+	insertedId, err := repositories.SaveAHPTx(models.AHP{StudentId: studentId, ConsistencyRatio: consistencyRatio}, tx)
 	if err != nil {
 		return &AHPServiceError{
 			StatusCode: http.StatusInternalServerError,
@@ -100,8 +99,7 @@ func CalculateAHP(r *http.Request, body []models.SubmitAnswerRequest, tx *sqlx.T
 		}
 	}
 
-	alt := repositories.GetAlternativeRepository()
-	alternatives, err := alt.GetAlternatives()
+	alternatives, err := repositories.GetAlternatives()
 	if err != nil {
 		return &AHPServiceError{
 			StatusCode: http.StatusInternalServerError,
@@ -127,7 +125,7 @@ func CalculateAHP(r *http.Request, body []models.SubmitAnswerRequest, tx *sqlx.T
 		}
 		ahpAlternatives = append(ahpAlternatives, ahpAlternative)
 	}
-	err = a.SaveAHPAlternativesTx(ahpAlternatives, tx)
+	err = repositories.SaveAHPAlternativesTx(ahpAlternatives, tx)
 	if err != nil {
 		return &AHPServiceError{
 			StatusCode: http.StatusInternalServerError,

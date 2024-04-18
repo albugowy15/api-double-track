@@ -19,7 +19,7 @@ func validateAlternativeId(skillId int) error {
 	if skillId == 0 {
 		return ErrAlternativeIdEmpty
 	}
-	_, err := repositories.GetAlternativeRepository().GetAlternativeById(skillId)
+	_, err := repositories.GetAlternativeById(skillId)
 	if err != nil {
 		return ErrAlternativeIdNotFound
 	}

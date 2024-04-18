@@ -8,18 +8,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type AnswersRepository struct{}
-
-var answersRepository *AnswersRepository
-
-func GetAnswersRepository() *AnswersRepository {
-	if answersRepository == nil {
-		answersRepository = &AnswersRepository{}
-	}
-	return answersRepository
-}
-
-func (r *AnswersRepository) SaveAnswersTx(answers []models.Answer, tx *sqlx.Tx) error {
+func SaveAnswersTx(answers []models.Answer, tx *sqlx.Tx) error {
 	_, err := tx.NamedExec(`INSERT INTO answers (student_id, question_id, answer) VALUES (:student_id, :question_id, :answer)`, answers)
 	if err != nil {
 		log.Println("db err:", err)
@@ -27,7 +16,7 @@ func (r *AnswersRepository) SaveAnswersTx(answers []models.Answer, tx *sqlx.Tx) 
 	return err
 }
 
-func (r *AnswersRepository) GetAnswersByStudentId(studentId string) ([]models.Answer, error) {
+func GetAnswersByStudentId(studentId string) ([]models.Answer, error) {
 	answers := []models.Answer{}
 	err := db.AppDB.Select(&answers, "SELECT id, student_id, question_id, answer FROM answers WHERE student_id = $1", studentId)
 	if err != nil {
@@ -36,7 +25,7 @@ func (r *AnswersRepository) GetAnswersByStudentId(studentId string) ([]models.An
 	return answers, err
 }
 
-func (r *AnswersRepository) DeleteAnswers(studentId string) error {
+func DeleteAnswers(studentId string) error {
 	tx, err := db.AppDB.Beginx()
 	if err != nil {
 		log.Println("db err:", err)

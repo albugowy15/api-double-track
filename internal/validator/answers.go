@@ -70,7 +70,7 @@ func ValidateSubmitAnswer(body []models.SubmitAnswerRequest) error {
 
 func ValidateAnswerNumber(body []models.SubmitAnswerRequest) error {
 	// db query return result as map id to number
-	questions, err := repositories.GetQuestionRepository().GetQuestions()
+	questions, err := repositories.GetQuestions()
 	if err != nil {
 		return err
 	}

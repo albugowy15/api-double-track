@@ -7,18 +7,7 @@ import (
 	"github.com/albugowy15/api-double-track/internal/models"
 )
 
-type QuestionnareSettingRepository struct{}
-
-var questionnareSettingRepository *QuestionnareSettingRepository
-
-func GetQuestionnareSettingRepository() *QuestionnareSettingRepository {
-	if questionnareSettingRepository == nil {
-		questionnareSettingRepository = &QuestionnareSettingRepository{}
-	}
-	return questionnareSettingRepository
-}
-
-func (r *QuestionnareSettingRepository) AddQuestionnareSetting(data models.QuestionnareSetting) error {
+func AddQuestionnareSetting(data models.QuestionnareSetting) error {
 	tx, err := db.AppDB.Beginx()
 	if err != nil {
 		log.Fatalf("err start transaction: %v", err)
@@ -45,7 +34,7 @@ func (r *QuestionnareSettingRepository) AddQuestionnareSetting(data models.Quest
 	return nil
 }
 
-func (r *QuestionnareSettingRepository) GetMissingSettings(schoolId string) ([]models.Alternative, error) {
+func GetMissingSettings(schoolId string) ([]models.Alternative, error) {
 	alternatives := []models.Alternative{}
 	err := db.AppDB.Select(
 		&alternatives,
@@ -54,7 +43,7 @@ func (r *QuestionnareSettingRepository) GetMissingSettings(schoolId string) ([]m
 	return alternatives, err
 }
 
-func (r *QuestionnareSettingRepository) GetQuestionnareSettings(schoolId string) ([]models.QuestionnareSettingAlternative, error) {
+func GetQuestionnareSettings(schoolId string) ([]models.QuestionnareSettingAlternative, error) {
 	settings := []models.QuestionnareSettingAlternative{}
 	err := db.AppDB.Select(
 		&settings,

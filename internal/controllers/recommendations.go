@@ -30,7 +30,7 @@ import (
 func HandleGetRecommendations(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := auth.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
-	studentRecommendations, err := repositories.GetRecommendationRepository().GetRecommendationsBySchoolId(schoolId)
+	studentRecommendations, err := repositories.GetRecommendationsBySchoolId(schoolId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -56,7 +56,7 @@ func HandleGetRecommendationsStudent(w http.ResponseWriter, r *http.Request) {
 	studentIdClaim, _ := auth.GetJwtClaim(r, "user_id")
 	studentId := studentIdClaim.(string)
 
-	consistencyRatio, err := repositories.GetRecommendationRepository().GetAHPConsistencyRatio(studentId)
+	consistencyRatio, err := repositories.GetAHPConsistencyRatio(studentId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("isian kuesioner tidak ditemukan"), http.StatusNotFound)
@@ -65,7 +65,7 @@ func HandleGetRecommendationsStudent(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	ahpResults, err := repositories.GetRecommendationRepository().GetAHPRecommendations(studentId)
+	ahpResults, err := repositories.GetAHPRecommendations(studentId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -105,7 +105,7 @@ func HandleDeleteRecommendations(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := repositories.GetAnswersRepository().DeleteAnswers(body.StudentId)
+	err := repositories.DeleteAnswers(body.StudentId)
 	if err != nil {
 		log.Println(err)
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusBadRequest)
@@ -136,7 +136,7 @@ func HandleGetRecommendationStudent(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, errors.New("id siswa wajib diisi"), http.StatusBadRequest)
 		return
 	}
-	consistencyRatio, err := repositories.GetRecommendationRepository().GetAHPConsistencyRatio(studentId)
+	consistencyRatio, err := repositories.GetAHPConsistencyRatio(studentId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("isian kuesioner tidak ditemukan"), http.StatusNotFound)
@@ -145,7 +145,7 @@ func HandleGetRecommendationStudent(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	ahpResults, err := repositories.GetRecommendationRepository().GetAHPRecommendations(studentId)
+	ahpResults, err := repositories.GetAHPRecommendations(studentId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return

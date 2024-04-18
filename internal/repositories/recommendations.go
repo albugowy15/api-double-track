@@ -7,18 +7,7 @@ import (
 	"github.com/albugowy15/api-double-track/internal/models"
 )
 
-type RecommendationRepository struct{}
-
-var recommendationRepository *RecommendationRepository
-
-func GetRecommendationRepository() *RecommendationRepository {
-	if recommendationRepository == nil {
-		recommendationRepository = &RecommendationRepository{}
-	}
-	return recommendationRepository
-}
-
-func (r *RecommendationRepository) GetRecommendationsBySchoolId(schoolId string) ([]models.StudentRecommendation, error) {
+func GetRecommendationsBySchoolId(schoolId string) ([]models.StudentRecommendation, error) {
 	students := []models.StudentRecommendation{}
 	tx, err := db.AppDB.Beginx()
 	if err != nil {
@@ -62,7 +51,7 @@ func (r *RecommendationRepository) GetRecommendationsBySchoolId(schoolId string)
 	return students, nil
 }
 
-func (r *RecommendationRepository) GetAHPRecommendations(studentId string) ([]models.RecommendationResult, error) {
+func GetAHPRecommendations(studentId string) ([]models.RecommendationResult, error) {
 	recommendations := []models.RecommendationResult{}
 	err := db.AppDB.Select(
 		&recommendations,
@@ -79,7 +68,7 @@ func (r *RecommendationRepository) GetAHPRecommendations(studentId string) ([]mo
 	return recommendations, err
 }
 
-func (r *RecommendationRepository) GetAHPConsistencyRatio(studentId string) (float32, error) {
+func GetAHPConsistencyRatio(studentId string) (float32, error) {
 	var consistencyRatio float32
 	err := db.AppDB.Get(&consistencyRatio, "SELECT consistency_ratio FROM ahp WHERE student_id = $1", studentId)
 	if err != nil {

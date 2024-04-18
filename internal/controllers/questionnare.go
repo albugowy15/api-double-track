@@ -54,8 +54,7 @@ func HandlePostQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	schoolId := schoolIdClaim.(string)
 	body.SchoolId = schoolId
 
-	s := repositories.GetQuestionnareSettingRepository()
-	err = s.AddQuestionnareSetting(body)
+	err = repositories.AddQuestionnareSetting(body)
 	if err != nil {
 		log.Println(err)
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
@@ -79,7 +78,7 @@ func HandlePostQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 //	@Failure		500				{object}	httpx.ErrorJsonResponse
 //	@Router			/questionnare/questions [get]
 func HandleGetQuestions(w http.ResponseWriter, r *http.Request) {
-	questions, err := repositories.GetQuestionRepository().GetQuestions()
+	questions, err := repositories.GetQuestions()
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -162,7 +161,7 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// make sure all questionnare settings set
-	missingSettings, err := repositories.GetQuestionnareSettingRepository().GetMissingSettings(schoolId)
+	missingSettings, err := repositories.GetMissingSettings(schoolId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -173,7 +172,7 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// make sure student not submit answer twice
-	prevAnswer, err := repositories.GetAnswersRepository().GetAnswersByStudentId(studentId)
+	prevAnswer, err := repositories.GetAnswersByStudentId(studentId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -215,7 +214,7 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 		}
 		answers = append(answers, answer)
 	}
-	err = repositories.GetAnswersRepository().SaveAnswersTx(answers, tx)
+	err = repositories.SaveAnswersTx(answers, tx)
 	if err != nil {
 		tx.Rollback()
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
@@ -242,7 +241,7 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 func HandleDeleteAnswer(w http.ResponseWriter, r *http.Request) {
 	studentIdClaim, _ := auth.GetJwtClaim(r, "user_id")
 	studentId := studentIdClaim.(string)
-	if err := repositories.GetAnswersRepository().DeleteAnswers(studentId); err != nil {
+	if err := repositories.DeleteAnswers(studentId); err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
@@ -265,7 +264,7 @@ func HandleDeleteAnswer(w http.ResponseWriter, r *http.Request) {
 func HandleGetIncompleteQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := auth.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
-	alternatives, err := repositories.GetQuestionnareSettingRepository().GetMissingSettings(schoolId)
+	alternatives, err := repositories.GetMissingSettings(schoolId)
 	if err != nil {
 		log.Println(err)
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
@@ -290,7 +289,7 @@ func HandleGetIncompleteQuestionnareSettings(w http.ResponseWriter, r *http.Requ
 func HandleGetQuestionnareSettings(w http.ResponseWriter, r *http.Request) {
 	schoolIdClaim, _ := auth.GetJwtClaim(r, "school_id")
 	schoolId := schoolIdClaim.(string)
-	settings, err := repositories.GetQuestionnareSettingRepository().GetQuestionnareSettings(schoolId)
+	settings, err := repositories.GetQuestionnareSettings(schoolId)
 	if err != nil {
 		log.Println(err)
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
@@ -319,7 +318,7 @@ func HandleGetQuesionnareStatus(w http.ResponseWriter, r *http.Request) {
 	studentId := studentIdClaim.(string)
 
 	// check is questionnare complete
-	answers, err := repositories.GetAnswersRepository().GetAnswersByStudentId(studentId)
+	answers, err := repositories.GetAnswersByStudentId(studentId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
@@ -333,7 +332,7 @@ func HandleGetQuesionnareStatus(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check is questionnare settings all sets
-	settings, err := repositories.GetQuestionnareSettingRepository().GetQuestionnareSettings(schoolId)
+	settings, err := repositories.GetQuestionnareSettings(schoolId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return

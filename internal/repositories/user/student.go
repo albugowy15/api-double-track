@@ -1,6 +1,7 @@
 package user
 
 import (
+	"database/sql"
 	"log"
 
 	"github.com/albugowy15/api-double-track/db"
@@ -76,11 +77,70 @@ func AddStudent(schoolId string, data user.Student) error {
 }
 
 func DeleteStudent(studentId string) error {
-	_, err := db.AppDB.Exec("DELETE FROM students WHERE id = $1", studentId)
+	tx, err := db.AppDB.Beginx()
 	if err != nil {
 		log.Println(err)
+		return err
 	}
-	return err
+
+	var ahpId int64
+	err = tx.Get(&ahpId, `SELECT id FROM ahp WHERE student_id = $1`, studentId)
+	if err == sql.ErrNoRows {
+		// it means the student is not completed the questionnare yet
+		// proceed to delete its row from students
+		_, err = tx.Exec("DELETE FROM students WHERE id = $1", studentId)
+		if err != nil {
+			log.Println(err)
+			tx.Rollback()
+			return err
+		}
+		tx.Commit()
+		return nil
+	}
+
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return err
+	}
+
+	// delete record from answers
+	_, err = tx.Exec(`DELETE FROM answers WHERE student_id = $1`, studentId)
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return err
+	}
+
+	// delete record from ahp_to_alternatives
+	_, err = tx.Exec(`DELETE FROM ahp_to_alternatives WHERE ahp_id = $1`, ahpId)
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return err
+	}
+
+	// TODO: delete record from topsis_to_alternatives
+
+	// delete record from ahp
+	_, err = tx.Exec(`DELETE FROM ahp WHERE student_id = $1`, studentId)
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return err
+	}
+	// TODO: delete record from topsis
+
+	// finally delete student record
+	_, err = tx.Exec("DELETE FROM students WHERE id = $1", studentId)
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+	return nil
 }
 
 func UpdateStudent(studentId string, data user.Student) error {

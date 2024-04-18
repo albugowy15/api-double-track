@@ -31,6 +31,7 @@ func Init() *chi.Mux {
 			r.Use(auth.Authenticator)
 
 			r.Get("/school", controllers.HandleGetSchool)
+			r.Post("/auth/refresh", controllers.HandlePostRefresh)
 
 			// admin route
 			r.Group(func(r chi.Router) {

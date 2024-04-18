@@ -7,30 +7,19 @@ import (
 	"github.com/albugowy15/api-double-track/internal/models/user"
 )
 
-type AdminRepository struct{}
-
-var adminRepository *AdminRepository
-
-func GetAdminRepository() *AdminRepository {
-	if adminRepository == nil {
-		adminRepository = &AdminRepository{}
-	}
-	return adminRepository
-}
-
-func (r *AdminRepository) GetAdminByUsername(username string) (user.Admin, error) {
+func GetAdminByUsername(username string) (user.Admin, error) {
 	admin := user.Admin{}
 	err := db.AppDB.Get(&admin, "SELECT id, username, email, password, phone_number FROM admins WHERE username = $1", username)
 	return admin, err
 }
 
-func (r *AdminRepository) GetAdminById(adminId string) (user.Admin, error) {
+func GetAdminById(adminId string) (user.Admin, error) {
 	admin := user.Admin{}
 	err := db.AppDB.Get(&admin, "SELECT id, username, email, phone_number FROM admins WHERE id = $1", adminId)
 	return admin, err
 }
 
-func (r *AdminRepository) UpdateAdminProfile(adminId string, data user.UpdateAdminRequest) error {
+func UpdateAdminProfile(adminId string, data user.UpdateAdminRequest) error {
 	tx, err := db.AppDB.Beginx()
 	if err != nil {
 		log.Fatal(err)

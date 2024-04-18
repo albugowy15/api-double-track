@@ -29,8 +29,7 @@ import (
 func HanldeGetAdminProfile(w http.ResponseWriter, r *http.Request) {
 	userIdClaim, _ := auth.GetJwtClaim(r, "user_id")
 	adminId := userIdClaim.(string)
-	a := user.GetAdminRepository()
-	admin, err := a.GetAdminById(adminId)
+	admin, err := user.GetAdminById(adminId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("profil admin tidak ditemukan"), http.StatusNotFound)
@@ -69,8 +68,7 @@ func HandlePatchAdminProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a := user.GetAdminRepository()
-	_, err = a.GetAdminById(adminId)
+	_, err = user.GetAdminById(adminId)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			httpx.SendError(w, errors.New("profil admin tidak ditemukan"), http.StatusNotFound)
@@ -79,7 +77,7 @@ func HandlePatchAdminProfile(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
-	if err := a.UpdateAdminProfile(adminId, body); err != nil {
+	if err := user.UpdateAdminProfile(adminId, body); err != nil {
 		log.Print(err)
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return

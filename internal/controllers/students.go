@@ -14,6 +14,7 @@ import (
 	"github.com/albugowy15/api-double-track/pkg/httpx"
 	"github.com/go-chi/chi/v5"
 	"github.com/lib/pq"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // HandleStudents godoc
@@ -367,4 +368,63 @@ func HandlePatchStudentProfile(w http.ResponseWriter, r *http.Request) {
 
 	// success
 	httpx.SendMessage(w, "berhasil memperbarui profil", http.StatusOK)
+}
+
+// HandlePatchStudentChangePassword godoc
+//
+//	@Summary		Change student password
+//	@Description	Change student password
+//	@Tags			Student
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string						true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Param			body			body		models.ChangePasswordRequest	true	"Change student password request body"
+//	@Success		201				{object}	httpx.MessageJsonResponse
+//	@Failure		400				{object}	httpx.ErrorJsonResponse
+//	@Failure		500				{object}	httpx.ErrorJsonResponse
+//	@Router			/students/change-password [patch]
+func HandlePatchStudentChangePassword(w http.ResponseWriter, r *http.Request) {
+	userIdClaim, _ := auth.GetJwtClaim(r, "user_id")
+	studentId := userIdClaim.(string)
+
+	var body models.ChangePasswordRequest
+	if err := httpx.GetBody(r, &body); err != nil {
+		httpx.SendError(w, httpx.ErrDecodeJsonBody, http.StatusBadRequest)
+		return
+	}
+
+	if err := validator.ValidateChangePassword(body); err != nil {
+		httpx.SendError(w, err, http.StatusBadRequest)
+		return
+	}
+
+	student, err := repositories.GetStudentById(studentId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			httpx.SendError(w, errors.New("data siswa tidak ditemukan"), http.StatusNotFound)
+			return
+		}
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusNotFound)
+		return
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(student.Password), []byte(body.OldPassword)); err != nil {
+		httpx.SendError(w, errors.New("password lama salah"), http.StatusBadRequest)
+		return
+	}
+
+	hashedNewPassword, err := crypto.HashStr(body.NewPassword)
+	if err != nil {
+		log.Println(err)
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusNotFound)
+		return
+	}
+
+	if err := repositories.UpdateStudentPassword(studentId, hashedNewPassword); err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusNotFound)
+		return
+	}
+
+	httpx.SendMessage(w, "berhasil mengubah password siswa", http.StatusCreated)
 }

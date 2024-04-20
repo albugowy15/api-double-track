@@ -15,8 +15,12 @@ func GetAdminByUsername(username string) (models.Admin, error) {
 
 func GetAdminById(adminId string) (models.Admin, error) {
 	admin := models.Admin{}
-	err := db.AppDB.Get(&admin, "SELECT id, username, email, phone_number FROM admins WHERE id = $1", adminId)
-	return admin, err
+	err := db.AppDB.Get(&admin, "SELECT id, username, email, password, phone_number FROM admins WHERE id = $1", adminId)
+	if err != nil {
+		log.Println("db err: ", err)
+		return admin, err
+	}
+	return admin, nil
 }
 
 func UpdateAdminProfile(adminId string, data models.UpdateAdminRequest) error {
@@ -42,5 +46,14 @@ func UpdateAdminProfile(adminId string, data models.UpdateAdminRequest) error {
 	}
 
 	tx.Commit()
+	return nil
+}
+
+func UpdateAdminPassword(adminId string, hashedPassword string) error {
+	_, err := db.AppDB.Exec(`UPDATE admins SET password = $1 WHERE id = $2`, hashedPassword, adminId)
+	if err != nil {
+		log.Println("db err: ", err)
+		return err
+	}
 	return nil
 }

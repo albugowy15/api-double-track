@@ -38,13 +38,14 @@ func GetStudentById(studentId string) (models.Student, error) {
 	student := models.Student{}
 	err := db.AppDB.Get(
 		&student,
-		"SELECT id, username, email, phone_number, fullname, nisn FROM students WHERE id = $1",
+		"SELECT id, username, email, phone_number, password, fullname, nisn FROM students WHERE id = $1",
 		studentId,
 	)
 	if err != nil {
 		log.Println(err)
+		return student, err
 	}
-	return student, err
+	return student, nil
 }
 
 func GetStudentBySchoolId(schoolId string, studentId string) (models.Student, error) {
@@ -170,4 +171,13 @@ func GetTotalStudents(schoolId string) (int64, error) {
 		log.Println(err)
 	}
 	return totalStudent, err
+}
+
+func UpdateStudentPassword(studentId string, hashedPassword string) error {
+	_, err := db.AppDB.Exec(`UPDATE students SET password = $1 WHERE id = $2`, hashedPassword, studentId)
+	if err != nil {
+		log.Println("db err: ", err)
+		return err
+	}
+	return nil
 }

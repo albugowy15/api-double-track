@@ -35,8 +35,9 @@ func Init() *chi.Mux {
 			// admin route
 			r.Group(func(r chi.Router) {
 				r.Use(userMiddleware.CheckAdminRole)
-				r.Get("/admin/profile", controllers.HanldeGetAdminProfile)
+				r.Get("/admin/profile", controllers.HandleGetAdminProfile)
 				r.Patch("/admin/profile", controllers.HandlePatchAdminProfile)
+				r.Patch("/admin/change-password", controllers.HandlePatchAdminChangePassword)
 				r.Get("/statistics", controllers.HandleGetStatistics)
 				r.Post("/questionnare/settings", controllers.HandlePostQuestionnareSettings)
 				r.Get("/questionnare/settings", controllers.HandleGetQuestionnareSettings)
@@ -56,6 +57,7 @@ func Init() *chi.Mux {
 				r.Use(userMiddleware.CheckStudentRole)
 				r.Get("/students/profile", controllers.HandleGetStudentProfile)
 				r.Patch("/students/profile", controllers.HandlePatchStudentProfile)
+				r.Patch("/students/change-password", controllers.HandlePatchStudentChangePassword)
 				r.Get("/recommendations/student", controllers.HandleGetRecommendationsStudent)
 				r.Get("/questionnare/questions", controllers.HandleGetQuestions)
 				r.Get("/questionnare/status", controllers.HandleGetQuesionnareStatus)

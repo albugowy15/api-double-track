@@ -70,6 +70,23 @@ func GetAHPRecommendations(studentId string) ([]models.RecommendationResult, err
 	return recommendations, err
 }
 
+func GetTOPSISRecommendations(studentId string) ([]models.RecommendationResult, error) {
+	recommendations := []models.RecommendationResult{}
+	err := db.AppDB.Select(
+		&recommendations,
+		`SELECT ata.id, a.alternative, ata.score, a.description FROM topsis_to_alternatives ata 
+		INNER JOIN alternatives a ON a.id = ata.alternative_id
+		INNER JOIN topsis ON topsis.id = ata.topsis_id
+		WHERE topsis.student_id = $1
+		ORDER BY ata.score DESC`,
+		studentId,
+	)
+	if err != nil {
+		log.Println("db err:", err)
+	}
+	return recommendations, err
+}
+
 func GetAHPConsistencyRatio(studentId string) (float32, error) {
 	var consistencyRatio float32
 	err := db.AppDB.Get(&consistencyRatio, "SELECT consistency_ratio FROM ahp WHERE student_id = $1", studentId)

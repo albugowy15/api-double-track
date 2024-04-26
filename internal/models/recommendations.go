@@ -15,8 +15,8 @@ type AhpRecommendation struct {
 }
 
 type TopsisRecommendation struct {
-	Result RecommendationResult `db:"result" json:"result"`
-	Id     int32                `db:"id" json:"id"`
+	Result []RecommendationResult `db:"result" json:"result"`
+	Id     int32                  `db:"id" json:"id"`
 }
 
 type Recommendation struct {

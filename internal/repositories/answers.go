@@ -44,37 +44,37 @@ func DeleteAnswers(studentId string) error {
 		log.Println("db err:", err)
 		return err
 	}
-	// var topsisId int32
-	// err = tx.QueryRowx("SELECT id FROM topsis WHERE student_id = $1", studentId).Scan(&topsisId)
-	// if err != nil {
-	// 	tx.Rollback()
-	// 	log.Println("db err:", err)
-	// 	return err
-	// }
+	var topsisId int32
+	err = tx.QueryRowx("SELECT id FROM topsis WHERE student_id = $1", studentId).Scan(&topsisId)
+	if err != nil {
+		tx.Rollback()
+		log.Println("db err:", err)
+		return err
+	}
 	_, err = tx.Exec("DELETE FROM ahp_to_alternatives WHERE ahp_id = $1", ahpId)
 	if err != nil {
 		tx.Rollback()
 		log.Println("db err:", err)
 		return err
 	}
-	// _, err = tx.Exec("DELETE FROM topsis_to_alternatives WHERE topsis_id = $1", topsisId)
-	// if err != nil {
-	// 	tx.Rollback()
-	// 	log.Println("db err:", err)
-	// 	return err
-	// }
+	_, err = tx.Exec("DELETE FROM topsis_to_alternatives WHERE topsis_id = $1", topsisId)
+	if err != nil {
+		tx.Rollback()
+		log.Println("db err:", err)
+		return err
+	}
 	_, err = tx.Exec("DELETE FROM ahp WHERE student_id = $1", studentId)
 	if err != nil {
 		tx.Rollback()
 		log.Println("db err:", err)
 		return err
 	}
-	// _, err = tx.Exec("DELETE FROM topsis WHERE student_id = $1", studentId)
-	// if err != nil {
-	// 	tx.Rollback()
-	// 	log.Println("db err:", err)
-	// 	return err
-	// }
+	_, err = tx.Exec("DELETE FROM topsis WHERE student_id = $1", studentId)
+	if err != nil {
+		tx.Rollback()
+		log.Println("db err:", err)
+		return err
+	}
 	tx.Commit()
 	return nil
 }

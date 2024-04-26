@@ -3,6 +3,7 @@ package controllers
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -75,8 +76,18 @@ func HandleGetRecommendationsStudent(w http.ResponseWriter, r *http.Request) {
 		ConsistencyRatio: null.FloatFrom(float64(consistencyRatio)),
 	}
 
+	topsisResults, err := repositories.GetTOPSISRecommendations(studentId)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	topsis := models.TopsisRecommendation{
+		Result: topsisResults,
+	}
+
 	res := models.Recommendation{
-		Ahp: ahp,
+		Ahp:    ahp,
+		Topsis: topsis,
 	}
 	httpx.SendData(w, res, http.StatusOK)
 }
@@ -155,8 +166,19 @@ func HandleGetRecommendationStudent(w http.ResponseWriter, r *http.Request) {
 		ConsistencyRatio: null.FloatFrom(float64(consistencyRatio)),
 	}
 
-	res := models.Recommendation{
-		Ahp: ahp,
+	topsisResults, err := repositories.GetTOPSISRecommendations(studentId)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
 	}
+	topsis := models.TopsisRecommendation{
+		Result: topsisResults,
+	}
+
+	res := models.Recommendation{
+		Ahp:    ahp,
+		Topsis: topsis,
+	}
+	fmt.Println("result : ", res.Topsis)
 	httpx.SendData(w, res, http.StatusOK)
 }

@@ -48,6 +48,22 @@ func GetRecommendationsBySchoolId(schoolId string) ([]models.StudentRecommendati
 		studentsRecs[idx].AhpResults = ahpResults
 
 		// do query for topsis
+		// topsisResults := []models.RecommendationResult{}
+		// err = tx.Select(
+		// 	&topsisResults,
+		// 	`SELECT ata.id, ata.score, a.alternative, a.description FROM topsis_to_alternatives ata
+		// 	INNER JOIN alternatives a ON a.id = ata.alternative_id
+		// 	WHERE topsis_id = $1
+		// 	ORDER BY ata.score DESC;`,
+		// 	student.StudentId,
+		// )
+		// if err != nil {
+		// 	log.Println("db err:", err)
+		// 	tx.Rollback()
+		// 	return students, err
+		// }
+		// students[idx].TopsisResults = topsisResults
+		// fmt.Println("topsis result : ", topsisResults)
 	}
 
 	return studentsRecs, nil

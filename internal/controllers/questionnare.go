@@ -10,6 +10,7 @@ import (
 	"github.com/albugowy15/api-double-track/internal/models"
 	"github.com/albugowy15/api-double-track/internal/repositories"
 	"github.com/albugowy15/api-double-track/internal/services"
+	weightmethods "github.com/albugowy15/api-double-track/internal/services/weight_methods"
 	"github.com/albugowy15/api-double-track/internal/validator"
 	"github.com/albugowy15/api-double-track/pkg/ahp"
 	"github.com/albugowy15/api-double-track/pkg/auth"
@@ -210,6 +211,15 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 	// start your topsis service here,
 	// the function parameter would be same as CalculateAHP services
 	// TODO: TOPSIS Service
+	if err := weightmethods.CalculateEntropy(r, body); err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	if err := services.CalculateTopsis(r, body, tx); err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
 
 	// save answer
 	answers := []models.Answer{}

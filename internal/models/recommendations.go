@@ -31,5 +31,4 @@ type StudentRecommendation struct {
 	AhpResults       []RecommendationResult `db:"ahp_results" json:"ahp_results"`
 	TopsisResults    []RecommendationResult `db:"topsis_results" json:"topsis_results"`
 	ConsistencyRatio null.Float             `db:"consistency_ratio" json:"consistency_ratio"`
-	Id               int32                  `db:"id" json:"id"`
 }

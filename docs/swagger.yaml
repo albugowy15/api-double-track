@@ -14,6 +14,15 @@ definitions:
       message:
         type: string
     type: object
+  models.ChangePasswordRequest:
+    properties:
+      confirm_password:
+        type: string
+      new_password:
+        type: string
+      old_password:
+        type: string
+    type: object
   schemas.AddStudentRequest:
     properties:
       email:
@@ -77,15 +86,9 @@ definitions:
     type: object
   schemas.LoginResponse:
     properties:
-      id:
-        type: string
       role:
         type: string
-      school_id:
-        type: string
       token:
-        type: string
-      username:
         type: string
     type: object
   schemas.QuestionResponse:
@@ -267,6 +270,43 @@ info:
   title: Double Track API
   version: "1.0"
 paths:
+  /admin/change-password:
+    patch:
+      consumes:
+      - application/json
+      description: Change admin password
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Change admin password request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/httpx.MessageJsonResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
+      summary: Change admin password
+      tags:
+      - Admin
+      - Auth
   /admin/profile:
     get:
       consumes:
@@ -1081,6 +1121,43 @@ paths:
       tags:
       - Students
       - Admin
+  /students/change-password:
+    patch:
+      consumes:
+      - application/json
+      description: Change student password
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Change student password request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/httpx.MessageJsonResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpx.ErrorJsonResponse'
+      summary: Change student password
+      tags:
+      - Student
+      - Auth
   /students/profile:
     get:
       consumes:

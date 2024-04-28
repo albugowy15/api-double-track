@@ -22,5 +22,5 @@ build:
 start:
 	@go build -o ./tmp/main cmd/api/main.go && ./tmp/main
 
-docs:
+doc:
 	@swag init -d "./" -g "cmd/api/main.go"

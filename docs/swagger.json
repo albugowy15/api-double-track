@@ -8,6 +8,61 @@
     },
     "basePath": "/v1",
     "paths": {
+        "/admin/change-password": {
+            "patch": {
+                "description": "Change admin password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin",
+                    "Auth"
+                ],
+                "summary": "Change admin password",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Change admin password request body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ChangePasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/profile": {
             "get": {
                 "description": "Get admin profile",
@@ -1148,6 +1203,61 @@
                 }
             }
         },
+        "/students/change-password": {
+            "patch": {
+                "description": "Change student password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student",
+                    "Auth"
+                ],
+                "summary": "Change student password",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Change student password request body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ChangePasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.MessageJsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httpx.ErrorJsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/students/profile": {
             "get": {
                 "description": "Get a student profile",
@@ -1414,6 +1524,20 @@
                 }
             }
         },
+        "models.ChangePasswordRequest": {
+            "type": "object",
+            "properties": {
+                "confirm_password": {
+                    "type": "string"
+                },
+                "new_password": {
+                    "type": "string"
+                },
+                "old_password": {
+                    "type": "string"
+                }
+            }
+        },
         "schemas.AddStudentRequest": {
             "type": "object",
             "properties": {
@@ -1512,19 +1636,10 @@
         "schemas.LoginResponse": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "role": {
                     "type": "string"
                 },
-                "school_id": {
-                    "type": "string"
-                },
                 "token": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }

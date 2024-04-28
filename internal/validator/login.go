@@ -23,9 +23,12 @@ func ValidateUsername(username string) error {
 
 func ValidatePassword(password string) error {
 	passwordLength := len(password)
-	if passwordLength < 8 || passwordLength > 16 {
-		return errors.New("password harus terdiri dari 8 hingga 16 karakter")
+	if passwordLength == 0 {
+		return errors.New("password wajib diisi")
 	}
+	// if passwordLength < minLen || passwordLength > 16 {
+	// 	return errors.New("password harus terdiri dari 8 hingga 16 karakter")
+	// }
 	if strings.Contains(password, " ") {
 		return errors.New("password tidak boleh terdapat spasi")
 	}

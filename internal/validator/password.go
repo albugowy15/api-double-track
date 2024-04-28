@@ -32,9 +32,6 @@ func ValidateChangePassword(req models.ChangePasswordRequest) error {
 		return errors.New("konfirmasi password wajib diisi")
 	}
 
-	if err := validatePassword(req.OldPassword, "lama"); err != nil {
-		return err
-	}
 	if err := validatePassword(req.NewPassword, "baru"); err != nil {
 		return err
 	}

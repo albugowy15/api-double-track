@@ -19,6 +19,8 @@ DROP TABLE IF EXISTS ahp_to_alternatives CASCADE;
 DROP TABLE IF EXISTS ahp_to_alternatives CASCADE;
 DROP TABLE IF EXISTS topsis CASCADE;
 DROP TABLE IF EXISTS topsis_to_alternatives CASCADE;
+DROP TABLE IF EXISTS expectations CASCADE;
+DROP TABLE IF EXISTS expectations_to_alternative CASCADE;
 DROP FUNCTION IF EXISTS trigger_set_timestamp();
   `
 

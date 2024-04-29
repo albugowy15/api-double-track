@@ -145,6 +145,23 @@ BEFORE UPDATE ON topsis
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
+CREATE TABLE "expectations" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  "student_id" uuid,
+  "created_at" TIMESTAMP NOT NULL DEFAULT (now()),
+  "updated_at" TIMESTAMP NOT NULL DEFAULT (now())
+);
+CREATE TRIGGER set_expectations_timestamp
+BEFORE UPDATE ON expectations
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TABLE "expectations_to_alternatives" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "expectation_id" uuid,
+  "alternative_id" int,
+  "rank" int
+);
 
 ALTER TABLE "students" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id");
 
@@ -165,6 +182,12 @@ ALTER TABLE "topsis_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENC
 ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("ahp_id") REFERENCES "ahp" ("id");
 
 ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id");
+
+ALTER TABLE "expectations" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("id");
+
+ALTER TABLE "expectations_to_alternatives" ADD FOREIGN KEY ("expectation_id") REFERENCES "expectations" ("id");
+
+ALTER TABLE "expectations_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id");
 `
 
 func init() {

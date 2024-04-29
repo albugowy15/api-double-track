@@ -35,11 +35,13 @@ func InitSubCriteriaWeights() {
 	}
 }
 
-func CalculateAHP(r *http.Request, body []models.SubmitAnswerRequest, tx *sqlx.Tx) error {
-	mpc := ahp.BuildCriteriaMPC(body)
-	colSum := ahp.CalculateColSum(mpc)
-	normMpc := ahp.NormalizeMPC(mpc, colSum)
-	criteriaWeight := ahp.CalculateCriteriaWeight(normMpc)
+func CalculateAHP(r *http.Request, body []models.SubmitAnswerRequest, mpc ahp.MPC, criteriaWeight ahp.CriteriaWeight, tx *sqlx.Tx) error {
+	// mpc := ahp.BuildCriteriaMPC(body)
+	// colSum := ahp.CalculateColSum(mpc)
+	// normMpc := ahp.NormalizeMPC(mpc, colSum)
+	// criteriaWeight := ahp.CalculateCriteriaWeight(normMpc)
+	//
+	//
 	weightedSum := ahp.CalculateWeightedSum(mpc, criteriaWeight)
 	lambdaMax := ahp.CalculateLambdaMax(weightedSum, criteriaWeight)
 	consistencyIndex := ahp.ConsistencyIndex(lambdaMax)

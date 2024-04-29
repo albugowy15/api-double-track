@@ -11,6 +11,7 @@ import (
 	"github.com/albugowy15/api-double-track/internal/repositories"
 	"github.com/albugowy15/api-double-track/internal/services"
 	"github.com/albugowy15/api-double-track/internal/validator"
+	"github.com/albugowy15/api-double-track/pkg/ahp"
 	"github.com/albugowy15/api-double-track/pkg/auth"
 	"github.com/albugowy15/api-double-track/pkg/httpx"
 	"github.com/albugowy15/api-double-track/pkg/schemas"
@@ -189,7 +190,13 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := services.CalculateAHP(r, body, tx); err != nil {
+	//
+	mpc := ahp.BuildCriteriaMPC(body)
+	colSum := ahp.CalculateColSum(mpc)
+	normMpc := ahp.NormalizeMPC(mpc, colSum)
+	criteriaWeight := ahp.CalculateCriteriaWeight(normMpc)
+
+	if err := services.CalculateAHP(r, body, mpc, criteriaWeight, tx); err != nil {
 		tx.Rollback()
 		re, ok := err.(*services.AHPServiceError)
 		if ok {

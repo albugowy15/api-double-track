@@ -3,7 +3,6 @@ package controllers
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -179,6 +178,6 @@ func HandleGetRecommendationStudent(w http.ResponseWriter, r *http.Request) {
 		Ahp:    ahp,
 		Topsis: topsis,
 	}
-	fmt.Println("result : ", res.Topsis)
+	// fmt.Println("result : ", res.Topsis)
 	httpx.SendData(w, res, http.StatusOK)
 }

@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -72,11 +71,11 @@ func CalculateTopsis(r *http.Request, body []models.SubmitAnswerRequest, tx *sql
 	}
 	arr_sum[4] = sum_sqrt_salaries
 
-	fmt.Println("arr_sum[0] : ", arr_sum[0]) // interest
-	fmt.Println("arr_sum[1] : ", arr_sum[1]) // facilities
-	fmt.Println("arr_sum[2] : ", arr_sum[2]) // total open jobs
-	fmt.Println("arr_sum[3] : ", arr_sum[3]) // entrepreneurship opportunity
-	fmt.Println("arr_sum[4] : ", arr_sum[4]) // salaries
+	// fmt.Println("arr_sum[0] : ", arr_sum[0]) // interest
+	// fmt.Println("arr_sum[1] : ", arr_sum[1]) // facilities
+	// fmt.Println("arr_sum[2] : ", arr_sum[2]) // total open jobs
+	// fmt.Println("arr_sum[3] : ", arr_sum[3]) // entrepreneurship opportunity
+	// fmt.Println("arr_sum[4] : ", arr_sum[4]) // salaries
 
 	/**
 	TOPSIS NORMALISASI ??
@@ -159,27 +158,27 @@ func CalculateTopsis(r *http.Request, body []models.SubmitAnswerRequest, tx *sql
 
 	for idx, val := range interest_norm {
 		interest_norm[idx] = val * float32(weightmethods.Weight_interest)
-		fmt.Printf("interest_norm [%d] : %v\n", idx, interest_norm[idx])
+		// fmt.Printf("interest_norm [%d] : %v\n", idx, interest_norm[idx])
 	}
 
 	for idx, val := range facilities_norm {
 		facilities_norm[idx] = val * float32(weightmethods.Weight_facilities)
-		fmt.Printf("facilities_norm [%d] : %v\n", idx, facilities_norm[idx])
+		// fmt.Printf("facilities_norm [%d] : %v\n", idx, facilities_norm[idx])
 	}
 
 	for idx, val := range TotalOpenJobs_norm {
 		TotalOpenJobs_norm[idx] = val * float32(weightmethods.Weight_total_open_jobs)
-		fmt.Printf("TotalOpenJobs_norm [%d] : %v\n", idx, TotalOpenJobs_norm[idx])
+		// fmt.Printf("TotalOpenJobs_norm [%d] : %v\n", idx, TotalOpenJobs_norm[idx])
 	}
 
 	for idx, val := range EntrepreneurshipOpportunity_norm {
 		EntrepreneurshipOpportunity_norm[idx] = val * float32(weightmethods.Weight_entrepreneurship_opportunities)
-		fmt.Printf("EntrepreneurshipOpportunity_norm [%d] : %v\n", idx, EntrepreneurshipOpportunity_norm[idx])
+		// fmt.Printf("EntrepreneurshipOpportunity_norm [%d] : %v\n", idx, EntrepreneurshipOpportunity_norm[idx])
 	}
 
 	for idx, val := range Salaries_norm {
 		Salaries_norm[idx] = val * float32(weightmethods.Weight_salaries)
-		fmt.Printf("Salaries_norm [%d] : %v\n", idx, Salaries_norm[idx])
+		// fmt.Printf("Salaries_norm [%d] : %v\n", idx, Salaries_norm[idx])
 	}
 
 	/*
@@ -246,16 +245,16 @@ func CalculateTopsis(r *http.Request, body []models.SubmitAnswerRequest, tx *sql
 		}
 	}
 
-	fmt.Println("pis_interest : ", pis_interest)
-	fmt.Println("nis_interest : ", nis_interest)
-	fmt.Println("pis_facilities : ", pis_facilities)
-	fmt.Println("nis_facilities : ", nis_facilities)
-	fmt.Println("pis_total_open_jobs : ", pis_total_open_jobs)
-	fmt.Println("nis_total_open_jobs : ", nis_total_open_jobs)
-	fmt.Println("pis_entrepreneurship_opportunities : ", pis_entrepreneurship_opportunities)
-	fmt.Println("nis_entrepreneurship_opportunities : ", nis_entrepreneurship_opportunities)
-	fmt.Println("pis_salary : ", pis_salary)
-	fmt.Println("nis_salary : ", nis_salary)
+	// fmt.Println("pis_interest : ", pis_interest)
+	// fmt.Println("nis_interest : ", nis_interest)
+	// fmt.Println("pis_facilities : ", pis_facilities)
+	// fmt.Println("nis_facilities : ", nis_facilities)
+	// fmt.Println("pis_total_open_jobs : ", pis_total_open_jobs)
+	// fmt.Println("nis_total_open_jobs : ", nis_total_open_jobs)
+	// fmt.Println("pis_entrepreneurship_opportunities : ", pis_entrepreneurship_opportunities)
+	// fmt.Println("nis_entrepreneurship_opportunities : ", nis_entrepreneurship_opportunities)
+	// fmt.Println("pis_salary : ", pis_salary)
+	// fmt.Println("nis_salary : ", nis_salary)
 
 	/**
 	Eucledian
@@ -362,27 +361,27 @@ func CalculateTopsis(r *http.Request, body []models.SubmitAnswerRequest, tx *sql
 			(math.Pow(float64(EntrepreneurshipOpportunity_norm[6])-float64(nis_entrepreneurship_opportunities), 2)) +
 			(math.Pow(float64(Salaries_norm[6])-float64(nis_salary), 2))))
 
-	for idx, val := range d_multimedia {
-		fmt.Printf("d_multimedia[%d] : %v\n", idx, val)
-	}
-	for idx, val := range d_elektro {
-		fmt.Printf("d_elektro[%d] : %v\n", idx, val)
-	}
-	for idx, val := range d_listrik {
-		fmt.Printf("d_listrik[%d] : %v\n", idx, val)
-	}
-	for idx, val := range d_busana {
-		fmt.Printf("d_busana[%d] : %v\n", idx, val)
-	}
-	for idx, val := range d_boga {
-		fmt.Printf("d_boga[%d] : %v\n", idx, val)
-	}
-	for idx, val := range d_kecantikan {
-		fmt.Printf("d_kecantikan[%d] : %v\n", idx, val)
-	}
-	for idx, val := range d_mesin {
-		fmt.Printf("d_mesin[%d] : %v\n", idx, val)
-	}
+	// for idx, val := range d_multimedia {
+	// 	fmt.Printf("d_multimedia[%d] : %v\n", idx, val)
+	// }
+	// for idx, val := range d_elektro {
+	// 	fmt.Printf("d_elektro[%d] : %v\n", idx, val)
+	// }
+	// for idx, val := range d_listrik {
+	// 	fmt.Printf("d_listrik[%d] : %v\n", idx, val)
+	// }
+	// for idx, val := range d_busana {
+	// 	fmt.Printf("d_busana[%d] : %v\n", idx, val)
+	// }
+	// for idx, val := range d_boga {
+	// 	fmt.Printf("d_boga[%d] : %v\n", idx, val)
+	// }
+	// for idx, val := range d_kecantikan {
+	// 	fmt.Printf("d_kecantikan[%d] : %v\n", idx, val)
+	// }
+	// for idx, val := range d_mesin {
+	// 	fmt.Printf("d_mesin[%d] : %v\n", idx, val)
+	// }
 	/**
 	Perankingan
 	*/
@@ -394,8 +393,8 @@ func CalculateTopsis(r *http.Request, body []models.SubmitAnswerRequest, tx *sql
 	kecantikan := d_kecantikan[0] / (d_kecantikan[0] + d_kecantikan[1])
 	mesin := d_mesin[0] / (d_mesin[0] + d_mesin[1])
 
-	fmt.Printf("multimedia : %v\nelektro : %v\nlistrik : %v\nbusana : %v\nboga : %v\nkecantikan : %v\nmesin : %v\n",
-		multimedia, elektro, listrik, busana, boga, kecantikan, mesin)
+	// fmt.Printf("multimedia : %v\nelektro : %v\nlistrik : %v\nbusana : %v\nboga : %v\nkecantikan : %v\nmesin : %v\n",
+	// 	multimedia, elektro, listrik, busana, boga, kecantikan, mesin)
 
 	// save topsis
 	studentIdClaim, _ := auth.GetJwtClaim(r, "user_id")

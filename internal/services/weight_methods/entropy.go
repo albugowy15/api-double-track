@@ -1,7 +1,6 @@
 package weightmethods
 
 import (
-	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -68,9 +67,9 @@ func CalculateEntropy(r *http.Request, body []models.SubmitAnswerRequest) error 
 		}
 	}
 
-	for i, answer := range interest_norm {
-		fmt.Printf("normalisasi ke %d: %v\n", i, answer)
-	}
+	// for i, answer := range interest_norm {
+	// 	fmt.Printf("normalisasi ke %d: %v\n", i, answer)
+	// }
 
 	var TotalOpenJobs_norm [topsis.TotalAlternative]float32
 	var Salaries_norm [topsis.TotalAlternative]float32
@@ -140,35 +139,35 @@ func CalculateEntropy(r *http.Request, body []models.SubmitAnswerRequest) error 
 		SumEntropyInterest += val * float32(math.Log(float64(val)))
 	}
 	entropy_interest := -1.0 / math.Log(topsis.TotalAlternative) * float64(SumEntropyInterest)
-	fmt.Println("entropy interest :", entropy_interest)
+	// fmt.Println("entropy interest :", entropy_interest)
 
 	var SumEntropyFacilities float32
 	for _, val := range facilities_norm {
 		SumEntropyFacilities += val * float32(math.Log(float64(val)))
 	}
 	entropy_facilities := -1.0 / math.Log(topsis.TotalAlternative) * float64(SumEntropyFacilities)
-	fmt.Println("entropy facilities :", entropy_facilities)
+	// fmt.Println("entropy facilities :", entropy_facilities)
 
 	var SumEntropyTotalOpenJobs float32
 	for _, val := range TotalOpenJobs_norm {
 		SumEntropyTotalOpenJobs += val * float32(math.Log(float64(val)))
 	}
 	entropy_total_open_jobs := -1.0 / math.Log(topsis.TotalAlternative) * float64(SumEntropyTotalOpenJobs)
-	fmt.Println("entropy total open jobs :", entropy_total_open_jobs)
+	// fmt.Println("entropy total open jobs :", entropy_total_open_jobs)
 
 	var SumSalaries float32
 	for _, val := range Salaries_norm {
 		SumSalaries += val * float32(math.Log(float64(val)))
 	}
 	entropy_salaries := -1.0 / math.Log(topsis.TotalAlternative) * float64(SumSalaries)
-	fmt.Println("entropy salaries :", entropy_salaries)
+	// fmt.Println("entropy salaries :", entropy_salaries)
 
 	var SumEntrepreneurshipOpportunity float32
 	for _, val := range EntrepreneurshipOpportunity_norm {
 		SumEntrepreneurshipOpportunity += val * float32(math.Log(float64(val)))
 	}
 	entropy_entrepreneurship_opportunities := -1.0 / math.Log(topsis.TotalAlternative) * float64(SumEntrepreneurshipOpportunity)
-	fmt.Println("entropy entrepreneurship opportunities :", entropy_entrepreneurship_opportunities)
+	// fmt.Println("entropy entrepreneurship opportunities :", entropy_entrepreneurship_opportunities)
 
 	/**
 	DEGREE OF DIFFERENTIATION
@@ -181,7 +180,7 @@ func CalculateEntropy(r *http.Request, body []models.SubmitAnswerRequest) error 
 	dod_entrepreneurship_opportunities := 1 - entropy_entrepreneurship_opportunities
 
 	total_dod := (dod_interest + dod_facilities + dod_total_open_jobs + dod_salaries + dod_entrepreneurship_opportunities)
-	fmt.Println("total dod : ", total_dod)
+	// fmt.Println("total dod : ", total_dod)
 	/**
 	weights of entropy
 	*/
@@ -192,12 +191,12 @@ func CalculateEntropy(r *http.Request, body []models.SubmitAnswerRequest) error 
 	Weight_salaries = dod_salaries / total_dod
 	Weight_entrepreneurship_opportunities = dod_entrepreneurship_opportunities / total_dod
 
-	fmt.Println("weight_interest : ", Weight_interest)
-	fmt.Println("weight_facilities : ", Weight_facilities)
-	fmt.Println("weight_total_open_jobs : ", Weight_total_open_jobs)
-	fmt.Println("weight_salaries : ", Weight_salaries)
-	fmt.Println("weight_entrepreneurship_opportunities : ", Weight_entrepreneurship_opportunities)
+	// fmt.Println("weight_interest : ", Weight_interest)
+	// fmt.Println("weight_facilities : ", Weight_facilities)
+	// fmt.Println("weight_total_open_jobs : ", Weight_total_open_jobs)
+	// fmt.Println("weight_salaries : ", Weight_salaries)
+	// fmt.Println("weight_entrepreneurship_opportunities : ", Weight_entrepreneurship_opportunities)
 
-	fmt.Println("Total : ", Weight_interest+Weight_facilities+Weight_total_open_jobs+Weight_salaries+Weight_entrepreneurship_opportunities)
+	// fmt.Println("Total : ", Weight_interest+Weight_facilities+Weight_total_open_jobs+Weight_salaries+Weight_entrepreneurship_opportunities)
 	return nil
 }

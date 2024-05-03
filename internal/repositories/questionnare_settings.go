@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"log"
+	"math"
 
 	"github.com/albugowy15/api-double-track/db"
 	"github.com/albugowy15/api-double-track/internal/models"
@@ -51,4 +52,121 @@ func GetQuestionnareSettings(schoolId string) ([]models.QuestionnareSettingAlter
 		schoolId,
 	)
 	return settings, err
+}
+
+func GetSumTotalOpenJobs(schoolId string) (int64, error) {
+	var sum int64
+	err := db.AppDB.Get(
+		&sum,
+		`SELECT SUM(total_open_jobs) FROM questionnare_settings
+		WHERE school_id = $1`,
+		schoolId,
+	)
+
+	return sum, err
+}
+
+func GetSumPowerOfTotalOpenJobs(schoolId string) (float32, error) {
+	var sqrt_sum float32
+	err := db.AppDB.Get(
+		&sqrt_sum,
+		`SELECT SUM(total_open_jobs * total_open_jobs) FROM questionnare_settings
+		WHERE school_id = $1`,
+		schoolId,
+	)
+	if err != nil {
+		return 0, err
+	}
+	result := math.Sqrt(float64(sqrt_sum))
+	return float32(result), nil
+}
+
+func GetTotalOpenJobsPerSchool(schoolID string) ([]float32, error) {
+	var totalOpenJobs []float32
+	err := db.AppDB.Select(
+		&totalOpenJobs,
+		`SELECT total_open_jobs FROM questionnare_settings
+		WHERE school_id = $1`,
+		schoolID,
+	)
+
+	return totalOpenJobs, err
+}
+
+func GetSumEntrepreneurshipOpportunities(schoolId string) (int64, error) {
+	var sum int64
+	err := db.AppDB.Get(
+		&sum,
+		`SELECT SUM(entrepreneurship_opportunity) FROM questionnare_settings
+		WHERE school_id = $1`,
+		schoolId,
+	)
+
+	return sum, err
+}
+
+func GetSumPowerOfEntrepreneurshipOpportunities(schoolId string) (float32, error) {
+	var sqrt_sum float32
+	err := db.AppDB.Get(
+		&sqrt_sum,
+		`SELECT SUM(entrepreneurship_opportunity * entrepreneurship_opportunity) FROM questionnare_settings
+		WHERE school_id = $1`,
+		schoolId,
+	)
+	if err != nil {
+		return 0, err
+	}
+	result := math.Sqrt(float64(sqrt_sum))
+	return float32(result), nil
+}
+
+func GetEntrepreneurshipOpportunitiesPerSchool(schoolID string) ([]float32, error) {
+	var EntrepreneurshipOpportunities []float32
+	err := db.AppDB.Select(
+		&EntrepreneurshipOpportunities,
+		`SELECT entrepreneurship_opportunity FROM questionnare_settings
+		WHERE school_id = $1`,
+		schoolID,
+	)
+
+	return EntrepreneurshipOpportunities, err
+}
+
+func GetSumSalary(schoolId string) (int64, error) {
+	var sum int64
+	err := db.AppDB.Get(
+		&sum,
+		`SELECT SUM(salary) FROM questionnare_settings
+		WHERE school_id = $1`,
+		schoolId,
+	)
+
+	return sum, err
+}
+
+func GetSumPowerOfSalaries(schoolId string) (float32, error) {
+	var sqrt_sum float32
+	err := db.AppDB.Get(
+		&sqrt_sum,
+		`SELECT SUM(salary * salary) FROM questionnare_settings
+		WHERE school_id = $1`,
+		schoolId,
+	)
+	if err != nil {
+		return 0, err
+	}
+	result := math.Sqrt(float64(sqrt_sum))
+	return float32(result), nil
+}
+
+func GetSalariesPerSchool(schoolID string) ([]float32, error) {
+	var Salaries []float32
+	err := db.AppDB.Select(
+		&Salaries,
+		`SELECT salary FROM questionnare_settings
+		WHERE school_id = $1`,
+		schoolID,
+	)
+
+	return Salaries, err
 }

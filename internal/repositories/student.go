@@ -8,6 +8,58 @@ import (
 	"github.com/albugowy15/api-double-track/internal/models"
 )
 
+func IsUniqueStudentUsername(username string) (bool, error) {
+	var studentId string
+	err := db.AppDB.Get(&studentId, "SELECT id FROM students WHERE username = $1", username)
+	if err == nil {
+		return false, nil
+	}
+	if err == sql.ErrNoRows {
+		return true, nil
+	}
+	log.Println("db err:", err)
+	return false, err
+}
+
+func IsUniqueStudentEmail(email string) (bool, error) {
+	var studentId string
+	err := db.AppDB.Get(&studentId, "SELECT id FROM students WHERE email = $1", email)
+	if err == nil {
+		return false, nil
+	}
+	if err == sql.ErrNoRows {
+		return true, nil
+	}
+	log.Println("db err:", err)
+	return false, err
+}
+
+func IsUniqueStudentPhoneNumber(phoneNumber string) (bool, error) {
+	var studentId string
+	err := db.AppDB.Get(&studentId, "SELECT id FROM students WHERE phone_number = $1", phoneNumber)
+	if err == nil {
+		return false, nil
+	}
+	if err == sql.ErrNoRows {
+		return true, nil
+	}
+	log.Println("db err:", err)
+	return false, err
+}
+
+func IsUniqueStudentNisn(nisn string) (bool, error) {
+	var studentId string
+	err := db.AppDB.Get(&studentId, "SELECT id FROM students WHERE nisn = $1", nisn)
+	if err == nil {
+		return false, nil
+	}
+	if err == sql.ErrNoRows {
+		return true, nil
+	}
+	log.Println("db err:", err)
+	return false, err
+}
+
 func GetStudentByUsername(username string) (models.Student, error) {
 	student := models.Student{}
 	err := db.AppDB.Get(
@@ -64,10 +116,11 @@ func GetStudentBySchoolId(schoolId string, studentId string) (models.Student, er
 
 func AddStudent(schoolId string, data models.Student) error {
 	_, err := db.AppDB.Exec(
-		`INSERT INTO students (username, password, fullname, nisn, school_id) VALUES ($1, $2, $3, $4, $5)`,
+		`INSERT INTO students (username, password, fullname, email, nisn, school_id) VALUES ($1, $2, $3, $4, $5, $6)`,
 		data.Username,
 		data.Password,
 		data.Fullname,
+		data.Email,
 		data.Nisn,
 		schoolId,
 	)

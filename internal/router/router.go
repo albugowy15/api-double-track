@@ -23,6 +23,8 @@ func Init() *chi.Mux {
 	router.Route("/v1", func(r chi.Router) {
 		r.Post("/auth/login", controllers.HandlePostLogin)
 		r.Get("/alternatives", controllers.HandleGetAlternatives)
+		r.Post("/register/student", controllers.HandlePostRegisterStudent)
+		r.Get("/schools", controllers.HandleGetSchools)
 
 		// protected route Group
 		// this route group require authentication and authorization

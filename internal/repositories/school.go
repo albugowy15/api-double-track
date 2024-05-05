@@ -1,9 +1,20 @@
 package repositories
 
 import (
+	"log"
+
 	"github.com/albugowy15/api-double-track/db"
 	"github.com/albugowy15/api-double-track/internal/models"
 )
+
+func GetSchools() ([]models.School, error) {
+	var schools []models.School
+	err := db.AppDB.Select(&schools, `SELECT id, name FROM schools`)
+	if err != nil {
+		log.Println("db err:", err)
+	}
+	return schools, err
+}
 
 func GetSchoolById(schoolId string) (models.School, error) {
 	school := models.School{}

@@ -21,3 +21,12 @@ type StudentProfile struct {
 	Email       null.String `db:"email" json:"email,omitempty"`
 	PhoneNumber null.String `db:"phone_number" json:"phone_number,omitempty"`
 }
+
+type StudentRegisterRequest struct {
+	Fullname string `json:"fullname"`
+	Nisn     string `json:"nisn"`
+	Email    string `json:"email"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	School   string `json:"school"`
+}

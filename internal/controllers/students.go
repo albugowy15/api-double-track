@@ -13,6 +13,7 @@ import (
 	"github.com/albugowy15/api-double-track/pkg/crypto"
 	"github.com/albugowy15/api-double-track/pkg/httpx"
 	"github.com/go-chi/chi/v5"
+	"github.com/guregu/null/v5"
 	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -427,4 +428,94 @@ func HandlePatchStudentChangePassword(w http.ResponseWriter, r *http.Request) {
 	}
 
 	httpx.SendMessage(w, "berhasil mengubah password siswa", http.StatusCreated)
+}
+
+// HandlePostRegisterStudent godoc
+//
+//	@Summary		Register student
+//	@Description	Register student
+//	@Tags			Student
+//	@Accept			json
+//	@Produce		json
+//	@Param			body			body		models.StudentRegisterRequest	true	"Register student request body"
+//	@Success		201				{object}	httpx.MessageJsonResponse
+//	@Failure		400				{object}	httpx.ErrorJsonResponse
+//	@Failure		500				{object}	httpx.ErrorJsonResponse
+//	@Router			/register/student [post]
+func HandlePostRegisterStudent(w http.ResponseWriter, r *http.Request) {
+	var body models.StudentRegisterRequest
+	err := httpx.GetBody(r, &body)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrDecodeJsonBody, http.StatusBadRequest)
+		return
+	}
+	if err := validator.ValidateRegisterStudent(body); err != nil {
+		httpx.SendError(w, err, http.StatusBadRequest)
+		return
+	}
+
+	// check school id
+	_, err = repositories.GetSchoolById(body.School)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			httpx.SendError(w, errors.New("id sekolah tidak ditemukan"), http.StatusNotFound)
+			return
+		}
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	// check unique columns
+	// unique username
+	isUniqueUsername, err := repositories.IsUniqueStudentUsername(body.Username)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	if !isUniqueUsername {
+		httpx.SendError(w, errors.New("username telah terdaftar, silahkan gunakan username lain"), http.StatusBadRequest)
+		return
+	}
+
+	// unique email
+	isUniqueEmail, err := repositories.IsUniqueStudentEmail(body.Email)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	if !isUniqueEmail {
+		httpx.SendError(w, errors.New("email telah terdaftar, silahkan gunakan email lain"), http.StatusBadRequest)
+		return
+	}
+
+	// unique nisn
+	isUniqueNisn, err := repositories.IsUniqueStudentNisn(body.Nisn)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	if !isUniqueNisn {
+		httpx.SendError(w, errors.New("nisn telah terdaftar, silahkan gunakan nisn lain"), http.StatusBadRequest)
+		return
+	}
+
+	// save to db
+	hashPassword, err := crypto.HashStr(body.Password)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	data := models.Student{
+		Fullname: body.Fullname,
+		Email:    null.StringFrom(body.Email),
+		Nisn:     body.Nisn,
+		Username: body.Username,
+		Password: hashPassword,
+	}
+	err = repositories.AddStudent(body.School, data)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+	httpx.SendMessage(w, "berhasil membuat akun siswa", http.StatusCreated)
 }

@@ -2,7 +2,9 @@ package validator
 
 import (
 	"errors"
+	"log"
 	"net/mail"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -15,6 +17,11 @@ var (
 	ErrEmailInvalid         = errors.New("email tidak valid")
 	ErrNisnEmpty            = errors.New("nisn wajib diisi")
 	ErrNisnInvalid          = errors.New("nisn wajib berupa angka")
+	ErrUsernameEmpty        = errors.New("username wajib diisi")
+	ErrUsernameLength       = errors.New("username minimal terdiri dari 5 karakter")
+	ErrUsernameWhitespace   = errors.New("username tidak boleh terdapat spasi")
+	ErrPasswordEmpty        = errors.New("password wajib diisi")
+	ErrPasswordWhitespace   = errors.New("password tidak boleh terdapat spasi")
 	ErrPhoneNumberLength    = errors.New("nomor hp hanya boleh terdiri dari 10 sampai 14 digit angka")
 	ErrPhoneNumberPrefix    = errors.New("nomor hp diawali dengan 08")
 	ErrPhoneNumberNotNumber = errors.New("nomor hp hanya boleh terdiri dari angka")
@@ -110,4 +117,62 @@ func ValidateUpdateStudent(data models.Student) (models.Student, error) {
 		}
 	}
 	return sanitized, nil
+}
+
+func ValidateRegisterStudent(data models.StudentRegisterRequest) error {
+	/*
+	 * Validation
+	 * - All field are required DONE
+	 * - Username min 5 no space DONE
+	 * - Password min 6 no space DONE
+	 * - Valid email DONE
+	 * - Valid nisn (only contain number without space)
+	 */
+
+	if len(data.Fullname) == 0 {
+		return ErrFullnameEmpty
+	}
+	if len(data.Nisn) == 0 {
+		return ErrNisnEmpty
+	}
+	if len(data.Email) == 0 {
+		return ErrEmailEmpty
+	}
+	if len(data.Username) == 0 {
+		return ErrUsernameEmpty
+	}
+	if len(data.Password) == 0 {
+		return ErrPasswordEmpty
+	}
+	if len(data.School) == 0 {
+		return errors.New("id sekolah wajib diisi")
+	}
+
+	if len(data.Username) < 5 {
+		return ErrUsernameLength
+	}
+	isWhitespacePresent := regexp.MustCompile(`\s`).MatchString(data.Username)
+	log.Println("username:", data.Username)
+	if isWhitespacePresent {
+		log.Println("username has space")
+		return ErrUsernameWhitespace
+	}
+
+	if len(data.Password) < 6 {
+		return ErrUsernameLength
+	}
+	isWhitespacePresent = regexp.MustCompile(`\s`).MatchString(data.Password)
+	if isWhitespacePresent {
+		return ErrPasswordWhitespace
+	}
+
+	if err := ValidateEmail(data.Email); err != nil {
+		return ErrEmailInvalid
+	}
+
+	if err := ValidateNisn(data.Nisn); err != nil {
+		return ErrNisnInvalid
+	}
+
+	return nil
 }

@@ -103,3 +103,24 @@ func HandleGetSchool(w http.ResponseWriter, r *http.Request) {
 	}
 	httpx.SendData(w, school, http.StatusOK)
 }
+
+// HandleGetSchools godoc
+//
+//	@Summary		Get all schools
+//	@Description	Get all registered schools
+//	@Tags			Common
+//	@Accept			json
+//	@Produce		json
+//	@Success		200				{object}	httpx.DataJsonResponse{data=[]schemas.School}
+//	@Failure		404				{object}	httpx.ErrorJsonResponse
+//	@Failure		500				{object}	httpx.ErrorJsonResponse
+//	@Router			/schools [get]
+func HandleGetSchools(w http.ResponseWriter, r *http.Request) {
+	schools, err := repositories.GetSchools()
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	httpx.SendData(w, schools, http.StatusOK)
+}

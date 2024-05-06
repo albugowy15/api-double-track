@@ -258,6 +258,53 @@ func HandlePatchStudent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// check unique
+	if len(sanitizedBody.Username) != 0 {
+		isUsernameUnique, err := repositories.IsUniqueStudentUsernameFromId(student.Id, sanitizedBody.Username)
+		if err != nil {
+			httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+			return
+		}
+		if !isUsernameUnique {
+			httpx.SendError(w, errors.New("username telah terdaftar, silahkan gunakan username lain"), http.StatusBadRequest)
+			return
+		}
+	}
+
+	if sanitizedBody.Email.Valid && len(sanitizedBody.Email.String) != 0 {
+		isEmailUnique, err := repositories.IsUniqueStudentEmailFromId(student.Id, sanitizedBody.Email.String)
+		if err != nil {
+			httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+			return
+		}
+		if !isEmailUnique {
+			httpx.SendError(w, errors.New("email telah terdaftar, silahkan gunakan email lain"), http.StatusBadRequest)
+			return
+		}
+	}
+	if len(sanitizedBody.Nisn) != 0 {
+		isNisnUnique, err := repositories.IsUniqueStudentNisnFromId(student.Id, sanitizedBody.Nisn)
+		if err != nil {
+			httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+			return
+		}
+		if !isNisnUnique {
+			httpx.SendError(w, errors.New("nisn telah terdaftar, silahkan gunakan nisn lain"), http.StatusBadRequest)
+			return
+		}
+	}
+	if len(sanitizedBody.PhoneNumber.String) != 0 && sanitizedBody.PhoneNumber.Valid {
+		isPhoneNumberUnique, err := repositories.IsUniqueStudentPhoneNumberFromId(student.Id, sanitizedBody.PhoneNumber.String)
+		if err != nil {
+			httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+			return
+		}
+		if !isPhoneNumberUnique {
+			httpx.SendError(w, errors.New("nomor hp telah terdaftar, silahkan gunakan nomor hp lain"), http.StatusBadRequest)
+			return
+		}
+	}
+
 	// save to db
 	err = repositories.UpdateStudent(student.Id, sanitizedBody)
 	if err != nil {

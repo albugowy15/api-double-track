@@ -85,22 +85,11 @@ func UpdateStudentExpectation(expectations []models.ExpectationData, studentId s
 }
 
 func DeleteStudentExpectation(studentId string) error {
-	var expectationId string
-	err := db.AppDB.Get(&expectationId, "SELECT id FROM expectations WHERE student_id = $1", studentId)
-	if err != nil {
-		return err
-	}
-
 	tx, err := db.AppDB.Beginx()
 	if err != nil {
 		return err
 	}
-	_, err = tx.Exec(`DELETE FROM expectations_to_alternatives WHERE expectation_id = $1`, expectationId)
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-	_, err = tx.Exec(`DELETE FROM expectations WHERE id = $1`, expectationId)
+	_, err = tx.Exec(`DELETE FROM expectations WHERE student_id = $1`, studentId)
 	if err != nil {
 		tx.Rollback()
 		return err

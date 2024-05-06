@@ -8,6 +8,7 @@ import (
 
 	"github.com/albugowy15/api-double-track/internal/models"
 	"github.com/albugowy15/api-double-track/internal/repositories"
+	"github.com/albugowy15/api-double-track/internal/utils"
 	"github.com/albugowy15/api-double-track/pkg/auth"
 	"github.com/albugowy15/api-double-track/pkg/httpx"
 	"github.com/albugowy15/api-double-track/pkg/schemas"
@@ -70,8 +71,14 @@ func HandleGetRecommendationsStudent(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
+
+	ahpResultsWithRanks, err := utils.MakeRecommendationRanks(ahpResults)
+	if err != nil {
+		httpx.SendError(w, err, http.StatusBadRequest)
+		return
+	}
 	ahp := models.AhpRecommendation{
-		Result:           ahpResults,
+		Result:           ahpResultsWithRanks,
 		ConsistencyRatio: null.FloatFrom(float64(consistencyRatio)),
 	}
 
@@ -160,8 +167,13 @@ func HandleGetRecommendationStudent(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
+	ahpResultsWithRanks, err := utils.MakeRecommendationRanks(ahpResults)
+	if err != nil {
+		httpx.SendError(w, err, http.StatusBadRequest)
+		return
+	}
 	ahp := models.AhpRecommendation{
-		Result:           ahpResults,
+		Result:           ahpResultsWithRanks,
 		ConsistencyRatio: null.FloatFrom(float64(consistencyRatio)),
 	}
 

@@ -7,11 +7,14 @@ migrate_down:
 seed:
 	@go run cmd/database/seeder/main.go
 
+setup_db:
+	@docker-compose up -d db && make migrate_down && make migrate_up && make dev
+
 run:
 	@go run cmd/api/main.go
 
 dev:
-	@air
+	@docker-compose up -d db && air
 
 test:
 	@go test -v ./...

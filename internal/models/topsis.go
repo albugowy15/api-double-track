@@ -10,3 +10,9 @@ type TOPSISToAlternatives struct {
 	TopsisId      int32   `db:"topsis_id"`
 	AlternativeId int     `db:"alternative_id"`
 }
+
+type TOPSISAHPToAlternatives struct {
+	Score         float32 `db:"score"`
+	TopsisId      int32   `db:"topsis_id"`
+	AlternativeId int     `db:"alternative_id"`
+}

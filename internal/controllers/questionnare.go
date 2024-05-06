@@ -196,6 +196,7 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 	colSum := ahp.CalculateColSum(mpc)
 	normMpc := ahp.NormalizeMPC(mpc, colSum)
 	criteriaWeight := ahp.CalculateCriteriaWeight(normMpc)
+	log.Println("criteriaWeight : ", criteriaWeight)
 
 	if err := services.CalculateAHP(r, body, mpc, criteriaWeight, tx); err != nil {
 		tx.Rollback()
@@ -216,7 +217,17 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := services.CalculateTopsis(r, body, tx); err != nil {
+	if err, _ := weightmethods.AhpWeight(r, body, criteriaWeight); err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	if err := services.CalculateTopsis(r, body, tx, criteriaWeight); err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	if err := services.CalculateTopsisAHP(r, body, tx, criteriaWeight); err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}

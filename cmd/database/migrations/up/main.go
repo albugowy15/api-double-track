@@ -96,6 +96,18 @@ BEFORE UPDATE ON answers
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
+CREATE TABLE "ahp" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "student_id" uuid,
+  "consistency_ratio" decimal,
+  "created_at" TIMESTAMP NOT NULL DEFAULT (now()),
+  "updated_at" TIMESTAMP NOT NULL DEFAULT (now())
+);
+CREATE TRIGGER set_ahp_timestamp
+BEFORE UPDATE ON ahp
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
 CREATE TABLE "ahp_to_alternatives" (
   "id" BIGSERIAL PRIMARY KEY,
   "score" decimal NOT NULL,
@@ -109,15 +121,14 @@ BEFORE UPDATE ON ahp_to_alternatives
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
-CREATE TABLE "ahp" (
+CREATE TABLE "topsis" (
   "id" BIGSERIAL PRIMARY KEY,
   "student_id" uuid,
-  "consistency_ratio" decimal,
   "created_at" TIMESTAMP NOT NULL DEFAULT (now()),
   "updated_at" TIMESTAMP NOT NULL DEFAULT (now())
 );
-CREATE TRIGGER set_ahp_timestamp
-BEFORE UPDATE ON ahp
+CREATE TRIGGER set_topsis_timestamp
+BEFORE UPDATE ON topsis
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
@@ -131,17 +142,6 @@ CREATE TABLE "topsis_to_alternatives" (
 );
 CREATE TRIGGER set_topsis_to_alternatives_timestamp
 BEFORE UPDATE ON topsis_to_alternatives
-FOR EACH ROW
-EXECUTE PROCEDURE trigger_set_timestamp();
-
-CREATE TABLE "topsis" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "student_id" uuid,
-  "created_at" TIMESTAMP NOT NULL DEFAULT (now()),
-  "updated_at" TIMESTAMP NOT NULL DEFAULT (now())
-);
-CREATE TRIGGER set_topsis_timestamp
-BEFORE UPDATE ON topsis
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
@@ -163,9 +163,9 @@ CREATE TABLE "expectations_to_alternatives" (
   "rank" int
 );
 
-ALTER TABLE "students" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id") ON DELETE CASCADE;
-
 ALTER TABLE "admins" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "students" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "questionnare_settings" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id") ON DELETE CASCADE;
 
@@ -174,6 +174,10 @@ ALTER TABLE "questionnare_settings" ADD FOREIGN KEY ("school_id") REFERENCES "sc
 ALTER TABLE "answers" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "answers" ADD FOREIGN KEY ("question_id") REFERENCES "questions" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "ahp" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "topsis" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "topsis_to_alternatives" ADD FOREIGN KEY ("topsis_id") REFERENCES "topsis" ("id") ON DELETE CASCADE;
 

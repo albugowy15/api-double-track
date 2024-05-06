@@ -163,31 +163,31 @@ CREATE TABLE "expectations_to_alternatives" (
   "rank" int
 );
 
-ALTER TABLE "students" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id");
+ALTER TABLE "students" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "admins" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id");
+ALTER TABLE "admins" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "questionnare_settings" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id");
+ALTER TABLE "questionnare_settings" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "questionnare_settings" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id");
+ALTER TABLE "questionnare_settings" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "answers" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("id");
+ALTER TABLE "answers" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "answers" ADD FOREIGN KEY ("question_id") REFERENCES "questions" ("id");
+ALTER TABLE "answers" ADD FOREIGN KEY ("question_id") REFERENCES "questions" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "topsis_to_alternatives" ADD FOREIGN KEY ("topsis_id") REFERENCES "topsis" ("id");
+ALTER TABLE "topsis_to_alternatives" ADD FOREIGN KEY ("topsis_id") REFERENCES "topsis" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "topsis_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id");
+ALTER TABLE "topsis_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("ahp_id") REFERENCES "ahp" ("id");
+ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("ahp_id") REFERENCES "ahp" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id");
+ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "expectations" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("id");
+ALTER TABLE "expectations" ADD FOREIGN KEY ("student_id") REFERENCES "students" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "expectations_to_alternatives" ADD FOREIGN KEY ("expectation_id") REFERENCES "expectations" ("id");
+ALTER TABLE "expectations_to_alternatives" ADD FOREIGN KEY ("expectation_id") REFERENCES "expectations" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "expectations_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id");
+ALTER TABLE "expectations_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id") ON DELETE CASCADE;
 `
 
 func init() {

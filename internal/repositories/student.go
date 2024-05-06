@@ -21,9 +21,35 @@ func IsUniqueStudentUsername(username string) (bool, error) {
 	return false, err
 }
 
+func IsUniqueStudentUsernameFromId(studentId string, username string) (bool, error) {
+	var id string
+	err := db.AppDB.Get(&id, "SELECT id FROM students WHERE username = $1 AND id != $2", username, studentId)
+	if err == nil {
+		return false, nil
+	}
+	if err == sql.ErrNoRows {
+		return true, nil
+	}
+	log.Println("db err:", err)
+	return false, err
+}
+
 func IsUniqueStudentEmail(email string) (bool, error) {
 	var studentId string
 	err := db.AppDB.Get(&studentId, "SELECT id FROM students WHERE email = $1", email)
+	if err == nil {
+		return false, nil
+	}
+	if err == sql.ErrNoRows {
+		return true, nil
+	}
+	log.Println("db err:", err)
+	return false, err
+}
+
+func IsUniqueStudentEmailFromId(studentId string, email string) (bool, error) {
+	var id string
+	err := db.AppDB.Get(&id, "SELECT id FROM students WHERE email = $1 AND id != $2", email, studentId)
 	if err == nil {
 		return false, nil
 	}
@@ -47,9 +73,35 @@ func IsUniqueStudentPhoneNumber(phoneNumber string) (bool, error) {
 	return false, err
 }
 
+func IsUniqueStudentPhoneNumberFromId(studentId string, phoneNumber string) (bool, error) {
+	var id string
+	err := db.AppDB.Get(&id, "SELECT id FROM students WHERE phone_number = $1 AND id != $2", phoneNumber, studentId)
+	if err == nil {
+		return false, nil
+	}
+	if err == sql.ErrNoRows {
+		return true, nil
+	}
+	log.Println("db err:", err)
+	return false, err
+}
+
 func IsUniqueStudentNisn(nisn string) (bool, error) {
 	var studentId string
 	err := db.AppDB.Get(&studentId, "SELECT id FROM students WHERE nisn = $1", nisn)
+	if err == nil {
+		return false, nil
+	}
+	if err == sql.ErrNoRows {
+		return true, nil
+	}
+	log.Println("db err:", err)
+	return false, err
+}
+
+func IsUniqueStudentNisnFromId(studentId string, nisn string) (bool, error) {
+	var id string
+	err := db.AppDB.Get(&id, "SELECT id FROM students WHERE nisn = $1 AND id != $2", nisn, studentId)
 	if err == nil {
 		return false, nil
 	}
@@ -131,69 +183,12 @@ func AddStudent(schoolId string, data models.Student) error {
 }
 
 func DeleteStudent(studentId string) error {
-	tx, err := db.AppDB.Beginx()
+	_, err := db.AppDB.Exec("DELETE FROM students WHERE id = $1", studentId)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
 
-	var ahpId int64
-	err = tx.Get(&ahpId, `SELECT id FROM ahp WHERE student_id = $1`, studentId)
-	if err == sql.ErrNoRows {
-		// it means the student is not completed the questionnare yet
-		// proceed to delete its row from students
-		_, err = tx.Exec("DELETE FROM students WHERE id = $1", studentId)
-		if err != nil {
-			log.Println(err)
-			tx.Rollback()
-			return err
-		}
-		tx.Commit()
-		return nil
-	}
-
-	if err != nil {
-		log.Println(err)
-		tx.Rollback()
-		return err
-	}
-
-	// delete record from answers
-	_, err = tx.Exec(`DELETE FROM answers WHERE student_id = $1`, studentId)
-	if err != nil {
-		log.Println(err)
-		tx.Rollback()
-		return err
-	}
-
-	// delete record from ahp_to_alternatives
-	_, err = tx.Exec(`DELETE FROM ahp_to_alternatives WHERE ahp_id = $1`, ahpId)
-	if err != nil {
-		log.Println(err)
-		tx.Rollback()
-		return err
-	}
-
-	// TODO: delete record from topsis_to_alternatives
-
-	// delete record from ahp
-	_, err = tx.Exec(`DELETE FROM ahp WHERE student_id = $1`, studentId)
-	if err != nil {
-		log.Println(err)
-		tx.Rollback()
-		return err
-	}
-	// TODO: delete record from topsis
-
-	// finally delete student record
-	_, err = tx.Exec("DELETE FROM students WHERE id = $1", studentId)
-	if err != nil {
-		log.Println(err)
-		tx.Rollback()
-		return err
-	}
-
-	tx.Commit()
 	return nil
 }
 

@@ -197,9 +197,20 @@ func HandleGetRecommendationStudent(w http.ResponseWriter, r *http.Request) {
 		Result: topsisResults,
 	}
 
+	topsisAHPResults, err := repositories.GetTOPSISAHPRecommendations(studentId)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	topsis_ahp := models.TopsisAHPRecommendation{
+		Result: topsisAHPResults,
+	}
+
 	res := models.Recommendation{
-		Ahp:    ahp,
-		Topsis: topsis,
+		Ahp:       ahp,
+		Topsis:    topsis,
+		TopsisAHP: topsis_ahp,
 	}
 	// fmt.Println("result : ", res.Topsis)
 	httpx.SendData(w, res, http.StatusOK)

@@ -60,7 +60,7 @@ func ValidatePhoneNumber(phoneNumber string) error {
 	if len(phoneNumber) < 10 || len(phoneNumber) > 14 {
 		return ErrPhoneNumberLength
 	}
-	if !strings.HasPrefix(phoneNumber, "08") {
+	if !strings.HasPrefix(phoneNumber, "0") {
 		return ErrPhoneNumberPrefix
 	}
 	_, err := strconv.Atoi(phoneNumber)

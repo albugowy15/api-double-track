@@ -176,6 +176,19 @@ BEFORE UPDATE ON expectations
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
+CREATE TABLE "topsis_combinative_to_alternatives" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "score" decimal,
+  "topsis_id" bigint,
+  "alternative_id" int,
+  "created_at" TIMESTAMP NOT NULL DEFAULT (now()),
+  "updated_at" TIMESTAMP NOT NULL DEFAULT (now())
+);
+CREATE TRIGGER set_topsis_combinative_to_alternatives_timestamp
+BEFORE UPDATE ON expectations
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
 ALTER TABLE "admins" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "students" ADD FOREIGN KEY ("school_id") REFERENCES "schools" ("id") ON DELETE CASCADE;
@@ -199,6 +212,10 @@ ALTER TABLE "topsis_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENC
 ALTER TABLE "topsis_ahp_to_alternatives" ADD FOREIGN KEY ("topsis_id") REFERENCES "topsis" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "topsis_ahp_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "topsis_combinative_to_alternatives" ADD FOREIGN KEY ("topsis_id") REFERENCES "topsis" ("id") ON DELETE CASCADE;
+
+ALTER TABLE "topsis_combinative_to_alternatives" ADD FOREIGN KEY ("alternative_id") REFERENCES "alternatives" ("id") ON DELETE CASCADE;
 
 ALTER TABLE "ahp_to_alternatives" ADD FOREIGN KEY ("ahp_id") REFERENCES "ahp" ("id") ON DELETE CASCADE;
 

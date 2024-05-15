@@ -70,6 +70,7 @@ func Init() *chi.Mux {
 				r.Post("/expectations", controllers.HandlePostExpectations)
 				r.Patch("/expectations", controllers.HandlePatchExpectations)
 				r.Delete("/expectations", controllers.HandleDeleteExpectations)
+				r.Get("/weight", controllers.HandleGetWeights)
 			})
 		})
 	})

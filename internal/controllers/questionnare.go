@@ -221,12 +221,22 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err, _ := weightmethods.CalculateCombinative(r, body, criteriaWeight); err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
 	if err := services.CalculateTopsis(r, body, tx, criteriaWeight); err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}
 
 	if err := services.CalculateTopsisAHP(r, body, tx, criteriaWeight); err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	if err := services.CalculateTopsisCombinative(r, body, tx, criteriaWeight); err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return
 	}

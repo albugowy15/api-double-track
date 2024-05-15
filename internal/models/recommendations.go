@@ -32,10 +32,16 @@ type TopsisAHPRecommendation struct {
 	Id     int32                  `db:"id" json:"id"`
 }
 
+type TOPSISCombinativesRecommendation struct {
+	Result []RecommendationResult `db:"result" json:"result"`
+	Id     int32                  `db:"id" json:"id"`
+}
+
 type Recommendation struct {
-	Ahp       AhpRecommendation       `db:"ahp" json:"ahp"`
-	Topsis    TopsisRecommendation    `db:"topsis" json:"topsis"`
-	TopsisAHP TopsisAHPRecommendation `db:"topsis_ahp" json:"topsis_ahp"`
+	Ahp                AhpRecommendation                `db:"ahp" json:"ahp"`
+	Topsis             TopsisRecommendation             `db:"topsis" json:"topsis"`
+	TopsisAHP          TopsisAHPRecommendation          `db:"topsis_ahp" json:"topsis_ahp"`
+	TOPSISCombinatives TOPSISCombinativesRecommendation `db:"topsis_combinative" json:"topsis_combinative"`
 }
 
 type StudentRecommendation struct {
@@ -45,4 +51,17 @@ type StudentRecommendation struct {
 	AhpResults       []RecommendationResult `db:"ahp_results" json:"ahp_results"`
 	TopsisResults    []RecommendationResult `db:"topsis_results" json:"topsis_results"`
 	ConsistencyRatio null.Float             `db:"consistency_ratio" json:"consistency_ratio"`
+}
+
+type Weights struct {
+	Interest                  float64 `json:"interest"`
+	Facilities                float64 `json:"facilities"`
+	TotalOpenJobs             float64 `json:"total_open_jobs"`
+	Salaries                  float64 `json:"salaries"`
+	EntrepreneurOpportunities float64 `json:"entrepreneur_opportunities"`
+}
+
+type CriteriaWeights struct {
+	Entropy Weights `json:"entropy"`
+	AHP     Weights `json:"ahp"`
 }

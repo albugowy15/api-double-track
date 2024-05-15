@@ -100,10 +100,22 @@ func HandleGetRecommendationsStudent(w http.ResponseWriter, r *http.Request) {
 	topsis_ahp := models.TopsisAHPRecommendation{
 		Result: topsisAHPResults,
 	}
+
+	topsisCombinativeResults, err := repositories.GetTOPSISCombinativeRecommendations(studentId)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	topsis_combinative := models.TOPSISCombinativesRecommendation{
+		Result: topsisCombinativeResults,
+	}
+
 	res := models.Recommendation{
-		Ahp:       ahp,
-		Topsis:    topsis,
-		TopsisAHP: topsis_ahp,
+		Ahp:                ahp,
+		Topsis:             topsis,
+		TopsisAHP:          topsis_ahp,
+		TOPSISCombinatives: topsis_combinative,
 	}
 
 	httpx.SendData(w, res, http.StatusOK)
@@ -207,11 +219,26 @@ func HandleGetRecommendationStudent(w http.ResponseWriter, r *http.Request) {
 		Result: topsisAHPResults,
 	}
 
+	topsisCombinativeResult, err := repositories.GetTOPSISCombinativeRecommendations(studentId)
+	if err != nil {
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	topsis_combinative := models.TOPSISCombinativesRecommendation{
+		Result: topsisCombinativeResult,
+	}
+
 	res := models.Recommendation{
-		Ahp:       ahp,
-		Topsis:    topsis,
-		TopsisAHP: topsis_ahp,
+		Ahp:                ahp,
+		Topsis:             topsis,
+		TopsisAHP:          topsis_ahp,
+		TOPSISCombinatives: topsis_combinative,
 	}
 	// fmt.Println("result : ", res.Topsis)
 	httpx.SendData(w, res, http.StatusOK)
 }
+
+// func MatchExpectation(w http.ResponseWriter, r *http.Request) {
+
+// }

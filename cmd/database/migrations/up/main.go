@@ -172,7 +172,7 @@ CREATE TABLE "topsis_ahp_to_alternatives" (
   "updated_at" TIMESTAMP NOT NULL DEFAULT (now())
 );
 CREATE TRIGGER set_topsis_ahp_to_alternatives_timestamp
-BEFORE UPDATE ON expectations
+BEFORE UPDATE ON topsis_combinative_to_alternatives
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
@@ -185,7 +185,7 @@ CREATE TABLE "topsis_combinative_to_alternatives" (
   "updated_at" TIMESTAMP NOT NULL DEFAULT (now())
 );
 CREATE TRIGGER set_topsis_combinative_to_alternatives_timestamp
-BEFORE UPDATE ON expectations
+BEFORE UPDATE ON topsis_combinative_to_alternatives
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 

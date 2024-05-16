@@ -59,9 +59,6 @@ func HandlePostExpectations(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, errors.New("siswa telah mengisi ekspektasi rekomendasi"), http.StatusBadRequest)
 		return
 	}
-	//
-	//
-	// save to db
 	err := repositories.SaveStudentExpectations(body.Expectations, studentId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
@@ -88,9 +85,6 @@ func HandlePatchExpectations(w http.ResponseWriter, r *http.Request) {
 		httpx.SendError(w, errors.New("siswa belum mengisi ekspektasi rekomendasi"), http.StatusBadRequest)
 		return
 	}
-	//
-	//
-	// save to db
 	err := repositories.UpdateStudentExpectation(body.Expectations, studentId)
 	if err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)

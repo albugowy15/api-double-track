@@ -35,5 +35,3 @@ var (
 		"supporting_facilites":         4,
 	}
 )
-
-type ()

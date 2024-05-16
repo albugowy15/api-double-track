@@ -235,7 +235,6 @@ func HandleGetRecommendationStudent(w http.ResponseWriter, r *http.Request) {
 		TopsisAHP:          topsis_ahp,
 		TOPSISCombinatives: topsis_combinative,
 	}
-	// fmt.Println("result : ", res.Topsis)
 	httpx.SendData(w, res, http.StatusOK)
 }
 

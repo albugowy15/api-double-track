@@ -118,7 +118,7 @@ func GetTOPSISAHPRecommendations(studentId string) ([]models.RecommendationResul
 	if err != nil {
 		log.Println("db err : ", err)
 	}
-	return recommendations, nil
+	return recommendations, err
 }
 
 func GetTOPSISCombinativeRecommendations(studentId string) ([]models.RecommendationResult, error) {
@@ -135,7 +135,7 @@ func GetTOPSISCombinativeRecommendations(studentId string) ([]models.Recommendat
 	if err != nil {
 		log.Println("db err : ", err)
 	}
-	return recommendations, nil
+	return recommendations, err
 }
 
 func GetAHPConsistencyRatio(studentId string) (float32, error) {

@@ -35,7 +35,13 @@ func InitSubCriteriaWeights() {
 	}
 }
 
-func CalculateAHP(r *http.Request, body []models.SubmitAnswerRequest, mpc ahp.MPC, criteriaWeight ahp.CriteriaWeight, tx *sqlx.Tx) error {
+func CalculateAHP(
+	r *http.Request,
+	body []models.SubmitAnswerRequest,
+	mpc ahp.MPC,
+	criteriaWeight ahp.CriteriaWeight,
+	tx *sqlx.Tx,
+) error {
 	// mpc := ahp.BuildCriteriaMPC(body)
 	// colSum := ahp.CalculateColSum(mpc)
 	// normMpc := ahp.NormalizeMPC(mpc, colSum)

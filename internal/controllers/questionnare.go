@@ -191,7 +191,6 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//
 	mpc := ahp.BuildCriteriaMPC(body)
 	colSum := ahp.CalculateColSum(mpc)
 	normMpc := ahp.NormalizeMPC(mpc, colSum)
@@ -210,7 +209,6 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 
 	// start your topsis service here,
 	// the function parameter would be same as CalculateAHP services
-	// TODO: TOPSIS Service
 	if err := weightmethods.CalculateEntropy(r, body); err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return

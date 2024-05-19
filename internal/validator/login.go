@@ -3,7 +3,6 @@ package validator
 import (
 	"errors"
 	"regexp"
-	"strings"
 
 	"github.com/albugowy15/api-double-track/internal/models"
 )
@@ -13,10 +12,15 @@ func ValidateUsername(username string) error {
 	if usernameLen < 6 || usernameLen > 30 {
 		return errors.New("username harus terdiri dari 6 hingga 30 karakter")
 	}
+
+	isWhitespacePresent := regexp.MustCompile(`\s`).MatchString(username)
+	if isWhitespacePresent {
+		return ErrUsernameWhitespace
+	}
 	pattern := "^[a-zA-Z0-9]+$"
 	re := regexp.MustCompile(pattern)
 	if !re.MatchString(username) {
-		return errors.New("username hanya boleh terdiri dari huruf alpabet atau angka tanpa spasi")
+		return errors.New("username hanya boleh terdiri dari huruf alphabet atau angka tanpa spasi")
 	}
 	return nil
 }
@@ -26,11 +30,12 @@ func ValidatePassword(password string) error {
 	if passwordLength == 0 {
 		return errors.New("password wajib diisi")
 	}
-	// if passwordLength < minLen || passwordLength > 16 {
-	// 	return errors.New("password harus terdiri dari 8 hingga 16 karakter")
-	// }
-	if strings.Contains(password, " ") {
-		return errors.New("password tidak boleh terdapat spasi")
+	if len(password) < 6 {
+		return ErrUsernameLength
+	}
+	isWhitespacePresent := regexp.MustCompile(`\s`).MatchString(password)
+	if isWhitespacePresent {
+		return ErrPasswordWhitespace
 	}
 	return nil
 }

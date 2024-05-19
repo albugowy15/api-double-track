@@ -119,7 +119,6 @@ func HandleGetQuestions(w http.ResponseWriter, r *http.Request) {
 			item.MinText = CodeToText[token[0]]
 			item.MaxText = CodeToText[token[1]]
 		default:
-			log.Println("there is no question with category: ", question.Category)
 			httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 			return
 		}

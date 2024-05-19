@@ -128,7 +128,6 @@ func HandlePatchAdminChangePassword(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(body.OldPassword)); err != nil {
-		log.Println("hashedPass:", admin.Password)
 		log.Println(err)
 		httpx.SendError(w, errors.New("password lama salah"), http.StatusBadRequest)
 		return

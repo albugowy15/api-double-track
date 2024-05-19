@@ -2,9 +2,7 @@ package validator
 
 import (
 	"errors"
-	"log"
 	"net/mail"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -148,22 +146,12 @@ func ValidateRegisterStudent(data models.StudentRegisterRequest) error {
 		return errors.New("id sekolah wajib diisi")
 	}
 
-	if len(data.Username) < 5 {
-		return ErrUsernameLength
-	}
-	isWhitespacePresent := regexp.MustCompile(`\s`).MatchString(data.Username)
-	log.Println("username:", data.Username)
-	if isWhitespacePresent {
-		log.Println("username has space")
-		return ErrUsernameWhitespace
+	if err := ValidateUsername(data.Username); err != nil {
+		return err
 	}
 
-	if len(data.Password) < 6 {
-		return ErrUsernameLength
-	}
-	isWhitespacePresent = regexp.MustCompile(`\s`).MatchString(data.Password)
-	if isWhitespacePresent {
-		return ErrPasswordWhitespace
+	if err := ValidatePassword(data.Password); err != nil {
+		return err
 	}
 
 	if err := ValidateEmail(data.Email); err != nil {

@@ -52,6 +52,7 @@ func Init() *chi.Mux {
 				r.Get("/students/{studentId}", controllers.HandleGetStudent)
 				r.Patch("/students/{studentId}", controllers.HandlePatchStudent)
 				r.Delete("/students", controllers.HandleDeleteStudent)
+				r.Get("/questionnare/answers/{studentId}", controllers.HandleGetAnswer)
 			})
 
 			// student route

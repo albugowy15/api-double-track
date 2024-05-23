@@ -237,7 +237,3 @@ func HandleGetRecommendationStudent(w http.ResponseWriter, r *http.Request) {
 	}
 	httpx.SendData(w, res, http.StatusOK)
 }
-
-// func MatchExpectation(w http.ResponseWriter, r *http.Request) {
-
-// }

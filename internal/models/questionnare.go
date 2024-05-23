@@ -47,6 +47,12 @@ type Answer struct {
 	QuestionId int         `db:"question_id" json:"question_id"`
 }
 
+type AnswerDetail struct {
+	Fullname string      `db:"fullname" json:"fullname"`
+	Question string      `db:"question" json:"question"`
+	Category string      `db:"category" json:"category"`
+	Answer   null.String `db:"answer" json:"answer"`
+}
 type SubmitAnswerRequest struct {
 	Answer string `json:"answer"`
 	Id     int    `json:"id"`

@@ -4,7 +4,7 @@ This project is a Go-based REST API that offers a variety of endpoints designed 
 
 ## Tech Stack
 
-- Go 1.22.0
+- Go 1.22
 - Chi (HTTP Router)
 - SQLx (database library)
 - Viper (configuration management)

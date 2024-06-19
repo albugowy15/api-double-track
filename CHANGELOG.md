@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/albugowy15/api-double-track/compare/v1.1.0...v1.2.0) (2024-06-19)
+
+
+### Features
+
+* use jwtauth v5 and jwx v2 ([7a929d2](https://github.com/albugowy15/api-double-track/commit/7a929d2b5cf1e7d9fd1d3c51c910ea748b6428b2))
+
 ## [1.1.0](https://github.com/albugowy15/api-double-track/compare/v1.0.0...v1.1.0) (2024-06-19)
 
 

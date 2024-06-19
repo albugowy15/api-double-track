@@ -7,8 +7,8 @@ import (
 	"net/http"
 
 	"github.com/albugowy15/api-double-track/pkg/httpx"
-	"github.com/go-chi/jwtauth"
-	"github.com/lestrrat-go/jwx/jwt"
+	"github.com/go-chi/jwtauth/v5"
+	"github.com/lestrrat-go/jwx/v2/jwt"
 )
 
 var tokenAuth *jwtauth.JWTAuth

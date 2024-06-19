@@ -7,7 +7,7 @@ import (
 	"github.com/albugowy15/api-double-track/pkg/swagger"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/jwtauth"
+	"github.com/go-chi/jwtauth/v5"
 )
 
 func Init() *chi.Mux {

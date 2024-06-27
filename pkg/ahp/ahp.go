@@ -53,13 +53,13 @@ var (
 	}
 	RandomIndex      = []float32{0.0, 0.0, 0.58, 0.90, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49}
 	AlternativeToRow = map[string]int{
-		"Multimedia":                      0,
-		"Teknik Elektro":                  1,
-		"Teknik Listrik":                  2,
-		"Tata Busana":                     3,
-		"Tata Boga":                       4,
-		"Tata Kecantikan":                 5,
-		"Teknik Kendararaan Ringan/Motor": 6,
+		"Multimedia":                    0,
+		"Teknik Elektro":                1,
+		"Teknik Listrik":                2,
+		"Tata Busana":                   3,
+		"Tata Boga":                     4,
+		"Tata Kecantikan":               5,
+		"Teknik Kendaraan Ringan/Motor": 6,
 	}
 	CriteriaToCol = map[string]int{
 		"total_open_jobs":              0,
@@ -286,4 +286,21 @@ func BuildDecisionMatrix(
 		}
 	}
 	return decisionMatrix, nil
+}
+
+func CalculateAlternativeHpt(
+	decisionMatrix DecisionMatrix,
+	allSubCriteriaWeights [TotalCriteria][TotalSubCriteria]float32,
+	criteriaWeight CriteriaWeight,
+) []float32 {
+	alternativeMatrix := [TotalAlternative][TotalCriteria]float32{}
+	alternativeHpt := []float32{}
+	for row := range TotalAlternative {
+		for col := range TotalCriteria {
+			subVecIdx := decisionMatrix[row][col] - 1
+			alternativeMatrix[row][col] = allSubCriteriaWeights[col][int(subVecIdx)] * criteriaWeight[col]
+		}
+		alternativeHpt = append(alternativeHpt, SumRow(alternativeMatrix[row]))
+	}
+	return alternativeHpt
 }

@@ -1,7 +1,7 @@
-migrate_up: 
+migrate_up:
 	@go run cmd/database/migrations/up/main.go
 
-migrate_down: 
+migrate_down:
 	@go run cmd/database/migrations/down/main.go
 
 seed:
@@ -18,6 +18,12 @@ dev:
 
 test:
 	@go test -v ./...
+
+test-cover:
+	@go test ./pkg/ahp -v -coverprofile=tmp/c.out 
+
+test-cover-result:
+	@go test ./pkg/ahp -v -coverprofile=tmp/c.out && go tool cover -html=tmp/c.out 
 
 build:
 	@go build -o ./tmp/main cmd/api/main.go

@@ -19,13 +19,13 @@ var (
 		"1/9": 1.0 / 9.0,
 	}
 	AlternativeToRow = map[string]int{
-		"Multimedia":                      0,
-		"Teknik Elektro":                  1,
-		"Teknik Listrik":                  2,
-		"Tata Busana":                     3,
-		"Tata Boga":                       4,
-		"Tata Kecantikan":                 5,
-		"Teknik Kendararaan Ringan/Motor": 6,
+		"Multimedia":                    0,
+		"Teknik Elektro":                1,
+		"Teknik Listrik":                2,
+		"Tata Busana":                   3,
+		"Tata Boga":                     4,
+		"Tata Kecantikan":               5,
+		"Teknik Kendaraan Ringan/Motor": 6,
 	}
 	CriteriaToCol = map[string]int{
 		"total_open_jobs":              0,

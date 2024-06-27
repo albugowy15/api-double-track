@@ -40,12 +40,12 @@ func CalculateTopsis(r *http.Request, body []models.SubmitAnswerRequest, tx *sql
 		is_facilities_question := answer.Number >= 8 && answer.Number <= 14
 		if is_interest_question {
 			float_answer, _ := strconv.ParseFloat(answer.Answer, 32)
-			squared := float32(math.Pow(float_answer, 2))
+			squared := float32(float_answer * float_answer)
 			arr_sum[0] += squared
 		}
 		if is_facilities_question {
 			float_answer, _ := strconv.ParseFloat(answer.Answer, 32)
-			squared := float32(math.Pow(float_answer, 2))
+			squared := float32(float_answer * float_answer)
 			arr_sum[1] += squared
 		}
 	}
@@ -502,7 +502,7 @@ func CalculateTopsis(r *http.Request, body []models.SubmitAnswerRequest, tx *sql
 	}
 
 	// 7
-	mesin_repository, err := repositories.GetAlternativeByName("Teknik Kendararaan Ringan/Motor")
+	mesin_repository, err := repositories.GetAlternativeByName("Teknik Kendaraan Ringan/Motor")
 	if err != nil {
 		return err
 	}
@@ -526,12 +526,12 @@ func CalculateTopsisAHP(r *http.Request, body []models.SubmitAnswerRequest, tx *
 		is_facilities_question := answer.Number >= 8 && answer.Number <= 14
 		if is_interest_question {
 			float_answer, _ := strconv.ParseFloat(answer.Answer, 32)
-			squared := float32(math.Pow(float_answer, 2))
+			squared := float32(float_answer * float_answer)
 			arr_sum[0] += squared
 		}
 		if is_facilities_question {
 			float_answer, _ := strconv.ParseFloat(answer.Answer, 32)
-			squared := float32(math.Pow(float_answer, 2))
+			squared := float32(float_answer * float_answer)
 			arr_sum[1] += squared
 		}
 	}
@@ -936,7 +936,7 @@ func CalculateTopsisAHP(r *http.Request, body []models.SubmitAnswerRequest, tx *
 	}
 
 	// 7
-	mesin_repository, err := repositories.GetAlternativeByName("Teknik Kendararaan Ringan/Motor")
+	mesin_repository, err := repositories.GetAlternativeByName("Teknik Kendaraan Ringan/Motor")
 	if err != nil {
 		return err
 	}
@@ -960,12 +960,12 @@ func CalculateTopsisCombinative(r *http.Request, body []models.SubmitAnswerReque
 		is_facilities_question := answer.Number >= 8 && answer.Number <= 14
 		if is_interest_question {
 			float_answer, _ := strconv.ParseFloat(answer.Answer, 32)
-			squared := float32(math.Pow(float_answer, 2))
+			squared := float32(float_answer * float_answer)
 			arr_sum[0] += squared
 		}
 		if is_facilities_question {
 			float_answer, _ := strconv.ParseFloat(answer.Answer, 32)
-			squared := float32(math.Pow(float_answer, 2))
+			squared := float32(float_answer * float_answer)
 			arr_sum[1] += squared
 		}
 	}
@@ -1370,7 +1370,7 @@ func CalculateTopsisCombinative(r *http.Request, body []models.SubmitAnswerReque
 	}
 
 	// 7
-	mesin_repository, err := repositories.GetAlternativeByName("Teknik Kendararaan Ringan/Motor")
+	mesin_repository, err := repositories.GetAlternativeByName("Teknik Kendaraan Ringan/Motor")
 	if err != nil {
 		return err
 	}

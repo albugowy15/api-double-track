@@ -20,7 +20,7 @@ func SeedAlternativeTx(tx *sqlx.Tx) {
 		{Alternative: "Tata Busana", Description: "Alternative keterampilan Tata Busana"},
 		{Alternative: "Tata Boga", Description: "Alternative keterampilan Tata Boga"},
 		{Alternative: "Tata Kecantikan", Description: "Alternative keterampilan Tata Kecantikan"},
-		{Alternative: "Teknik Kendararaan Ringan/Motor", Description: "Alternative keterampilan Teknik Kendararaan Ringan/Motor"},
+		{Alternative: "Teknik Kendaraan Ringan/Motor", Description: "Alternative keterampilan Teknik Kendaraan Ringan/Motor"},
 	}
 	_, err := tx.NamedExec(`INSERT INTO alternatives (alternative, description) VALUES (:alternative, :description)`, alteratives)
 	if err != nil {

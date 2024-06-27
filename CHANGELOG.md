@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/albugowy15/api-double-track/compare/v1.2.0...v1.3.0) (2024-06-27)
+
+
+### Features
+
+* add CalculateAlternativeHpt in ahp package ([2270bb6](https://github.com/albugowy15/api-double-track/commit/2270bb627f41d4f249b796352a69c1caf7728e61))
+
+
+### Bug Fixes
+
+* typo alternative "Teknik Kendaraan Ringan/Motor" ([00c75a8](https://github.com/albugowy15/api-double-track/commit/00c75a886a251ab08883687f5f06099796f1acb2))
+
 ## [1.2.0](https://github.com/albugowy15/api-double-track/compare/v1.1.0...v1.2.0) (2024-06-19)
 
 

@@ -259,6 +259,36 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 	httpx.SendMessage(w, "berhasil menyimpan kuesioner", http.StatusCreated)
 }
 
+// HandleGetAnswer godoc
+//
+//	@Summary		Get student questionnare answer
+//	@Description	Get student questionnare answer
+//	@Tags			Questionnare
+//	@Tags			Admin
+//	@Accept			json
+//	@Produce		json
+//	@Param			Authorization	header		string				true	"Insert your access token"	default(Bearer <Add access token here>)
+//	@Success		201				{object}	httpx.MessageJsonResponse
+//	@Failure		400				{object}	httpx.ErrorJsonResponse
+//	@Failure		500				{object}	httpx.ErrorJsonResponse
+//	@Router			/questionnare/answers/{studentId} [get]
+func HandleGetAnswer(w http.ResponseWriter, r *http.Request) {
+	studentId := r.PathValue("studentId")
+	if len(studentId) == 0 {
+		httpx.SendError(w, errors.New("id siswa wajib diisi"), http.StatusBadRequest)
+		return
+	}
+	data, err := repositories.GetAnswerStudent(studentId)
+	if err != nil {
+		log.Println("Error fetching answers: ", err)
+		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
+		return
+	}
+
+	// log.Println("data : ", data)
+	httpx.SendData(w, data, http.StatusOK)
+}
+
 // HandleDeleteAnswer godoc
 //
 //	@Summary		Delete student questionnare answer
@@ -275,6 +305,7 @@ func HandlePostAnswers(w http.ResponseWriter, r *http.Request) {
 func HandleDeleteAnswer(w http.ResponseWriter, r *http.Request) {
 	studentIdClaim, _ := auth.GetJwtClaim(r, "user_id")
 	studentId := studentIdClaim.(string)
+	log.Println("studentId:", studentId)
 	if err := repositories.DeleteAnswers(studentId); err != nil {
 		httpx.SendError(w, httpx.ErrInternalServer, http.StatusInternalServerError)
 		return

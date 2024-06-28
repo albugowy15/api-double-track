@@ -25,6 +25,33 @@ func GetAnswersByStudentId(studentId string) ([]models.Answer, error) {
 	return answers, err
 }
 
+func GetAnswerStudent(studentId string) ([]models.AnswerDetail, error) {
+	answers := []models.AnswerDetail{}
+	err := db.AppDB.Select(&answers,
+		`SELECT 
+			s.fullname, 
+			q.question, 
+			q.category,
+			a.answer
+		FROM 
+			students s
+		JOIN 
+			schools sch ON s.school_id = sch.id
+		JOIN 
+			answers a ON s.id = a.student_id
+		JOIN 
+			questions q ON a.question_id = q.id
+		WHERE s.id = $1
+		`,
+		studentId,
+	)
+	if err != nil {
+		log.Println("db err:", err)
+		return nil, err
+	}
+	return answers, err
+}
+
 func DeleteAnswers(studentId string) error {
 	tx, err := db.AppDB.Beginx()
 	if err != nil {

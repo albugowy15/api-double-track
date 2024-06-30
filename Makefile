@@ -8,7 +8,7 @@ seed:
 	@go run cmd/database/seeder/main.go
 
 setup_db:
-	@docker-compose up -d db && make migrate_down && make migrate_up && make dev
+	@docker-compose up -d db && make migrate_down && make migrate_up
 
 run:
 	@go run cmd/api/main.go

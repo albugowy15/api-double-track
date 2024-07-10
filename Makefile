@@ -33,3 +33,6 @@ start:
 
 doc:
 	@swag init -d "./" -g "cmd/api/main.go"
+
+format:
+	@go fmt ./...

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/albugowy15/api-double-track/compare/v1.3.0...v1.3.1) (2024-07-12)
+
+
+### Bug Fixes
+
+* typo in alternatives description ([ffceeee](https://github.com/albugowy15/api-double-track/commit/ffceeee092a5cdaf49a02e7de2fa180f8bdf1608))
+
 ## [1.3.0](https://github.com/albugowy15/api-double-track/compare/v1.2.0...v1.3.0) (2024-06-27)
 
 
